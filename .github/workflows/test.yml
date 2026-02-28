@@ -1,0 +1,63 @@
+name: Test
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_call:
+
+jobs:
+  unit_tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - name: Cache default Flutter artifacts
+        uses: actions/cache@v5
+        with:
+          path: |
+            ~/.pub-cache/
+            /opt/hostedtoolcache/flutter/
+          key: ${{ runner.os }}-flutter-${{ hashFiles('**/pubspec.lock') }}
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Analyze
+        run: flutter analyze
+
+      - name: Run unit tests
+        run: |
+          COMMIT_HASH=$(git rev-parse --short HEAD)
+          BUILD_DATE=$(date -u +"%Y-%m-%d %H:%M UTC")
+          flutter test --exclude-tags mac \
+            --dart-define=COMMIT_HASH=$COMMIT_HASH \
+            --dart-define=BUILD_DATE="$BUILD_DATE"
+
+  golden_tests:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v6
+      - name: Cache default Flutter artifacts
+        uses: actions/cache@v5
+        with:
+          path: |
+            ~/.pub-cache/
+            /opt/hostedtoolcache/flutter/
+          key: ${{ runner.os }}-flutter-${{ runner.arch }}-${{ hashFiles('**/pubspec.lock') }}
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Run golden tests
+        run: |
+          flutter test --tags mac
