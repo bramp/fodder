@@ -47,3 +47,6 @@ app.*.map.json
 # Asset extraction paths
 original_game/
 raw_assets/
+
+# Vendor libraries
+vendor/
