@@ -25,19 +25,23 @@ jobs:
         with:
           channel: 'stable'
 
-      - name: Install dependencies
-        run: flutter pub get
+      - name: Install Melos
+        run: dart pub global activate melos
+
+      - name: Bootstrap Melos
+        run: melos bootstrap
 
       - name: Analyze
-        run: flutter analyze
+        run: melos run analyze
 
       - name: Run unit tests
         run: |
           COMMIT_HASH=$(git rev-parse --short HEAD)
           BUILD_DATE=$(date -u +"%Y-%m-%d %H:%M UTC")
-          flutter test --exclude-tags mac \
+          melos exec -c 1 -- \
+            "flutter test --exclude-tags mac \
             --dart-define=COMMIT_HASH=$COMMIT_HASH \
-            --dart-define=BUILD_DATE="$BUILD_DATE"
+            --dart-define=BUILD_DATE=\"$BUILD_DATE\""
 
   golden_tests:
     runs-on: macos-latest
@@ -55,9 +59,12 @@ jobs:
         with:
           channel: 'stable'
 
-      - name: Install dependencies
-        run: flutter pub get
+      - name: Install Melos
+        run: dart pub global activate melos
+
+      - name: Bootstrap Melos
+        run: melos bootstrap
 
       - name: Run golden tests
         run: |
-          flutter test --tags mac
+          melos exec -c 1 -- "flutter test --tags mac"
