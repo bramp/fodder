@@ -4,10 +4,10 @@ import 'package:test/test.dart';
 
 // Relative imports: tool/ packages lack pubspec.yaml.
 // ignore: avoid_relative_lib_imports
-import '../lib/image_decoder.dart';
+import 'package:fodder_tools/image_decoder.dart';
 // Relative imports: tool/ packages lack pubspec.yaml.
 // ignore: avoid_relative_lib_imports
-import '../lib/palette.dart';
+import 'package:fodder_tools/palette.dart';
 
 void main() {
   /// Creates a palette with one non-transparent color at the given index.
@@ -89,11 +89,7 @@ void main() {
       final palette = paletteWith(42, r: 10, g: 20, b: 30);
       final data = Uint8List.fromList([42, 0, 42]);
 
-      final pixels = decode8Bit(
-        data: data,
-        palette: palette,
-        width: 3,
-      );
+      final pixels = decode8Bit(data: data, palette: palette, width: 3);
 
       expect(pixels.length, 3);
       expect(pixels[0], 0xFF285078); // color 42

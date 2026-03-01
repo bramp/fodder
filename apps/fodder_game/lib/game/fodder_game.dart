@@ -1,7 +1,7 @@
 import 'package:flame/events.dart';
 import 'package:flame/game.dart';
 
-import 'package:fodder/game/components/player_soldier.dart';
+import 'package:fodder_game/game/components/player_soldier.dart';
 
 class FodderGame extends FlameGame with HasCollisionDetection, TapCallbacks {
   late PlayerSoldier player;

@@ -1,7 +1,7 @@
 import 'dart:typed_data';
 
-import 'palette.dart';
-import 'sprite_frame.dart';
+import 'package:fodder_tools/palette.dart';
+import 'package:fodder_tools/sprite_frame.dart';
 
 /// Decodes a 4-bit packed "nibble" sprite sheet into an RGBA pixel buffer.
 ///

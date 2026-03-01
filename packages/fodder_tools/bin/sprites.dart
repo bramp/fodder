@@ -5,17 +5,13 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:args/args.dart';
+import 'package:fodder_tools/atlas_writer.dart';
+import 'package:fodder_tools/dat_reader.dart';
+import 'package:fodder_tools/image_decoder.dart';
+import 'package:fodder_tools/palette.dart';
+import 'package:fodder_tools/png_writer.dart';
+import 'package:fodder_tools/sprite_frame.dart';
 import 'package:path/path.dart' as p;
-
-// The archive library lives in a sibling tool directory and is imported
-// via a relative path since neither package has its own pubspec.yaml.
-// ignore: avoid_relative_lib_imports
-import '../archive/lib/dat_reader.dart';
-import 'lib/atlas_writer.dart';
-import 'lib/image_decoder.dart';
-import 'lib/palette.dart';
-import 'lib/png_writer.dart';
-import 'lib/sprite_frame.dart';
 
 // ---------------------------------------------------------------------------
 // Palette metadata tables
@@ -137,12 +133,7 @@ void main(List<String> arguments) {
       help: 'Extract individual sprites (requires --sprite-data).',
       negatable: false,
     )
-    ..addFlag(
-      'help',
-      abbr: 'h',
-      negatable: false,
-      help: 'Show usage.',
-    );
+    ..addFlag('help', abbr: 'h', negatable: false, help: 'Show usage.');
 
   final args = parser.parse(arguments);
   if (args['help'] as bool) {
@@ -178,9 +169,7 @@ void main(List<String> arguments) {
       return;
     }
     final reader = DatReader(datFile)..read();
-    final entryMap = {
-      for (final e in reader.entries) e.filename: e,
-    };
+    final entryMap = {for (final e in reader.entries) e.filename: e};
     getFile = (f) => reader.getFileBytes(entryMap[f]!);
     hasFile = entryMap.containsKey;
   }
@@ -315,11 +304,7 @@ int _export4Bit(
   final height = pixels.length ~/ width;
   // TODO(bramp): The follow encode + save can be refactored into a function
   // since it's repeated in all export types.
-  final png = encodePng(
-    pixels: pixels,
-    width: width,
-    height: height,
-  );
+  final png = encodePng(pixels: pixels, width: width, height: height);
   final outPath = p.join(
     outputDir.path,
     '${p.basenameWithoutExtension(filename)}.png',
@@ -350,11 +335,7 @@ int _export8BitLinear(
   );
   const width = 320;
   final height = pixelCount ~/ width;
-  final png = encodePng(
-    pixels: pixels,
-    width: width,
-    height: height,
-  );
+  final png = encodePng(pixels: pixels, width: width, height: height);
   final outPath = p.join(
     outputDir.path,
     '${p.basenameWithoutExtension(filename)}.png',
@@ -381,11 +362,7 @@ int _exportTile(
   );
   const width = 320;
   const height = pixelCount ~/ width;
-  final png = encodePng(
-    pixels: pixels,
-    width: width,
-    height: height,
-  );
+  final png = encodePng(pixels: pixels, width: width, height: height);
   final outPath = p.join(
     outputDir.path,
     '${p.basenameWithoutExtension(filename)}.png',
@@ -405,30 +382,24 @@ int _exportTile(
 /// dynamically since the filename depends on the active tileset.
 const _gfxTypeFiles = <GfxType, _GfxFileSpec>{
   GfxType.font: _GfxFileSpec('font.dat', [_PaletteSpec(0xA000, 0x10, 0xD0)]),
-  GfxType.pstuff: _GfxFileSpec(
-    'pstuff.dat',
-    [_PaletteSpec(0xA000, 0x10, 0xF0)],
-  ),
-  GfxType.hill: _GfxFileSpec(
-    'hillbits.dat',
-    [_PaletteSpec(0x6900, 0x10, 0xB0)],
-  ),
-  GfxType.recruit: _GfxFileSpec(
-    'hillbits.dat',
-    [_PaletteSpec(0x6900, 0x10, 0xB0)],
-  ),
-  GfxType.briefing: _GfxFileSpec(
-    'pstuff.dat',
-    [_PaletteSpec(0xA000, 0x10, 0xF0)],
-  ),
-  GfxType.rankFont: _GfxFileSpec(
-    'rankfont.dat',
-    [_PaletteSpec(0xA000, 0x80, 0x40)],
-  ),
-  GfxType.service: _GfxFileSpec(
-    'morphbig.dat',
-    [_PaletteSpec(0xFA00, 0x40, 0x00)],
-  ),
+  GfxType.pstuff: _GfxFileSpec('pstuff.dat', [
+    _PaletteSpec(0xA000, 0x10, 0xF0),
+  ]),
+  GfxType.hill: _GfxFileSpec('hillbits.dat', [
+    _PaletteSpec(0x6900, 0x10, 0xB0),
+  ]),
+  GfxType.recruit: _GfxFileSpec('hillbits.dat', [
+    _PaletteSpec(0x6900, 0x10, 0xB0),
+  ]),
+  GfxType.briefing: _GfxFileSpec('pstuff.dat', [
+    _PaletteSpec(0xA000, 0x10, 0xF0),
+  ]),
+  GfxType.rankFont: _GfxFileSpec('rankfont.dat', [
+    _PaletteSpec(0xA000, 0x80, 0x40),
+  ]),
+  GfxType.service: _GfxFileSpec('morphbig.dat', [
+    _PaletteSpec(0xFA00, 0x40, 0x00),
+  ]),
 };
 
 class _GfxFileSpec {

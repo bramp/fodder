@@ -3,9 +3,8 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:fodder_tools/sprite_data_parser.dart';
 import 'package:path/path.dart' as p;
-
-import 'lib/sprite_data_parser.dart';
 
 /// Exports OpenFodder sprite sheet metadata to JSON files.
 /// These files can be bundled with the game to avoid parsing the C++ header

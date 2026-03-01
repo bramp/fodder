@@ -14,17 +14,11 @@ import 'dart:typed_data';
 class RingBuffer {
   /// Creates a ring buffer of [size] bytes, pre-filled with `0x20` up to
   /// [initialPosition], with the write cursor at [initialPosition].
-  RingBuffer({
-    this.size = 1024,
-    int initialPosition = 0,
-    int fillByte = 0x00,
-  })  : assert(
-          size > 0 && (size & (size - 1)) == 0,
-          'size must be a power of 2',
-        ),
-        _mask = size - 1,
-        _data = Uint8List(size),
-        _pos = initialPosition {
+  RingBuffer({this.size = 1024, int initialPosition = 0, int fillByte = 0x00})
+    : assert(size > 0 && (size & (size - 1)) == 0, 'size must be a power of 2'),
+      _mask = size - 1,
+      _data = Uint8List(size),
+      _pos = initialPosition {
     _data.fillRange(0, initialPosition, fillByte);
   }
 

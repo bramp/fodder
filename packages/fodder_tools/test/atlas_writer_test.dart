@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:test/test.dart';
 
 // ignore: avoid_relative_lib_imports // CLI tool
-import '../lib/atlas_writer.dart';
+import 'package:fodder_tools/atlas_writer.dart';
 
 void main() {
   group('generateAtlasJson', () {
@@ -89,13 +89,7 @@ void main() {
     test('preserves sprite name ordering', () {
       final entries = [
         for (var i = 0; i < 5; i++)
-          AtlasEntry(
-            name: 'group_$i',
-            x: i * 16,
-            y: 0,
-            width: 16,
-            height: 16,
-          ),
+          AtlasEntry(name: 'group_$i', x: i * 16, y: 0, width: 16, height: 16),
       ];
 
       final json = generateAtlasJson(

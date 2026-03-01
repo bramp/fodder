@@ -104,8 +104,7 @@ enum GfxType {
   pstuff,
 
   /// Unknown type.
-  unknown
-  ;
+  unknown;
 
   /// Converts a string name back to its [GfxType] enum value.
   static GfxType fromName(String name) =>
@@ -116,10 +115,7 @@ enum GfxType {
 /// `mSpriteSheetTypes_*_PC` pointer arrays in OpenFodder.
 class SpriteSheetType {
   /// Creates a sprite sheet type definition.
-  const SpriteSheetType({
-    required this.name,
-    required this.entries,
-  });
+  const SpriteSheetType({required this.name, required this.entries});
 
   /// Loads a [SpriteSheetType] from a JSON-compatible list.
   factory SpriteSheetType.fromJson(String name, List<dynamic> json) {

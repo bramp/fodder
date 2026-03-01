@@ -6,7 +6,7 @@ A collection of Dart-based tools for extracting and processing original Cannon F
 
 ### 1. Archive Tool (`tool/archive/main.dart`)
 
-Extracts and decompresses files from original `.DAT` archives (e.g., `FODDER.DAT`, `CF_ENG.DAT`).
+Extracts and decompresses files from original `.DAT` archives (e.g., `CF_ENG.DAT`).
 
 **Usage:**
 

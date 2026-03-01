@@ -156,8 +156,10 @@ class Decompressor {
   ///
   /// This is a view into the tail of [_parent] starting at offset
   /// [_totalNodes], so overflow writes from [_parent] naturally land here.
-  late final Int16List _symbolToNode =
-      Int16List.sublistView(_parent, _totalNodes);
+  late final Int16List _symbolToNode = Int16List.sublistView(
+    _parent,
+    _totalNodes,
+  );
 
   /// Root node value (>= _totalNodes) if leaf, or child pointer if internal.
   final Int16List _children = Int16List(_totalNodes);

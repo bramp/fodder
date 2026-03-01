@@ -4,7 +4,7 @@ import 'package:test/test.dart';
 
 // Relative import needed since tool/ packages lack pubspec.yaml.
 // ignore: avoid_relative_lib_imports
-import '../lib/palette.dart';
+import 'package:fodder_tools/palette.dart';
 
 void main() {
   group('Palette', () {
@@ -63,11 +63,7 @@ void main() {
 
     test('resolve8Bit with zeroTransparent', () {
       final palette = Palette()
-        ..load(
-          data: Uint8List.fromList([10, 20, 30]),
-          offset: 0,
-          count: 1,
-        );
+        ..load(data: Uint8List.fromList([10, 20, 30]), offset: 0, count: 1);
 
       // Index 0 is opaque when zeroTransparent is false — but it's always
       // set to transparent by load().

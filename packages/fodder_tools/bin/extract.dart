@@ -2,7 +2,7 @@
 import 'dart:io';
 
 import 'package:args/args.dart';
-import 'lib/dat_reader.dart';
+import 'package:fodder_tools/dat_reader.dart';
 
 void main(List<String> arguments) {
   final parser = ArgParser()

@@ -1,27 +1,29 @@
-name: fodder
-description: "A new Flutter project."
-publish_to: 'none'
-version: 0.1.0+1
+name: fodder_workspace
+publish_to: none
+
+workspace:
+  - apps/fodder_game
+  - packages/fodder_tools
 
 environment:
   sdk: ^3.11.0
 
-dependencies:
-  a_star_algorithm: ^0.4.1
-  flame: ^1.35.1
-  flame_tiled: ^3.0.11
-  flutter:
-    sdk: flutter
-
 dev_dependencies:
-  flutter_test:
-    sdk: flutter
-  flutter_lints: ^6.0.0
-  very_good_analysis: ^10.2.0
-  args: ^2.7.0
-  image: ^4.8.0
-  path: ^1.9.1
-  test: ^1.29.0
+  melos: ^7.4.0
 
-flutter:
-  uses-material-design: true
+melos:
+  repository: https://github.com/bramp/fodder
+
+  ide:
+    intellij: false
+
+  scripts:
+    analyze:
+      run: melos exec -c 1 -- "flutter analyze"
+      description: Run `flutter analyze` in all packages.
+    test:
+      run: melos exec -c 1 -- "flutter test"
+      description: Run `flutter test` in all packages.
+    format:
+      run: melos exec -c 1 -- "dart format ."
+      description: Run `dart format` in all packages.

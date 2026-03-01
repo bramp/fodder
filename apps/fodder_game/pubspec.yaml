@@ -1,0 +1,29 @@
+name: fodder_game
+description: "Fodder Game - Main application"
+publish_to: 'none'
+version: 0.1.0+1
+
+resolution: workspace
+
+environment:
+  sdk: ^3.11.0
+
+dependencies:
+  a_star_algorithm: ^0.4.1
+  flame: ^1.35.1
+  flame_tiled: ^3.0.11
+  flutter:
+    sdk: flutter
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+  very_good_analysis: ^10.2.0
+  args: ^2.7.0
+  image: ^4.8.0
+  path: ^1.9.1
+  test: ^1.29.0
+
+flutter:
+  uses-material-design: true

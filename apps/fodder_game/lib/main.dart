@@ -2,7 +2,7 @@ import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import 'package:fodder/game/fodder_game.dart';
+import 'package:fodder_game/game/fodder_game.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

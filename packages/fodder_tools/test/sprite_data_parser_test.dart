@@ -1,9 +1,7 @@
 import 'package:test/test.dart';
 
-// ignore: avoid_relative_lib_imports // CLI tool
-import '../lib/sprite_data_parser.dart';
-// ignore: avoid_relative_lib_imports // CLI tool
-import '../lib/sprite_frame.dart';
+import 'package:fodder_tools/sprite_data_parser.dart';
+import 'package:fodder_tools/sprite_frame.dart';
 
 void main() {
   group('SpriteDataParser', () {

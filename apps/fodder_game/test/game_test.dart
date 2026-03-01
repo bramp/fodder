@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:fodder/game/fodder_game.dart';
+import 'package:fodder_game/game/fodder_game.dart';
 
 void main() {
   group('FodderGame', () {

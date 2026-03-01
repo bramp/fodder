@@ -77,14 +77,8 @@ String generateAtlasJson({
         'w': entry.width,
         'h': entry.height,
       },
-      'sourceSize': <String, int>{
-        'w': entry.width,
-        'h': entry.height,
-      },
-      'anchor': <String, int>{
-        'x': entry.anchorX,
-        'y': entry.anchorY,
-      },
+      'sourceSize': <String, int>{'w': entry.width, 'h': entry.height},
+      'anchor': <String, int>{'x': entry.anchorX, 'y': entry.anchorY},
     };
   }
 
@@ -95,10 +89,7 @@ String generateAtlasJson({
       'version': '1.1',
       'image': imageFilename,
       'format': 'RGBA8888',
-      'size': <String, int>{
-        'w': imageWidth,
-        'h': imageHeight,
-      },
+      'size': <String, int>{'w': imageWidth, 'h': imageHeight},
       'scale': 1,
     },
   };

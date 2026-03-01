@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'package:test/test.dart';
 // ignore: avoid_relative_lib_imports // CLI test tool
-import '../lib/dat_reader.dart';
+import 'package:fodder_tools/dat_reader.dart';
 
 void main() {
   /// Verifies every entry in [datPath] decompresses to match [extractedDir].
@@ -23,11 +23,7 @@ void main() {
       final expected = refFile.readAsBytesSync();
       final actual = reader.getFileBytes(entry);
 
-      expect(
-        actual,
-        expected,
-        reason: 'Data mismatch for ${entry.filename}',
-      );
+      expect(actual, expected, reason: 'Data mismatch for ${entry.filename}');
     }
   }
 

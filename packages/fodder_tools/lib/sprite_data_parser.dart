@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'sprite_frame.dart';
+import 'package:fodder_tools/sprite_frame.dart';
 
 /// Parses OpenFodder's `SpriteData_PC.hpp` C++ header file and extracts
 /// all sprite sheet metadata as structured Dart objects.
@@ -157,17 +157,14 @@ class SpriteDataParser {
       // or just:          stru_32FAC,
       // The last entry may not have a trailing comma.
       final refPattern = RegExp(
-        r'(?:\/\*\s*(0x[0-9A-F]+)\s*\*\/)?\s*'
-        r'(\w+)\s*'
-        r'(?:,\s*)?'
-        r'(?:\/\/.*)?$',
+        r'(?:\/\*\s*(?:0x)?[0-9A-F]+\s*\*\/)?\s*(\w+)\s*(?:,\s*)?(?:\/\/.*)?',
         multiLine: true,
       );
 
       final entries = <List<SpriteFrame>>[];
 
       for (final refMatch in refPattern.allMatches(body)) {
-        final varName = refMatch.group(2)!;
+        final varName = refMatch.group(1)!;
         final frames = arrays[varName];
         if (frames != null) {
           // Look for a comment on this line to use as description
