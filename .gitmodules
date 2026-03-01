@@ -1,0 +1,3 @@
+[submodule "packages/fodder_assets"]
+	path = packages/fodder_assets
+	url = git@github.com:bramp/fodder_assets.git
