@@ -1,34 +1,35 @@
+import 'package:flame/components.dart';
 import 'package:flame/events.dart';
 import 'package:flame/game.dart';
 
-import 'package:fodder_game/game/components/player_soldier.dart';
+import 'package:fodder_game/game/map/level_map.dart';
 
 class FodderGame extends FlameGame with HasCollisionDetection, TapCallbacks {
-  late PlayerSoldier player;
+  FodderGame({this.initialMap = 'mapm1.tmx'});
+
+  /// The `.tmx` map file to load on start.
+  final String initialMap;
+
+  late LevelMap levelMap;
 
   @override
   Future<void> onLoad() async {
     await super.onLoad();
 
-    // 1. Initialize map (placeholder until real asset is ready)
-    // levelMap = LevelMap();
-    // await add(levelMap);
+    // 1. Load the tile map.
+    levelMap = LevelMap(mapFile: initialMap);
+    await world.add(levelMap);
 
-    // 2. Initialize player
-    // player = PlayerSoldier();
-    // await add(player);
-
-    // 3. Configure camera logic
-    // camera.follow(player);
+    // 2. Configure camera to show the full map.
+    // Use a fixed-resolution viewport matching the map's native pixel size.
+    // The camera will show the whole map and centre it on screen.
+    camera.viewfinder.anchor = Anchor.topLeft;
   }
 
-  // --- Input Handlers ---
-
-  @override
-  void onTapUp(TapUpEvent event) {
-    // Desktop: Left-click | Mobile: Tap
-    // final worldPosition = camera.globalToLocal(event.localPosition);
-    // player.moveTo(worldPosition);
-    super.onTapUp(event);
+  /// Loads a different map, replacing the current one.
+  Future<void> loadMap(String mapFile) async {
+    levelMap.removeFromParent();
+    levelMap = LevelMap(mapFile: mapFile);
+    await world.add(levelMap);
   }
 }
