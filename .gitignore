@@ -46,7 +46,9 @@ app.*.map.json
 
 # Asset extraction paths
 original_game/
-raw_assets/
+
+# Intermediate tool data
+/tool/sprites/data/
 
 # Vendor libraries
-vendor/
+# vendor/

@@ -1,0 +1,47 @@
+import 'dart:io';
+import 'package:test/test.dart';
+// ignore: avoid_relative_lib_imports // CLI test tool
+import '../lib/dat_reader.dart';
+
+void main() {
+  /// Verifies every entry in [datPath] decompresses to match [extractedDir].
+  void testArchive(String datPath, String extractedDir) {
+    final datFile = File(datPath);
+    final refDir = Directory(extractedDir);
+
+    if (!datFile.existsSync() || !refDir.existsSync()) {
+      markTestSkipped('Missing $datPath or $extractedDir.');
+      return;
+    }
+
+    final reader = DatReader(datFile)..read();
+
+    for (final entry in reader.entries) {
+      final refFile = File('${refDir.path}/${entry.filename}');
+      if (!refFile.existsSync()) continue;
+
+      final expected = refFile.readAsBytesSync();
+      final actual = reader.getFileBytes(entry);
+
+      expect(
+        actual,
+        expected,
+        reason: 'Data mismatch for ${entry.filename}',
+      );
+    }
+  }
+
+  test('Decompressor matches Dos_CD_Extracted', () {
+    testArchive(
+      'original_game/Dos_CD/CF_ENG.DAT',
+      'original_game/Dos_CD_Extracted',
+    );
+  });
+
+  test('Decompressor matches Dos2_CD_Extracted', () {
+    testArchive(
+      'original_game/Dos2_CD/CF_ENG.DAT',
+      'original_game/Dos2_CD_Extracted',
+    );
+  });
+}
