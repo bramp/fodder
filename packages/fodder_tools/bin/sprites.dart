@@ -65,9 +65,9 @@ const _coptSheets = <String, List<_PaletteSpec>>{
 
 /// Known 8-bit linear images with embedded palettes.
 const _linear8Bit = <String, _PaletteSpec>{
-  'hill.dat': _PaletteSpec(0xFA00, 0x50, 0x00),
-  'morphbig.dat': _PaletteSpec(0xFA00, 0x40, 0x00),
-  'cftitle.dat': _PaletteSpec(0xFA00, 0x50, 0x00),
+  'hill.dat': _PaletteSpec(0xFA00, 0x100, 0x00),
+  'morphbig.dat': _PaletteSpec(0xFA00, 0x100, 0x00),
+  'cftitle.dat': _PaletteSpec(0xFA00, 0x100, 0x00),
 };
 
 /// Tile base-block files (palette at 0xFA00, 128 colours).
@@ -320,6 +320,13 @@ int _export8BitLinear(
   _PaletteSpec spec,
   Directory outputDir,
 ) {
+  final expectedSize = spec.offset + spec.count * 3;
+  if (data.length != expectedSize) {
+    print(
+      '  Warning: $filename size mismatch. Expected $expectedSize bytes, got ${data.length}.',
+    );
+  }
+
   final palette = Palette()
     ..load(
       data: data,
@@ -352,16 +359,29 @@ int _exportTile(
   Directory outputDir, {
   required String label,
 }) {
+  const standardSize = 0xFD00; // 64000 pixels (0xFA00) + 256 colors (0x300)
+  if (data.length != standardSize) {
+    print(
+      '  Warning: $filename size mismatch. Expected $standardSize bytes, got ${data.length}.',
+    );
+    return 0;
+  }
+
   final palSrc = basePaletteData ?? data;
-  final palette = Palette()..load(data: palSrc, offset: 0xFA00, count: 0x80);
-  const pixelCount = 0xFA00;
+  final palette = Palette();
+  palette.load(data: palSrc, offset: 0xFA00, count: 0x100);
+
+  // Use the available data as pixels, up to the standard 0xFA00 bytes.
+  final pixelCount = data.length < 0xFA00 ? data.length : 0xFA00;
   final pixels = decode8Bit(
     data: data,
     palette: palette,
     pixelCount: pixelCount,
   );
   const width = 320;
-  const height = pixelCount ~/ width;
+  final height = pixelCount ~/ width;
+  if (height == 0) return 0;
+
   final png = encodePng(pixels: pixels, width: width, height: height);
   final outPath = p.join(
     outputDir.path,
