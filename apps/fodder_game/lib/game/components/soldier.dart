@@ -176,14 +176,11 @@ abstract class Soldier extends SpriteAnimationGroupComponent<SoldierState>
           soldierAnimations.idleAnimations[facing] ??
           soldierAnimations.idleAnimations[Direction8.south]!,
       if (soldierAnimations.firingAnimations.containsKey(facing))
-        SoldierState.firing:
-            soldierAnimations.firingAnimations[facing]!,
+        SoldierState.firing: soldierAnimations.firingAnimations[facing]!,
       if (soldierAnimations.throwAnimations.containsKey(facing))
-        SoldierState.throwing:
-            soldierAnimations.throwAnimations[facing]!,
+        SoldierState.throwing: soldierAnimations.throwAnimations[facing]!,
       if (soldierAnimations.deathAnimations.containsKey(facing))
-        SoldierState.dying:
-            soldierAnimations.deathAnimations[facing]!,
+        SoldierState.dying: soldierAnimations.deathAnimations[facing]!,
     };
   }
 

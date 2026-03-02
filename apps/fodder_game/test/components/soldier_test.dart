@@ -134,23 +134,25 @@ void main() {
         ..current = SoldierState.idle;
 
       // Need combat anims for dying state.
-      final combatSoldier = _TestSoldier(
-        soldierAnimations: _buildFakeAnims(includeCombatAnims: true),
-      )
-        ..updateAnimations()
-        ..current = SoldierState.idle
-        ..die();
+      final combatSoldier =
+          _TestSoldier(
+              soldierAnimations: _buildFakeAnims(includeCombatAnims: true),
+            )
+            ..updateAnimations()
+            ..current = SoldierState.idle
+            ..die();
 
       expect(combatSoldier.current, SoldierState.dying);
     });
 
     test('die is idempotent', () {
-      final combatSoldier = _TestSoldier(
-        soldierAnimations: _buildFakeAnims(includeCombatAnims: true),
-      )
-        ..updateAnimations()
-        ..current = SoldierState.idle
-        ..die();
+      final combatSoldier =
+          _TestSoldier(
+              soldierAnimations: _buildFakeAnims(includeCombatAnims: true),
+            )
+            ..updateAnimations()
+            ..current = SoldierState.idle
+            ..die();
 
       expect(combatSoldier.isAlive, isFalse);
 
@@ -261,16 +263,17 @@ void main() {
     test('picks death variant randomly when both are available', () {
       // Use seeded Random for deterministic testing.
       // Seed 42: first nextInt(2) = 0 → picks death variant 1.
-      final soldier = _TestSoldier(
-        soldierAnimations: _buildFakeAnims(
-          includeCombatAnims: true,
-          includeDeath2: true,
-        ),
-        random: Random(42),
-      )
-        ..updateAnimations()
-        ..current = SoldierState.idle
-        ..die();
+      final soldier =
+          _TestSoldier(
+              soldierAnimations: _buildFakeAnims(
+                includeCombatAnims: true,
+                includeDeath2: true,
+              ),
+              random: Random(42),
+            )
+            ..updateAnimations()
+            ..current = SoldierState.idle
+            ..die();
 
       expect(soldier.current, SoldierState.dying);
       // The animation should have been replaced with either variant.
@@ -292,13 +295,14 @@ void main() {
         includeCombatAnims: true,
         includeDeath2: true,
       );
-      final soldier = _TestSoldier(
-        soldierAnimations: anims,
-        random: Random(seed),
-      )
-        ..updateAnimations()
-        ..current = SoldierState.idle
-        ..die();
+      final soldier =
+          _TestSoldier(
+              soldierAnimations: anims,
+              random: Random(seed),
+            )
+            ..updateAnimations()
+            ..current = SoldierState.idle
+            ..die();
 
       // Death2 uses single frame (stepTime 0.3), death1 uses 2 frames
       // (stepTime 0.2). Verify the variant was swapped in.
@@ -307,12 +311,13 @@ void main() {
     });
 
     test('falls back to death1 when no death2 available', () {
-      final soldier = _TestSoldier(
-        soldierAnimations: _buildFakeAnims(includeCombatAnims: true),
-      )
-        ..updateAnimations()
-        ..current = SoldierState.idle
-        ..die();
+      final soldier =
+          _TestSoldier(
+              soldierAnimations: _buildFakeAnims(includeCombatAnims: true),
+            )
+            ..updateAnimations()
+            ..current = SoldierState.idle
+            ..die();
 
       expect(soldier.current, SoldierState.dying);
       final dyingAnim = soldier.animations![SoldierState.dying]!;
@@ -322,12 +327,13 @@ void main() {
 
   group('Soldier death fade-out', () {
     test('opacity decreases during fade period', () {
-      final soldier = _TestSoldier(
-        soldierAnimations: _buildFakeAnims(includeCombatAnims: true),
-      )
-        ..updateAnimations()
-        ..current = SoldierState.idle
-        ..die();
+      final soldier =
+          _TestSoldier(
+              soldierAnimations: _buildFakeAnims(includeCombatAnims: true),
+            )
+            ..updateAnimations()
+            ..current = SoldierState.idle
+            ..die();
 
       // Initial opacity is 1.0 (death anim phase).
       expect(soldier.opacity, 1.0);
@@ -343,14 +349,15 @@ void main() {
     });
 
     test('opacity reaches zero at end of death', () {
-      final soldier = _TestSoldier(
-        soldierAnimations: _buildFakeAnims(includeCombatAnims: true),
-      )
-        ..updateAnimations()
-        ..current = SoldierState.idle
-        ..die()
-        // Advance to just before full removal (1.0 s total - epsilon).
-        ..update(0.99);
+      final soldier =
+          _TestSoldier(
+              soldierAnimations: _buildFakeAnims(includeCombatAnims: true),
+            )
+            ..updateAnimations()
+            ..current = SoldierState.idle
+            ..die()
+            // Advance to just before full removal (1.0 s total - epsilon).
+            ..update(0.99);
 
       expect(soldier.opacity, closeTo(0, 0.1));
     });
@@ -361,8 +368,8 @@ void main() {
       var callbackInvoked = false;
 
       _TestSoldier(
-        soldierAnimations: _buildFakeAnims(includeCombatAnims: true),
-      )
+          soldierAnimations: _buildFakeAnims(includeCombatAnims: true),
+        )
         ..updateAnimations()
         ..current = SoldierState.idle
         ..onDeath = () {
@@ -376,15 +383,16 @@ void main() {
     test('callback is not invoked on second die call', () {
       var callCount = 0;
 
-      final soldier = _TestSoldier(
-        soldierAnimations: _buildFakeAnims(includeCombatAnims: true),
-      )
-        ..updateAnimations()
-        ..current = SoldierState.idle
-        ..onDeath = () {
-          callCount++;
-        }
-        ..die();
+      final soldier =
+          _TestSoldier(
+              soldierAnimations: _buildFakeAnims(includeCombatAnims: true),
+            )
+            ..updateAnimations()
+            ..current = SoldierState.idle
+            ..onDeath = () {
+              callCount++;
+            }
+            ..die();
 
       expect(callCount, 1);
 

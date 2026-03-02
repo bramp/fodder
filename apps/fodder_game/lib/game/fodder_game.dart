@@ -2,15 +2,19 @@ import 'package:flame/components.dart';
 import 'package:flame/events.dart';
 import 'package:flame/game.dart';
 
+import 'package:fodder_game/game/components/bullet.dart';
+import 'package:fodder_game/game/components/bullet_sprites.dart';
 import 'package:fodder_game/game/components/debug_barrier_overlay.dart';
 import 'package:fodder_game/game/components/enemy_soldier.dart';
 import 'package:fodder_game/game/components/player_soldier.dart';
 import 'package:fodder_game/game/components/soldier_animations.dart';
 import 'package:fodder_game/game/map/level_map.dart';
+import 'package:fodder_game/game/systems/aggression.dart';
 import 'package:fodder_game/game/systems/pathfinder.dart';
 import 'package:fodder_game/game/systems/walkability_grid.dart';
 
-class FodderGame extends FlameGame with HasCollisionDetection, TapCallbacks {
+class FodderGame extends FlameGame
+    with HasCollisionDetection, TapCallbacks, SecondaryTapCallbacks {
   FodderGame({this.initialMap = 'cf1/maps/mapm1.tmx'});
 
   /// The relative path to the `.tmx` map file to load on start.
@@ -23,6 +27,9 @@ class FodderGame extends FlameGame with HasCollisionDetection, TapCallbacks {
 
   /// Active enemy soldiers on the current map.
   final List<EnemySoldier> _enemies = [];
+
+  /// Bullet sprites loaded from the copt atlas.
+  late BulletSprites bulletSprites;
 
   /// The asset prefix for sprite files.
   static const _spritePrefix = 'packages/fodder_assets/assets/';
@@ -64,12 +71,23 @@ class FodderGame extends FlameGame with HasCollisionDetection, TapCallbacks {
       prefix: '${_spritePrefix}cf1/sprites/',
       atlasJsonFile: 'junarmy.json',
       imageFile: 'junarmy.png',
-      walkBaseGroup: walkBaseGroupEnemy,
+      walkPrefix: walkPrefixEnemy,
+      firingPrefix: firingPrefixEnemy,
+      throwPrefix: throwPrefixEnemy,
+      deathPrefix: deathPrefixEnemy,
+      death2Prefix: death2PrefixEnemy,
     );
 
     await _spawnEnemies(enemyAnims);
 
-    // 6. Add the debug overlay (initially hidden).
+    // 6. Load bullet sprites from the copt (helicopter) atlas.
+    bulletSprites = await BulletSprites.load(
+      prefix: '${_spritePrefix}cf1/sprites/',
+      atlasJsonFile: 'juncopt.json',
+      imageFile: 'juncopt.png',
+    );
+
+    // 7. Add the debug overlay (initially hidden).
     _debugOverlay = DebugBarrierOverlay(
       grid: grid ?? WalkabilityGrid.fromData([]),
       player: playerSoldier,
@@ -110,6 +128,32 @@ class FodderGame extends FlameGame with HasCollisionDetection, TapCallbacks {
     }
   }
 
+  @override
+  void onSecondaryTapUp(SecondaryTapUpEvent event) {
+    super.onSecondaryTapUp(event);
+
+    // Convert screen position to world coordinates.
+    final worldPos = camera.globalToLocal(event.devicePosition);
+
+    _firePlayerBullet(worldPos);
+  }
+
+  void _firePlayerBullet(Vector2 worldPos) {
+    final bullet = playerSoldier.fire(worldPos);
+    if (bullet != null) {
+      // Attach the correct sprite at display scale.
+      final spawnedBullet = Bullet(
+        position: bullet.position,
+        velocity: bullet.velocity,
+        faction: bullet.faction,
+        bulletSprite: bulletSprites.spriteFor(Faction.player),
+        size: bulletSprites.scaledSize.clone(),
+      );
+      // ignore: discarded_futures, Bullet.onLoad is synchronous; safe to fire-and-forget.
+      world.add(spawnedBullet);
+    }
+  }
+
   /// Loads a different map, replacing the current one.
   Future<void> loadMap(String mapFile) async {
     // Remove soldier and enemies from old world.
@@ -140,7 +184,11 @@ class FodderGame extends FlameGame with HasCollisionDetection, TapCallbacks {
       prefix: '${_spritePrefix}cf1/sprites/',
       atlasJsonFile: 'junarmy.json',
       imageFile: 'junarmy.png',
-      walkBaseGroup: walkBaseGroupEnemy,
+      walkPrefix: walkPrefixEnemy,
+      firingPrefix: firingPrefixEnemy,
+      throwPrefix: throwPrefixEnemy,
+      deathPrefix: deathPrefixEnemy,
+      death2Prefix: death2PrefixEnemy,
     );
     await _spawnEnemies(enemyAnims);
 
@@ -183,12 +231,44 @@ class FodderGame extends FlameGame with HasCollisionDetection, TapCallbacks {
 
   /// Creates [EnemySoldier] components at each enemy spawn point and adds them
   /// to the world.
+  ///
+  /// Assigns aggression via the ping-pong assigner, wires up walkability grid,
+  /// player references, staggered fire delays, and bullet callbacks.
   Future<void> _spawnEnemies(SoldierAnimations enemyAnims) async {
+    final assigner = AggressionAssigner();
+    final grid = levelMap.walkabilityGrid;
+    var fireDelay = 0.0;
+    const fireDelayIncrement = 0.5; // ~0x0A ticks ≈ 0.5 s
+
     for (final spawn in levelMap.spawnData.enemies) {
+      final agg = assigner.next();
+      fireDelay += fireDelayIncrement;
+
       final enemy = EnemySoldier(soldierAnimations: enemyAnims)
-        ..position = spawn.position.clone();
+        ..position = spawn.position.clone()
+        ..aggression = agg
+        ..initialFireDelay = agg > 4 ? 0 : fireDelay
+        ..walkabilityGrid = grid
+        ..players = [playerSoldier]
+        ..onFireBullet = _spawnEnemyBullet;
+      enemy.onDeath = () => _enemies.remove(enemy);
+
       _enemies.add(enemy);
       await world.add(enemy);
     }
+  }
+
+  /// Callback for enemy soldiers to spawn bullets into the world.
+  void _spawnEnemyBullet(Bullet bullet) {
+    final spawnedBullet = Bullet(
+      position: bullet.position,
+      velocity: bullet.velocity,
+      faction: bullet.faction,
+      maxRange: bullet.maxRange,
+      bulletSprite: bulletSprites.spriteFor(Faction.enemy),
+      size: bulletSprites.scaledSize.clone(),
+    );
+    // ignore: discarded_futures, Bullet.onLoad is synchronous; safe to fire-and-forget.
+    world.add(spawnedBullet);
   }
 }

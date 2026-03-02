@@ -76,8 +76,8 @@ WalkabilityGrid _openGrid({int tiles = 10}) {
 
 PlayerSoldier _makePlayer() {
   return PlayerSoldier(
-    soldierAnimations: _buildFakeAnims(includeCombatAnims: true),
-  )
+      soldierAnimations: _buildFakeAnims(includeCombatAnims: true),
+    )
     ..position = Vector2(100, 100)
     ..updateAnimations()
     ..current = SoldierState.idle;
@@ -123,45 +123,48 @@ void main() {
 
   group('EnemySoldier AI — idle', () {
     test('stays idle when no players', () {
-      final enemy = EnemySoldier(
-        soldierAnimations: _buildFakeAnims(includeCombatAnims: true),
-      )
-        ..position = Vector2(50, 50)
-        ..players = []
-        ..walkabilityGrid = _openGrid()
-        ..updateAnimations()
-        ..current = SoldierState.idle
-        ..update(0.1);
+      final enemy =
+          EnemySoldier(
+              soldierAnimations: _buildFakeAnims(includeCombatAnims: true),
+            )
+            ..position = Vector2(50, 50)
+            ..players = []
+            ..walkabilityGrid = _openGrid()
+            ..updateAnimations()
+            ..current = SoldierState.idle
+            ..update(0.1);
 
       expect(enemy.aiState, EnemyAiState.idle);
     });
 
     test('stays idle when player is out of range', () {
       final player = _makePlayer()..position = Vector2(500, 500);
-      final enemy = EnemySoldier(
-        soldierAnimations: _buildFakeAnims(includeCombatAnims: true),
-      )
-        ..position = Vector2(50, 50)
-        ..players = [player]
-        ..walkabilityGrid = _openGrid()
-        ..updateAnimations()
-        ..current = SoldierState.idle
-        ..update(0.1);
+      final enemy =
+          EnemySoldier(
+              soldierAnimations: _buildFakeAnims(includeCombatAnims: true),
+            )
+            ..position = Vector2(50, 50)
+            ..players = [player]
+            ..walkabilityGrid = _openGrid()
+            ..updateAnimations()
+            ..current = SoldierState.idle
+            ..update(0.1);
 
       expect(enemy.aiState, EnemyAiState.idle);
     });
 
     test('transitions to chasing when player in range', () {
       final player = _makePlayer()..position = Vector2(100, 100);
-      final enemy = EnemySoldier(
-        soldierAnimations: _buildFakeAnims(includeCombatAnims: true),
-      )
-        ..position = Vector2(50, 50)
-        ..players = [player]
-        ..walkabilityGrid = _openGrid()
-        ..updateAnimations()
-        ..current = SoldierState.idle
-        ..update(0.1);
+      final enemy =
+          EnemySoldier(
+              soldierAnimations: _buildFakeAnims(includeCombatAnims: true),
+            )
+            ..position = Vector2(50, 50)
+            ..players = [player]
+            ..walkabilityGrid = _openGrid()
+            ..updateAnimations()
+            ..current = SoldierState.idle
+            ..update(0.1);
 
       expect(enemy.aiState, EnemyAiState.chasing);
     });
@@ -173,15 +176,16 @@ void main() {
       // effective bullet range (~132 px for aggression 6). The enemy should
       // chase (walk) rather than immediately fire.
       final player = _makePlayer()..position = Vector2(230, 50);
-      final enemy = EnemySoldier(
-        soldierAnimations: _buildFakeAnims(includeCombatAnims: true),
-      )
-        ..position = Vector2(50, 50)
-        ..players = [player]
-        ..walkabilityGrid = _openGrid()
-        ..updateAnimations()
-        ..current = SoldierState.idle
-        ..update(0.1); // detect → chasing
+      final enemy =
+          EnemySoldier(
+              soldierAnimations: _buildFakeAnims(includeCombatAnims: true),
+            )
+            ..position = Vector2(50, 50)
+            ..players = [player]
+            ..walkabilityGrid = _openGrid()
+            ..updateAnimations()
+            ..current = SoldierState.idle
+            ..update(0.1); // detect → chasing
 
       // Verify the distance is within detection but beyond bullet range.
       const dist = 180.0; // |230 - 50|
@@ -198,15 +202,16 @@ void main() {
 
     test('returns to idle when player moves out of range', () {
       final player = _makePlayer()..position = Vector2(100, 50);
-      final enemy = EnemySoldier(
-        soldierAnimations: _buildFakeAnims(includeCombatAnims: true),
-      )
-        ..position = Vector2(50, 50)
-        ..players = [player]
-        ..walkabilityGrid = _openGrid()
-        ..updateAnimations()
-        ..current = SoldierState.idle
-        ..update(0.1); // detect → chasing
+      final enemy =
+          EnemySoldier(
+              soldierAnimations: _buildFakeAnims(includeCombatAnims: true),
+            )
+            ..position = Vector2(50, 50)
+            ..players = [player]
+            ..walkabilityGrid = _openGrid()
+            ..updateAnimations()
+            ..current = SoldierState.idle
+            ..update(0.1); // detect → chasing
 
       expect(enemy.aiState, EnemyAiState.chasing);
 
@@ -223,15 +228,16 @@ void main() {
       final player = _makePlayer()..position = Vector2(80, 50);
       Bullet? firedBullet;
 
-      final enemy = EnemySoldier(
-        soldierAnimations: _buildFakeAnims(includeCombatAnims: true),
-      )
-        ..position = Vector2(50, 50)
-        ..players = [player]
-        ..walkabilityGrid = _openGrid()
-        ..updateAnimations()
-        ..current = SoldierState.idle
-        ..onFireBullet = (b) => firedBullet = b;
+      final enemy =
+          EnemySoldier(
+              soldierAnimations: _buildFakeAnims(includeCombatAnims: true),
+            )
+            ..position = Vector2(50, 50)
+            ..players = [player]
+            ..walkabilityGrid = _openGrid()
+            ..updateAnimations()
+            ..current = SoldierState.idle
+            ..onFireBullet = (b) => firedBullet = b;
 
       // Tick several times to detect → chase → close enough → fire.
       for (var i = 0; i < 20; i++) {
@@ -246,16 +252,18 @@ void main() {
       final player = _makePlayer()..position = Vector2(80, 50);
       Bullet? firedBullet;
 
-      final enemy = EnemySoldier(
-        soldierAnimations: _buildFakeAnims(includeCombatAnims: true),
-      )
-        ..position = Vector2(50, 50)
-        ..players = [player]
-        ..walkabilityGrid = _openGrid()
-        ..initialFireDelay = 10 // Very long delay.
-        ..updateAnimations()
-        ..current = SoldierState.idle
-        ..onFireBullet = (b) => firedBullet = b;
+      final enemy =
+          EnemySoldier(
+              soldierAnimations: _buildFakeAnims(includeCombatAnims: true),
+            )
+            ..position = Vector2(50, 50)
+            ..players = [player]
+            ..walkabilityGrid = _openGrid()
+            ..initialFireDelay =
+                10 // Very long delay.
+            ..updateAnimations()
+            ..current = SoldierState.idle
+            ..onFireBullet = (b) => firedBullet = b;
 
       // Tick a bit — should not fire due to initial delay.
       for (var i = 0; i < 10; i++) {
@@ -269,17 +277,19 @@ void main() {
       final player = _makePlayer()..position = Vector2(80, 50);
       Bullet? firedBullet;
 
-      final enemy = EnemySoldier(
-        soldierAnimations: _buildFakeAnims(includeCombatAnims: true),
-      )
-        ..position = Vector2(50, 50)
-        ..aggression = 8
-        ..players = [player]
-        ..walkabilityGrid = _openGrid()
-        ..initialFireDelay = 0 // High aggression → delay = 0 from game.
-        ..updateAnimations()
-        ..current = SoldierState.idle
-        ..onFireBullet = (b) => firedBullet = b;
+      final enemy =
+          EnemySoldier(
+              soldierAnimations: _buildFakeAnims(includeCombatAnims: true),
+            )
+            ..position = Vector2(50, 50)
+            ..aggression = 8
+            ..players = [player]
+            ..walkabilityGrid = _openGrid()
+            ..initialFireDelay =
+                0 // High aggression → delay = 0 from game.
+            ..updateAnimations()
+            ..current = SoldierState.idle
+            ..onFireBullet = (b) => firedBullet = b;
 
       // Tick enough to detect, chase, and fire.
       for (var i = 0; i < 20; i++) {
@@ -293,15 +303,16 @@ void main() {
   group('EnemySoldier AI — death', () {
     test('stops AI when dead', () {
       final player = _makePlayer()..position = Vector2(80, 50);
-      final enemy = EnemySoldier(
-        soldierAnimations: _buildFakeAnims(includeCombatAnims: true),
-      )
-        ..position = Vector2(50, 50)
-        ..players = [player]
-        ..walkabilityGrid = _openGrid()
-        ..updateAnimations()
-        ..current = SoldierState.idle
-        ..update(0.1); // detect → chasing
+      final enemy =
+          EnemySoldier(
+              soldierAnimations: _buildFakeAnims(includeCombatAnims: true),
+            )
+            ..position = Vector2(50, 50)
+            ..players = [player]
+            ..walkabilityGrid = _openGrid()
+            ..updateAnimations()
+            ..current = SoldierState.idle
+            ..update(0.1); // detect → chasing
 
       expect(enemy.aiState, EnemyAiState.chasing);
 

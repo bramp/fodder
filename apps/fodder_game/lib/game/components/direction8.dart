@@ -24,13 +24,21 @@ enum Direction8 {
   east,
 
   /// ↘ South-east.
-  southeast;
+  southeast
+  ;
 
   /// Short suffix used in atlas sprite names (e.g. `s`, `sw`, `nw`).
   ///
   /// Matches the naming convention produced by `fodder_tools`.
   String get suffix => const [
-    's', 'sw', 'w', 'nw', 'n', 'ne', 'e', 'se',
+    's',
+    'sw',
+    'w',
+    'nw',
+    'n',
+    'ne',
+    'e',
+    'se',
   ][index];
 
   /// Returns the [Direction8] closest to the given movement vector.
