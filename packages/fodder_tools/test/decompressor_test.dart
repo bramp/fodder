@@ -29,15 +29,15 @@ void main() {
 
   test('Decompressor matches Dos_CD_Extracted', () {
     testArchive(
-      'original_game/Dos_CD/CF_ENG.DAT',
-      'original_game/Dos_CD_Extracted',
+      '../../original_game/Dos_CD/CF_ENG.DAT',
+      '../../original_game/Dos_CD_Extracted',
     );
   });
 
   test('Decompressor matches Dos2_CD_Extracted', () {
     testArchive(
-      'original_game/Dos2_CD/CF_ENG.DAT',
-      'original_game/Dos2_CD_Extracted',
+      '../../original_game/Dos2_CD/CF_ENG.DAT',
+      '../../original_game/Dos2_CD_Extracted',
     );
   });
 }
