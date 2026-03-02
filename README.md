@@ -12,7 +12,10 @@ This repository is a monorepo managed with [Melos](https://melos.invertase.dev/)
 To initialize the project and link all packages:
 
 ```bash
-dart pub get
+git clone --recursive git@github.com:bramp/fodder.git
+# or `git submodule update --init --recursive` if you forgot
+
+dart pub global activate melos
 dart run melos bootstrap
 ```
 
