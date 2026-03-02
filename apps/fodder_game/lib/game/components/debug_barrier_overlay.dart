@@ -27,8 +27,15 @@ const _terrainColors = <TerrainType, Color>{
   TerrainType.jump: Color(0x5500AAAA), // dark teal
 };
 
+/// Pre-built [Paint] objects for each terrain colour. Created once to avoid
+/// per-frame allocations.
+final Map<TerrainType, Paint> _terrainPaints = {
+  for (final entry in _terrainColors.entries)
+    entry.key: (Paint()..color = entry.value),
+};
+
 /// Semi-transparent green colour used for path dots.
-const _pathColor = Color(0xAA00FF00);
+final Paint _pathPaint = Paint()..color = const Color(0xAA00FF00);
 
 /// Debug overlay that draws semi-transparent coloured rectangles over
 /// non-walkable tiles and visualises the player's current A* path.
@@ -37,36 +44,83 @@ const _pathColor = Color(0xAA00FF00);
 /// renders each of the 8×8 sub-tile cells individually, showing the exact
 /// terrain boundary within the tile.
 ///
+/// The static terrain overlay is recorded into a [Picture] once and replayed
+/// each frame. Only the path dots are drawn dynamically. Call
+/// [invalidateCache] (or assign a new [grid]) to rebuild after a map change.
+///
 /// Uses [HasVisibility] so it can stay in the component tree and be
 /// toggled on/off cheaply via [isVisible] instead of add/remove.
 class DebugBarrierOverlay extends Component with HasVisibility {
   DebugBarrierOverlay({
-    required this.grid,
+    required WalkabilityGrid grid,
     required this.player,
     bool visible = false,
-  }) : super(priority: 20) {
+  }) : _grid = grid,
+       super(priority: 20) {
     isVisible = visible;
   }
 
-  WalkabilityGrid grid;
+  WalkabilityGrid _grid;
   final PlayerSoldier player;
+
+  /// Cached picture of the static terrain overlay.
+  Picture? _cachedPicture;
+
+  /// Updates the walkability grid and invalidates the cached picture.
+  set grid(WalkabilityGrid value) {
+    _grid = value;
+    invalidateCache();
+  }
+
+  /// Returns the current walkability grid.
+  WalkabilityGrid get grid => _grid;
+
+  /// Forces the cached terrain picture to be rebuilt on the next render.
+  void invalidateCache() {
+    _cachedPicture?.dispose();
+    _cachedPicture = null;
+  }
+
+  @override
+  void onRemove() {
+    _cachedPicture?.dispose();
+    _cachedPicture = null;
+    super.onRemove();
+  }
 
   @override
   void render(Canvas canvas) {
+    // Draw cached static terrain overlay.
+    _cachedPicture ??= _buildTerrainPicture();
+    canvas.drawPicture(_cachedPicture!);
+
+    // Draw the player's current path as small dots.
+    const dotRadius = 1.5;
+    for (final waypoint in player.currentPath) {
+      canvas.drawCircle(
+        Offset(waypoint.x, waypoint.y),
+        dotRadius,
+        _pathPaint,
+      );
+    }
+  }
+
+  /// Records all static terrain rectangles into a [Picture].
+  Picture _buildTerrainPicture() {
+    final recorder = PictureRecorder();
+    final canvas = Canvas(recorder);
+
     const tileSize = LevelMap.destTileSize;
     const subCellSize = LevelMap.destSubTileSize;
 
-    // Draw terrain type overlays.
-    for (var tileY = 0; tileY < grid.height; tileY++) {
-      for (var tileX = 0; tileX < grid.width; tileX++) {
-        if (grid.hasSubTileData(tileX, tileY)) {
-          // Mixed-terrain tile: render each sub-tile cell individually.
+    for (var tileY = 0; tileY < _grid.height; tileY++) {
+      for (var tileX = 0; tileX < _grid.width; tileX++) {
+        if (_grid.hasSubTileData(tileX, tileY)) {
           _renderSubTileCells(canvas, tileX, tileY, tileSize, subCellSize);
         } else {
-          // Single-terrain tile: render one rectangle per tile.
-          final terrain = grid.terrainAt(tileX, tileY);
-          final color = _terrainColors[terrain];
-          if (color != null) {
+          final terrain = _grid.terrainAt(tileX, tileY);
+          final paint = _terrainPaints[terrain];
+          if (paint != null) {
             canvas.drawRect(
               Rect.fromLTWH(
                 tileX * tileSize,
@@ -74,23 +128,14 @@ class DebugBarrierOverlay extends Component with HasVisibility {
                 tileSize,
                 tileSize,
               ),
-              Paint()..color = color,
+              paint,
             );
           }
         }
       }
     }
 
-    // Draw the player's current path as small dots.
-    final pathPaint = Paint()..color = _pathColor;
-    const dotRadius = 1.5;
-    for (final waypoint in player.currentPath) {
-      canvas.drawCircle(
-        Offset(waypoint.x, waypoint.y),
-        dotRadius,
-        pathPaint,
-      );
-    }
+    return recorder.endRecording();
   }
 
   /// Renders the 8×8 sub-tile grid for a mixed-terrain tile.
@@ -105,9 +150,13 @@ class DebugBarrierOverlay extends Component with HasVisibility {
     final baseY = tileY * 8;
     for (var sy = 0; sy < 8; sy++) {
       for (var sx = 0; sx < 8; sx++) {
-        final terrain = grid.subTileTerrainAtGlobal(baseX + sx, baseY + sy);
-        final color = _terrainColors[terrain];
-        if (color != null) {
+        // Read terrain directly from the sub-tile grid since this is only
+        // called for tiles that have sub-tile data.
+        final gx = baseX + sx;
+        final gy = baseY + sy;
+        final terrain = _grid.subTileTerrainAtGlobal(gx, gy);
+        final paint = _terrainPaints[terrain];
+        if (paint != null) {
           canvas.drawRect(
             Rect.fromLTWH(
               tileX * tileSize + sx * subCellSize,
@@ -115,7 +164,7 @@ class DebugBarrierOverlay extends Component with HasVisibility {
               subCellSize,
               subCellSize,
             ),
-            Paint()..color = color,
+            paint,
           );
         }
       }
