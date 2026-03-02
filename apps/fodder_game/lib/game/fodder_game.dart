@@ -3,6 +3,7 @@ import 'package:flame/events.dart';
 import 'package:flame/game.dart';
 
 import 'package:fodder_game/game/components/debug_barrier_overlay.dart';
+import 'package:fodder_game/game/components/enemy_soldier.dart';
 import 'package:fodder_game/game/components/player_soldier.dart';
 import 'package:fodder_game/game/components/soldier_animations.dart';
 import 'package:fodder_game/game/map/level_map.dart';
@@ -19,6 +20,9 @@ class FodderGame extends FlameGame with HasCollisionDetection, TapCallbacks {
   late PlayerSoldier playerSoldier;
   Pathfinder? _pathfinder;
   late DebugBarrierOverlay _debugOverlay;
+
+  /// Active enemy soldiers on the current map.
+  final List<EnemySoldier> _enemies = [];
 
   /// The asset prefix for sprite files.
   static const _spritePrefix = 'packages/fodder_assets/assets/';
@@ -41,13 +45,13 @@ class FodderGame extends FlameGame with HasCollisionDetection, TapCallbacks {
     }
 
     // 4. Load soldier animations and spawn the player.
-    final anims = await SoldierAnimations.load(
+    final playerAnims = await SoldierAnimations.load(
       prefix: '${_spritePrefix}cf1/sprites/',
       atlasJsonFile: 'junarmy.json',
       imageFile: 'junarmy.png',
     );
 
-    playerSoldier = PlayerSoldier(soldierAnimations: anims);
+    playerSoldier = PlayerSoldier(soldierAnimations: playerAnims);
 
     // Place soldier at the first player spawn point, or fall back to
     // scanning for the first walkable tile.
@@ -55,7 +59,17 @@ class FodderGame extends FlameGame with HasCollisionDetection, TapCallbacks {
 
     await world.add(playerSoldier);
 
-    // 5. Add the debug overlay (initially hidden).
+    // 5. Load enemy animations and spawn enemies at their spawn points.
+    final enemyAnims = await SoldierAnimations.load(
+      prefix: '${_spritePrefix}cf1/sprites/',
+      atlasJsonFile: 'junarmy.json',
+      imageFile: 'junarmy.png',
+      walkBaseGroup: walkBaseGroupEnemy,
+    );
+
+    await _spawnEnemies(enemyAnims);
+
+    // 6. Add the debug overlay (initially hidden).
     _debugOverlay = DebugBarrierOverlay(
       grid: grid ?? WalkabilityGrid.fromData([]),
       player: playerSoldier,
@@ -98,8 +112,12 @@ class FodderGame extends FlameGame with HasCollisionDetection, TapCallbacks {
 
   /// Loads a different map, replacing the current one.
   Future<void> loadMap(String mapFile) async {
-    // Remove soldier from old world (overlay stays in tree).
+    // Remove soldier and enemies from old world.
     playerSoldier.removeFromParent();
+    for (final enemy in _enemies) {
+      enemy.removeFromParent();
+    }
+    _enemies.clear();
     levelMap.removeFromParent();
 
     // Load new map.
@@ -116,6 +134,15 @@ class FodderGame extends FlameGame with HasCollisionDetection, TapCallbacks {
     playerSoldier.position = _playerSpawnPosition();
     playerSoldier.followPath([]);
     await world.add(playerSoldier);
+
+    // Spawn enemies for the new map.
+    final enemyAnims = await SoldierAnimations.load(
+      prefix: '${_spritePrefix}cf1/sprites/',
+      atlasJsonFile: 'junarmy.json',
+      imageFile: 'junarmy.png',
+      walkBaseGroup: walkBaseGroupEnemy,
+    );
+    await _spawnEnemies(enemyAnims);
 
     // Update the overlay's grid and spawn data for the new map.
     _debugOverlay.grid = grid ?? WalkabilityGrid.fromData([]);
@@ -152,5 +179,16 @@ class FodderGame extends FlameGame with HasCollisionDetection, TapCallbacks {
       LevelMap.destTileSize + LevelMap.destTileSize / 2,
       LevelMap.destTileSize + LevelMap.destTileSize / 2,
     );
+  }
+
+  /// Creates [EnemySoldier] components at each enemy spawn point and adds them
+  /// to the world.
+  Future<void> _spawnEnemies(SoldierAnimations enemyAnims) async {
+    for (final spawn in levelMap.spawnData.enemies) {
+      final enemy = EnemySoldier(soldierAnimations: enemyAnims)
+        ..position = spawn.position.clone();
+      _enemies.add(enemy);
+      await world.add(enemy);
+    }
   }
 }

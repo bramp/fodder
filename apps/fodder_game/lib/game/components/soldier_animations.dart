@@ -15,16 +15,28 @@ const double _idleStepTime = double.infinity;
 /// Sprite scale factor (original 16 px tiles rendered at 32 px).
 const _spriteScale = 2.0;
 
-/// Walk animation base group index in the atlas (groups 0x00–0x07).
-const _walkBaseGroup = 0x00;
+/// Walk animation base group for player (human) soldiers.
+const walkBaseGroupHuman = 0x00;
+
+/// Walk animation base group for enemy (AI) soldiers.
+const walkBaseGroupEnemy = 0x42;
 
 /// Loads soldier sprite animations from a TexturePacker JSON Hash atlas.
 ///
 /// The atlas is expected to contain frames named `ingame/{groupHex}_{frame}`
-/// where group indices 0x00–0x07 are walk animations for 8 directions and
-/// frame 0 of each group doubles as the idle animation.
+/// where 8 consecutive group indices starting at a given base represent
+/// walk animations for 8 directions, and frame 0 of each group doubles as
+/// the idle animation.
 class SoldierAnimations {
   SoldierAnimations._({
+    required this.walkAnimations,
+    required this.idleAnimations,
+  });
+
+  /// Creates a [SoldierAnimations] from pre-built animation maps.
+  ///
+  /// Intended for testing; production code should use [load].
+  SoldierAnimations.fromMaps({
     required this.walkAnimations,
     required this.idleAnimations,
   });
@@ -43,10 +55,15 @@ class SoldierAnimations {
   /// [imageFile] is the image file name (e.g. `junarmy.png`).
   ///
   /// [atlasJsonFile] is the atlas JSON file name (e.g. `junarmy.json`).
+  ///
+  /// [walkBaseGroup] is the first group index in the atlas for the 8-direction
+  /// walk cycle. Defaults to [walkBaseGroupHuman] (`0x00`); use
+  /// [walkBaseGroupEnemy] (`0x42`) for enemy soldiers.
   static Future<SoldierAnimations> load({
     required String prefix,
     required String imageFile,
     required String atlasJsonFile,
+    int walkBaseGroup = walkBaseGroupHuman,
   }) async {
     // Use a custom Images instance whose prefix matches the package path.
     final images = Images(prefix: prefix);
@@ -61,7 +78,7 @@ class SoldierAnimations {
     final idleAnims = <Direction8, SpriteAnimation>{};
 
     for (final dir in Direction8.values) {
-      final groupIndex = _walkBaseGroup + dir.index;
+      final groupIndex = walkBaseGroup + dir.index;
       final groupHex = groupIndex.toRadixString(16).padLeft(2, '0');
 
       // Collect frames for this direction's walk cycle.
