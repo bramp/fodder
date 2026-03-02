@@ -67,4 +67,17 @@ void main() {
       }
     });
   });
+
+  group('Direction8.suffix', () {
+    test('returns correct short names for all directions', () {
+      expect(Direction8.south.suffix, 's');
+      expect(Direction8.southwest.suffix, 'sw');
+      expect(Direction8.west.suffix, 'w');
+      expect(Direction8.northwest.suffix, 'nw');
+      expect(Direction8.north.suffix, 'n');
+      expect(Direction8.northeast.suffix, 'ne');
+      expect(Direction8.east.suffix, 'e');
+      expect(Direction8.southeast.suffix, 'se');
+    });
+  });
 }
