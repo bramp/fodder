@@ -5,9 +5,9 @@ import 'package:flame/game.dart';
 import 'package:fodder_game/game/map/level_map.dart';
 
 class FodderGame extends FlameGame with HasCollisionDetection, TapCallbacks {
-  FodderGame({this.initialMap = 'mapm1.tmx'});
+  FodderGame({this.initialMap = 'cf1/maps/mapm1.tmx'});
 
-  /// The `.tmx` map file to load on start.
+  /// The relative path to the `.tmx` map file to load on start.
   final String initialMap;
 
   late LevelMap levelMap;

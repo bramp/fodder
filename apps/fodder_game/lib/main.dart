@@ -18,7 +18,10 @@ void main() async {
 }
 
 /// Total number of maps available in Cannon Fodder 1.
-const _totalMaps = 72;
+const _cf1Maps = 72;
+
+/// Total number of maps available in Cannon Fodder 2.
+const _cf2Maps = 72;
 
 class MainApp extends StatefulWidget {
   const MainApp({super.key});
@@ -29,7 +32,7 @@ class MainApp extends StatefulWidget {
 
 class _MainAppState extends State<MainApp> {
   final _game = FodderGame();
-  String _currentMap = 'mapm1.tmx';
+  String _currentMap = 'cf1/maps/mapm1.tmx';
 
   @override
   Widget build(BuildContext context) {
@@ -81,9 +84,28 @@ class _LevelDropdown extends StatelessWidget {
         underline: const SizedBox.shrink(),
         icon: const Icon(Icons.arrow_drop_down, color: Colors.white),
         items: [
-          for (var i = 1; i <= _totalMaps; i++)
+          const DropdownMenuItem(
+            enabled: false,
+            child: Text(
+              'Cannon Fodder 1',
+              style: TextStyle(fontWeight: FontWeight.bold, color: Colors.grey),
+            ),
+          ),
+          for (var i = 1; i <= _cf1Maps; i++)
             DropdownMenuItem(
-              value: 'mapm$i.tmx',
+              value: 'cf1/maps/mapm$i.tmx',
+              child: Text('Map $i'),
+            ),
+          const DropdownMenuItem(
+            enabled: false,
+            child: Text(
+              'Cannon Fodder 2',
+              style: TextStyle(fontWeight: FontWeight.bold, color: Colors.grey),
+            ),
+          ),
+          for (var i = 1; i <= _cf2Maps; i++)
+            DropdownMenuItem(
+              value: 'cf2/maps/mapm$i.tmx',
               child: Text('Map $i'),
             ),
         ],

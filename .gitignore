@@ -50,5 +50,9 @@ original_game/
 # Intermediate tool data
 /tool/sprites/data/
 
+# Tiled editor session (user-local state)
+*.tiled-project
+*.tiled-session
+
 # Vendor libraries
 # vendor/

@@ -43,28 +43,29 @@ jobs:
             --dart-define=COMMIT_HASH=$COMMIT_HASH \
             --dart-define=BUILD_DATE=\"$BUILD_DATE\""
 
-  golden_tests:
-    runs-on: macos-latest
-    steps:
-      - uses: actions/checkout@v6
-      - name: Cache default Flutter artifacts
-        uses: actions/cache@v5
-        with:
-          path: |
-            ~/.pub-cache/
-            /opt/hostedtoolcache/flutter/
-          key: ${{ runner.os }}-flutter-${{ runner.arch }}-${{ hashFiles('**/pubspec.lock') }}
-      - name: Setup Flutter
-        uses: subosito/flutter-action@v2
-        with:
-          channel: 'stable'
+  # Disabled until we have some golden tests to run, and a strategy for managing them in CI.
+  # golden_tests:
+  #   runs-on: macos-latest
+  #   steps:
+  #     - uses: actions/checkout@v6
+  #     - name: Cache default Flutter artifacts
+  #       uses: actions/cache@v5
+  #       with:
+  #         path: |
+  #           ~/.pub-cache/
+  #           /opt/hostedtoolcache/flutter/
+  #         key: ${{ runner.os }}-flutter-${{ runner.arch }}-${{ hashFiles('**/pubspec.lock') }}
+  #     - name: Setup Flutter
+  #       uses: subosito/flutter-action@v2
+  #       with:
+  #         channel: 'stable'
 
-      - name: Install Melos
-        run: dart pub global activate melos
+  #     - name: Install Melos
+  #       run: dart pub global activate melos
 
-      - name: Bootstrap Melos
-        run: melos bootstrap
+  #     - name: Bootstrap Melos
+  #       run: melos bootstrap
 
-      - name: Run golden tests
-        run: |
-          melos exec -c 1 -- "flutter test --tags mac"
+  #     - name: Run golden tests
+  #       run: |
+  #         melos exec -c 1 -- "flutter test --tags mac"

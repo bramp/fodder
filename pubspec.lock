@@ -219,6 +219,13 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  fodder_assets:
+    dependency: transitive
+    description:
+      path: "packages/fodder_assets"
+      relative: true
+    source: path
+    version: "0.1.0"
   frontend_server_client:
     dependency: transitive
     description:

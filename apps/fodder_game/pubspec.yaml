@@ -14,6 +14,8 @@ dependencies:
   flame_tiled: ^3.0.11
   flutter:
     sdk: flutter
+  fodder_assets:
+    path: ../../packages/fodder_assets
 
 dev_dependencies:
   flutter_test:
@@ -27,7 +29,3 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
-
-  assets:
-    - assets/original/maps/
-    - assets/original/sprites/
