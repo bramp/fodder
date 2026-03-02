@@ -8,17 +8,18 @@ const TerrainType _l = TerrainType.land;
 const TerrainType _b = TerrainType.block;
 
 void main() {
-  group('Pathfinder', () {
+  group('Pathfinder (sub-tile resolution)', () {
     test('finds path on open grid', () {
-      // 5×5 fully walkable grid.
+      // 5×5 tile grid → 40×40 sub-tile grid.
       final grid = WalkabilityGrid.fromData(
         List.generate(5, (_) => List.filled(5, _l)),
       );
       final pathfinder = Pathfinder(grid);
 
+      // Sub-tile coords: tile (0,0) → (0,0), tile (4,4) → (32,32).
       final path = pathfinder.findPath(
-        startTile: (0, 0),
-        endTile: (4, 4),
+        start: (0, 0),
+        end: (32, 32),
       );
 
       expect(path, isNotEmpty);
@@ -34,8 +35,8 @@ void main() {
       final pathfinder = Pathfinder(grid);
 
       final path = pathfinder.findPath(
-        startTile: (1, 1),
-        endTile: (1, 1),
+        start: (8, 8),
+        end: (8, 8),
       );
 
       expect(path, isEmpty);
@@ -49,9 +50,10 @@ void main() {
       ]);
       final pathfinder = Pathfinder(grid);
 
+      // Tile (1,1) is block → sub-tiles (8..15, 8..15) are all blocked.
       final path = pathfinder.findPath(
-        startTile: (0, 0),
-        endTile: (1, 1),
+        start: (0, 0),
+        end: (8, 8),
       );
 
       expect(path, isEmpty);
@@ -68,9 +70,10 @@ void main() {
       ]);
       final pathfinder = Pathfinder(grid);
 
+      // Tile (2,0) → sub-tile (16,0), tile (2,4) → sub-tile (16,32).
       final path = pathfinder.findPath(
-        startTile: (2, 0),
-        endTile: (2, 4),
+        start: (16, 0),
+        end: (16, 32),
       );
 
       // Should find a path around the wall.
@@ -88,9 +91,10 @@ void main() {
       ]);
       final pathfinder = Pathfinder(grid);
 
+      // Tile (2,2) → sub-tile (16,16), which is walkable but unreachable.
       final path = pathfinder.findPath(
-        startTile: (0, 0),
-        endTile: (2, 2),
+        start: (0, 0),
+        end: (16, 16),
       );
 
       expect(path, isEmpty);
@@ -103,11 +107,11 @@ void main() {
       final pathfinder = Pathfinder(grid);
 
       expect(
-        pathfinder.findPath(startTile: (-1, 0), endTile: (2, 2)),
+        pathfinder.findPath(start: (-1, 0), end: (16, 16)),
         isEmpty,
       );
       expect(
-        pathfinder.findPath(startTile: (0, 0), endTile: (10, 10)),
+        pathfinder.findPath(start: (0, 0), end: (80, 80)),
         isEmpty,
       );
     });

@@ -42,6 +42,12 @@ class LevelMap extends Component with HasGameReference<FlameGame> {
   /// Destination tile size exposed for coordinate conversion.
   static const double destTileSize = _destTileSize;
 
+  /// Size of a sub-tile cell in pixels (at 2× scale).
+  ///
+  /// Each 16×16 source tile has 8×8 sub-tile cells (2×2 pixels each).
+  /// At 2× scale, each sub-cell is 4×4 pixels.
+  static const double destSubTileSize = _destTileSize / 8; // 4.0
+
   /// The loaded Tiled component (available after [onLoad]).
   TiledComponent? _tiledComponent;
 

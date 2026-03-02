@@ -9,14 +9,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "93.0.0"
-  a_star_algorithm:
-    dependency: transitive
-    description:
-      name: a_star_algorithm
-      sha256: efc131ca9a3eaceebe09fa67b9a7235d6e0a6e23ff0de4c009c60d506f791349
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.4.1"
   analyzer:
     dependency: transitive
     description:

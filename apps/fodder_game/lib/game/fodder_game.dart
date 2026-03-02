@@ -76,21 +76,21 @@ class FodderGame extends FlameGame with HasCollisionDetection, TapCallbacks {
     // Convert screen tap to world coordinates.
     final worldPos = camera.globalToLocal(event.devicePosition);
 
-    // Convert to tile coordinates.
-    final tileX = (worldPos.x / LevelMap.destTileSize).floor();
-    final tileY = (worldPos.y / LevelMap.destTileSize).floor();
+    // Convert to sub-tile coordinates (8 sub-tiles per tile).
+    final subTileX = (worldPos.x / LevelMap.destSubTileSize).floor();
+    final subTileY = (worldPos.y / LevelMap.destSubTileSize).floor();
 
-    if (!grid.isWalkable(tileX, tileY)) return;
+    if (!grid.isSubTileWalkable(subTileX, subTileY)) return;
 
-    // Current soldier tile.
-    final soldierTileX = (playerSoldier.position.x / LevelMap.destTileSize)
+    // Current soldier position in sub-tile coordinates.
+    final soldierSubX = (playerSoldier.position.x / LevelMap.destSubTileSize)
         .floor();
-    final soldierTileY = (playerSoldier.position.y / LevelMap.destTileSize)
+    final soldierSubY = (playerSoldier.position.y / LevelMap.destSubTileSize)
         .floor();
 
     final waypoints = _pathfinder!.findPath(
-      startTile: (soldierTileX, soldierTileY),
-      endTile: (tileX, tileY),
+      start: (soldierSubX, soldierSubY),
+      end: (subTileX, subTileY),
     );
 
     if (waypoints.isNotEmpty) {

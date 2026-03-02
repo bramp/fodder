@@ -188,6 +188,12 @@ class WalkabilityGrid {
   /// Map height in tiles.
   final int height;
 
+  /// Grid width in sub-tile units (each tile has 8 sub-tile columns).
+  int get subTileWidth => width * 8;
+
+  /// Grid height in sub-tile units (each tile has 8 sub-tile rows).
+  int get subTileHeight => height * 8;
+
   /// Returns the [TerrainType] at the given tile coordinate.
   ///
   /// Out-of-bounds coordinates return [TerrainType.block].
@@ -222,6 +228,43 @@ class WalkabilityGrid {
     final st = _subTileGrid[tileY][tileX];
     if (st == null) return null;
     return st.terrainAt(subX, subY);
+  }
+
+  /// Returns the [TerrainType] at global sub-tile coordinates.
+  ///
+  /// [globalSubX] and [globalSubY] are indices in the sub-tile grid
+  /// (0..subTileWidth-1, 0..subTileHeight-1). Each sub-cell covers
+  /// 2×2 pixels within the original 16×16 tile.
+  ///
+  /// For tiles without mixed terrain, returns the tile-level terrain type.
+  /// For mixed tiles, uses the sub-tile bitmask to select primary or
+  /// secondary.
+  TerrainType subTileTerrainAtGlobal(int globalSubX, int globalSubY) {
+    final tileX = globalSubX ~/ 8;
+    final tileY = globalSubY ~/ 8;
+    if (tileX < 0 || tileX >= width || tileY < 0 || tileY >= height) {
+      return TerrainType.block;
+    }
+    final st = _subTileGrid?[tileY][tileX];
+    if (st == null) return _grid[tileY][tileX];
+    final subX = globalSubX % 8;
+    final subY = globalSubY % 8;
+    return st.terrainAt(subX, subY);
+  }
+
+  /// Returns `true` if the sub-tile at global coordinates is walkable.
+  bool isSubTileWalkable(int globalSubX, int globalSubY) {
+    return !subTileTerrainAtGlobal(globalSubX, globalSubY).blocksWalking;
+  }
+
+  /// Returns `true` if the tile at [tileX], [tileY] has sub-tile data
+  /// (i.e. it is a mixed-terrain tile).
+  bool hasSubTileData(int tileX, int tileY) {
+    if (_subTileGrid == null) return false;
+    if (tileX < 0 || tileX >= width || tileY < 0 || tileY >= height) {
+      return false;
+    }
+    return _subTileGrid[tileY][tileX] != null;
   }
 
   /// Parses a 16-character hex string into an 8-byte [Uint8List].

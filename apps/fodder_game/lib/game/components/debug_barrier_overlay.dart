@@ -30,8 +30,12 @@ const _terrainColors = <TerrainType, Color>{
 /// Semi-transparent green colour used for path dots.
 const _pathColor = Color(0xAA00FF00);
 
-/// Debug overlay that draws semi-transparent purple rectangles over
+/// Debug overlay that draws semi-transparent coloured rectangles over
 /// non-walkable tiles and visualises the player's current A* path.
+///
+/// For mixed-terrain tiles (tiles with sub-tile bitmask data), the overlay
+/// renders each of the 8×8 sub-tile cells individually, showing the exact
+/// terrain boundary within the tile.
 ///
 /// Uses [HasVisibility] so it can stay in the component tree and be
 /// toggled on/off cheaply via [isVisible] instead of add/remove.
@@ -50,30 +54,71 @@ class DebugBarrierOverlay extends Component with HasVisibility {
   @override
   void render(Canvas canvas) {
     const tileSize = LevelMap.destTileSize;
+    const subCellSize = LevelMap.destSubTileSize;
 
     // Draw terrain type overlays.
-    for (var y = 0; y < grid.height; y++) {
-      for (var x = 0; x < grid.width; x++) {
-        final terrain = grid.terrainAt(x, y);
-        final color = _terrainColors[terrain];
-        if (color != null) {
-          canvas.drawRect(
-            Rect.fromLTWH(x * tileSize, y * tileSize, tileSize, tileSize),
-            Paint()..color = color,
-          );
+    for (var tileY = 0; tileY < grid.height; tileY++) {
+      for (var tileX = 0; tileX < grid.width; tileX++) {
+        if (grid.hasSubTileData(tileX, tileY)) {
+          // Mixed-terrain tile: render each sub-tile cell individually.
+          _renderSubTileCells(canvas, tileX, tileY, tileSize, subCellSize);
+        } else {
+          // Single-terrain tile: render one rectangle per tile.
+          final terrain = grid.terrainAt(tileX, tileY);
+          final color = _terrainColors[terrain];
+          if (color != null) {
+            canvas.drawRect(
+              Rect.fromLTWH(
+                tileX * tileSize,
+                tileY * tileSize,
+                tileSize,
+                tileSize,
+              ),
+              Paint()..color = color,
+            );
+          }
         }
       }
     }
 
     // Draw the player's current path as small dots.
     final pathPaint = Paint()..color = _pathColor;
-    const dotRadius = 3.0;
+    const dotRadius = 1.5;
     for (final waypoint in player.currentPath) {
       canvas.drawCircle(
         Offset(waypoint.x, waypoint.y),
         dotRadius,
         pathPaint,
       );
+    }
+  }
+
+  /// Renders the 8×8 sub-tile grid for a mixed-terrain tile.
+  void _renderSubTileCells(
+    Canvas canvas,
+    int tileX,
+    int tileY,
+    double tileSize,
+    double subCellSize,
+  ) {
+    final baseX = tileX * 8;
+    final baseY = tileY * 8;
+    for (var sy = 0; sy < 8; sy++) {
+      for (var sx = 0; sx < 8; sx++) {
+        final terrain = grid.subTileTerrainAtGlobal(baseX + sx, baseY + sy);
+        final color = _terrainColors[terrain];
+        if (color != null) {
+          canvas.drawRect(
+            Rect.fromLTWH(
+              tileX * tileSize + sx * subCellSize,
+              tileY * tileSize + sy * subCellSize,
+              subCellSize,
+              subCellSize,
+            ),
+            Paint()..color = color,
+          );
+        }
+      }
     }
   }
 }
