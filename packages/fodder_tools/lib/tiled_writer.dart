@@ -7,12 +7,17 @@ import 'package:fodder_tools/tileset_builder.dart';
 /// [imageFilename] is the relative path to the tileset PNG (e.g.
 /// `jungle.png`).
 /// [imageWidth] and [imageHeight] are the tileset PNG dimensions in pixels.
+///
+/// When [terrainTypes] is provided (length = [totalTileCount]), each tile
+/// receives a custom `terrain` integer property from the original `.hit`
+/// data. See `hit_reader.dart` for the terrain type table.
 // TODO(bramp): Is there a tiled library we should be using instead?
 String generateTsx({
   required String name,
   required String imageFilename,
   required int imageWidth,
   required int imageHeight,
+  List<int>? terrainTypes,
 }) {
   final buf = StringBuffer()
     ..writeln('<?xml version="1.0" encoding="UTF-8"?>')
@@ -26,8 +31,22 @@ String generateTsx({
     ..writeln(
       ' <image source="$imageFilename" '
       'width="$imageWidth" height="$imageHeight"/>',
-    )
-    ..writeln('</tileset>');
+    );
+
+  // Emit per-tile terrain properties when available.
+  if (terrainTypes != null) {
+    for (var id = 0; id < terrainTypes.length; id++) {
+      final t = terrainTypes[id];
+      buf
+        ..writeln(' <tile id="$id">')
+        ..writeln('  <properties>')
+        ..writeln('   <property name="terrain" type="int" value="$t"/>')
+        ..writeln('  </properties>')
+        ..writeln(' </tile>');
+    }
+  }
+
+  buf.writeln('</tileset>');
   return buf.toString();
 }
 

@@ -45,12 +45,20 @@ class _MainAppState extends State<MainApp> {
             Positioned(
               top: 8,
               right: 8,
-              child: _LevelDropdown(
-                currentMap: _currentMap,
-                onChanged: (map) async {
-                  setState(() => _currentMap = map);
-                  await _game.loadMap(map);
-                },
+              child: Row(
+                children: [
+                  _DebugButton(
+                    onPressed: _game.toggleDebugMode,
+                  ),
+                  const SizedBox(width: 8),
+                  _LevelDropdown(
+                    currentMap: _currentMap,
+                    onChanged: (map) async {
+                      setState(() => _currentMap = map);
+                      await _game.loadMap(map);
+                    },
+                  ),
+                ],
               ),
             ),
           ],
@@ -112,6 +120,27 @@ class _LevelDropdown extends StatelessWidget {
         onChanged: (value) {
           if (value != null) onChanged(value);
         },
+      ),
+    );
+  }
+}
+
+class _DebugButton extends StatelessWidget {
+  const _DebugButton({required this.onPressed});
+
+  final VoidCallback onPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.black54,
+        borderRadius: BorderRadius.circular(8),
+      ),
+      child: IconButton(
+        icon: const Icon(Icons.bug_report, color: Colors.white, size: 20),
+        tooltip: 'Toggle debug overlay',
+        onPressed: onPressed,
       ),
     );
   }

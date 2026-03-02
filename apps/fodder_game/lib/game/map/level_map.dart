@@ -5,6 +5,8 @@ import 'package:flame/components.dart';
 import 'package:flame/game.dart';
 import 'package:flame_tiled/flame_tiled.dart';
 
+import 'package:fodder_game/game/systems/walkability_grid.dart';
+
 /// A component that loads and renders a Tiled `.tmx` map.
 ///
 /// Wraps [TiledComponent] to load maps exported by the `maps` tool from the
@@ -37,11 +39,19 @@ class LevelMap extends Component with HasGameReference<FlameGame> {
   /// Destination tile size in pixels (2× the original 16 px tiles).
   static const _destTileSize = 32.0;
 
+  /// Destination tile size exposed for coordinate conversion.
+  static const double destTileSize = _destTileSize;
+
   /// The loaded Tiled component (available after [onLoad]).
   TiledComponent? _tiledComponent;
 
   /// The underlying [TiledComponent], or `null` if not yet loaded.
   TiledComponent? get tiledComponent => _tiledComponent;
+
+  /// The walkability grid derived from tileset terrain properties.
+  ///
+  /// Available after [onLoad] completes.
+  WalkabilityGrid? walkabilityGrid;
 
   /// The pixel width of the loaded map (map columns × dest tile width).
   double get mapWidth => _tiledComponent?.width ?? 0;
@@ -81,6 +91,7 @@ class LevelMap extends Component with HasGameReference<FlameGame> {
     );
 
     _tiledComponent = tiled;
+    walkabilityGrid = WalkabilityGrid.fromTiled(tiled);
     await add(tiled);
   }
 }

@@ -484,18 +484,119 @@ for that mission phase.
 
 ## 5. Terrain-Related Data Files
 
-Each terrain tileset has several associated non-graphics data files:
+Each terrain tileset has several associated non-graphics data files that control
+collision, walkability, and destructible terrain behaviour:
 
 | Extension | Purpose                                         |
 | --------- | ----------------------------------------------- |
-| `.bht`    | Tile height/terrain type data                   |
-| `.hit`    | Collision/hit detection data for tiles          |
+| `.hit`    | Per-tile terrain type / walkability data         |
+| `.bht`    | Sub-tile (8×8) terrain bitmasks for mixed tiles  |
 | `.swp`    | Tile swap/animation data (destructible terrain) |
 
 Files follow the naming pattern `{terrain}{type}.{ext}`, e.g.:
 
-- `junbase.bht`, `junbase.hit`, `junbase.swp`
-- `junsub0.bht`, `junsub0.hit`, `junsub0.swp`
+- `junbase.hit`, `junbase.bht`, `junbase.swp`
+- `junsub0.hit`, `junsub0.bht`, `junsub0.swp`
+
+### 5.1. Terrain Type Files (`.hit`)
+
+`.hit` files assign a terrain type to each tile in a tile block. The engine uses
+these to determine walkability, driveability, and flyability for pathfinding and
+collision.
+
+#### Format
+
+Each `.hit` file is a flat array of **big-endian signed int16** values, one per
+tile:
+
+- **Base `.hit`**: 480 bytes → 240 entries (one per base tile, indices 0–239)
+- **Sub `.hit`**: 320 bytes → 160 entries (sub tiles 0–159); the remaining 80
+  sub tiles (indices 160–239) default to terrain type 0 (Land).
+
+#### Terrain Type Values (`eTerrainFeature`)
+
+Each int16 entry maps to one of the following terrain feature types from
+OpenFodder's `eTerrainFeature` enum:
+
+| Value | Name           | Walkable | Driveable | Flyable |
+| ----- | -------------- | -------- | --------- | ------- |
+| 0     | Land           | yes      | yes       | yes     |
+| 1     | Rocky          | yes      | yes       | no      |
+| 2     | Boulders       | yes      | yes       | no      |
+| 3     | **Block**      | **no**   | **no**    | no      |
+| 4     | Wood / Tree    | yes      | yes       | no      |
+| 5     | Mud / Swamp    | yes      | yes       | no      |
+| 6     | Water          | yes*     | yes       | no      |
+| 7     | Snow           | yes      | yes       | yes     |
+| 8     | Quick Sand     | yes      | yes       | yes     |
+| 9     | Wall           | yes      | yes       | no      |
+| 10    | Fence          | yes      | no        | no      |
+| 11    | Drop           | yes      | no        | no      |
+| 12    | Drop2          | yes      | no        | no      |
+| 13    | Intbase (int.) | yes      | no        | no      |
+| 14    | Intbase2       | yes      | no        | no      |
+
+\* Water tiles are walkable (soldiers can swim) but they are a distinct movement
+mode in the original engine.
+
+The engine's walkability lookup tables from OpenFodder:
+- `mTiles_NotWalkable[]`  = only type **3** (`Block`) blocks walking
+- `mTiles_NotDriveable[]` = types 3, 10, 11 block driving
+- `mTiles_NotFlyable[]`   = types 1, 2, 3, 4, 5, 6, 9, 10, 11, 12, 13, 14
+
+#### Negative Values (Mixed Terrain / BHIT Reference)
+
+When an entry's int16 value is **negative** (bit 15 set), the tile spans two
+terrain types and requires sub-tile resolution from the corresponding `.bht`
+file. The absolute value is used as an index into the BHIT table. For
+tile-level walkability queries, negative entries should be treated as walkable
+(or resolved via the BHIT table for higher fidelity).
+
+#### Known `.hit` Files
+
+| File           | Size (bytes) | Entries | Terrain  |
+| -------------- | ------------ | ------- | -------- |
+| `junbase.hit`  | 480          | 240     | Jungle   |
+| `junsub0.hit`  | 320          | 160     | Jungle   |
+| `junsub1.hit`  | 320          | 160     | Jungle   |
+| `desbase.hit`  | 480          | 240     | Desert   |
+| `dessub0.hit`  | 320          | 160     | Desert   |
+| `icebase.hit`  | 480          | 240     | Ice      |
+| `icesub0.hit`  | 320          | 160     | Ice      |
+| `morbase.hit`  | 480          | 240     | Moors    |
+| `morsub0.hit`  | 320          | 160     | Moors    |
+| `intbase.hit`  | 480          | 240     | Interior |
+| `intsub0.hit`  | 320          | 160     | Interior |
+
+### 5.2. Sub-Tile Terrain Bitmasks (`.bht`)
+
+`.bht` (BHIT) files provide sub-tile terrain resolution for tiles that span
+two terrain types (indicated by a negative value in the `.hit` file).
+
+#### Format
+
+Each `.bht` file is a flat array of 8-byte entries. Each entry describes a
+single mixed tile and contains an **8×8 bitmask** (8 rows × 8 bits = 8 bytes)
+that divides the 16×16 tile into 64 sub-cells (each sub-cell covering a 2×2
+pixel area).
+
+- **Base `.bht`**: 1,920 bytes → 240 entries (one per base tile)
+- **Sub `.bht`**: 1,280 bytes → 160 entries (sub tiles 0–159)
+
+For each bit in the bitmask:
+- `0` = sub-cell uses the primary terrain type
+- `1` = sub-cell uses the secondary terrain type
+
+The engine function `Map_Terrain_Get_Type_And_Walkable()` first looks up the
+tile's `.hit` value. If negative, it indexes into the BHIT table and checks
+the specific 2×2 sub-cell under the queried pixel coordinate.
+
+### 5.3. Tile Swap Data (`.swp`)
+
+`.swp` files define which tiles are replaced when terrain is destroyed (e.g.,
+by explosions or rockets). The exact binary format is not yet fully documented.
+
+Files follow the same naming convention: `junbase.swp`, `junsub0.swp`, etc.
 
 ---
 

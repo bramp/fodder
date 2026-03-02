@@ -5,6 +5,7 @@ import 'dart:typed_data';
 
 import 'package:args/args.dart';
 import 'package:fodder_tools/dat_reader.dart';
+import 'package:fodder_tools/hit_reader.dart';
 import 'package:fodder_tools/map_reader.dart';
 import 'package:fodder_tools/tiled_writer.dart';
 import 'package:fodder_tools/tileset_builder.dart';
@@ -164,11 +165,29 @@ void main(List<String> arguments) {
       const imageWidth = blkColumns * tileSize; // 320
       const imageHeight = (totalTileCount ~/ blkColumns) * tileSize; // 384
 
+      // Load .hit terrain data when available.
+      final baseHitName = map.baseBlockFilename.replaceAll('.blk', '.hit');
+      final subHitName = map.subBlockFilename.replaceAll('.blk', '.hit');
+
+      List<int>? terrainTypes;
+      if (hasFile(baseHitName) && hasFile(subHitName)) {
+        terrainTypes = buildCombinedTerrainTypes(
+          baseHitData: getFile(baseHitName),
+          subHitData: getFile(subHitName),
+        );
+      } else {
+        print(
+          '  Warning: .hit files not found for $resolvedName '
+          '($baseHitName / $subHitName) — skipping terrain data.',
+        );
+      }
+
       final tsx = generateTsx(
         name: resolvedName,
         imageFilename: pngFilename,
         imageWidth: imageWidth,
         imageHeight: imageHeight,
+        terrainTypes: terrainTypes,
       );
       final tsxFilename = '$resolvedName.tsx';
       File(p.join(outputDir.path, tsxFilename)).writeAsStringSync(tsx);
