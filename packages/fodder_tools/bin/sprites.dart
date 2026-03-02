@@ -11,6 +11,7 @@ import 'package:fodder_tools/image_decoder.dart';
 import 'package:fodder_tools/palette.dart';
 import 'package:fodder_tools/png_writer.dart';
 import 'package:fodder_tools/sprite_frame.dart';
+import 'package:fodder_tools/sprite_names.dart';
 import 'package:path/path.dart' as p;
 
 // ---------------------------------------------------------------------------
@@ -543,8 +544,13 @@ void _exportSpriteAtlases({
         if (filenames == null) continue;
 
         for (final filename in filenames) {
-          final groupHex = groupIdx.toRadixString(16).padLeft(2, '0');
-          final name = '${sheetType.name}/${groupHex}_$frameIdx';
+          final groupLabel =
+              spriteGroupName(
+                sheetTypeName: sheetType.name,
+                groupIndex: groupIdx,
+              ) ??
+              groupIdx.toRadixString(16).padLeft(2, '0');
+          final name = '${sheetType.name}/${groupLabel}_$frameIdx';
 
           final x = frame.pixelX();
           final y = frame.pixelY();

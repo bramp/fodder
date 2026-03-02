@@ -55,4 +55,4 @@ original_game/
 *.tiled-session
 
 # Vendor libraries
-# vendor/
+vendor/

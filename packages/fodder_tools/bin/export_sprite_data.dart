@@ -11,7 +11,8 @@ import 'package:path/path.dart' as p;
 /// at runtime or during standard builds.
 void main() {
   final scriptDir = File(Platform.script.toFilePath()).parent.path;
-  final projectRoot = p.dirname(p.dirname(scriptDir));
+  // Go up from bin/ → fodder_tools/ → packages/ → monorepo root.
+  final projectRoot = p.dirname(p.dirname(p.dirname(scriptDir)));
 
   // Path to the OpenFodder C++ header file.
   final spriteDataPath = p.join(
@@ -32,7 +33,7 @@ void main() {
   print('Parsing sprite data from ${spriteDataFile.path}...');
   final sheets = SpriteDataParser.parse(file: spriteDataFile);
 
-  const outputDir = 'tool/sprites/data';
+  const outputDir = 'packages/fodder_tools/tool/sprites/data';
   final outputDirFile = Directory(p.join(projectRoot, outputDir));
   if (!outputDirFile.existsSync()) {
     outputDirFile.createSync(recursive: true);

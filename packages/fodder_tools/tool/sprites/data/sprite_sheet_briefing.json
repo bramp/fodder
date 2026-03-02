@@ -1,0 +1,1036 @@
+[
+  [
+    {
+      "byteOffset": 25672,
+      "gfxType": "pstuff",
+      "width": 16,
+      "height": 6,
+      "paletteIndex": 240,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 25680,
+      "gfxType": "pstuff",
+      "width": 16,
+      "height": 6,
+      "paletteIndex": 240,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 25688,
+      "gfxType": "pstuff",
+      "width": 16,
+      "height": 6,
+      "paletteIndex": 240,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 25696,
+      "gfxType": "pstuff",
+      "width": 16,
+      "height": 6,
+      "paletteIndex": 240,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 25704,
+      "gfxType": "pstuff",
+      "width": 16,
+      "height": 6,
+      "paletteIndex": 240,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 25712,
+      "gfxType": "pstuff",
+      "width": 16,
+      "height": 6,
+      "paletteIndex": 240,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 25720,
+      "gfxType": "pstuff",
+      "width": 16,
+      "height": 6,
+      "paletteIndex": 240,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 25728,
+      "gfxType": "pstuff",
+      "width": 16,
+      "height": 6,
+      "paletteIndex": 240,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 25736,
+      "gfxType": "pstuff",
+      "width": 16,
+      "height": 6,
+      "paletteIndex": 240,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 25744,
+      "gfxType": "pstuff",
+      "width": 16,
+      "height": 6,
+      "paletteIndex": 240,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 25752,
+      "gfxType": "pstuff",
+      "width": 16,
+      "height": 6,
+      "paletteIndex": 240,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 26632,
+      "gfxType": "pstuff",
+      "width": 16,
+      "height": 6,
+      "paletteIndex": 240,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 26640,
+      "gfxType": "pstuff",
+      "width": 16,
+      "height": 6,
+      "paletteIndex": 240,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 26648,
+      "gfxType": "pstuff",
+      "width": 16,
+      "height": 6,
+      "paletteIndex": 240,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 26656,
+      "gfxType": "pstuff",
+      "width": 16,
+      "height": 6,
+      "paletteIndex": 240,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 26664,
+      "gfxType": "pstuff",
+      "width": 16,
+      "height": 6,
+      "paletteIndex": 240,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 26672,
+      "gfxType": "pstuff",
+      "width": 16,
+      "height": 6,
+      "paletteIndex": 240,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 26680,
+      "gfxType": "pstuff",
+      "width": 16,
+      "height": 6,
+      "paletteIndex": 240,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 26688,
+      "gfxType": "pstuff",
+      "width": 16,
+      "height": 6,
+      "paletteIndex": 240,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 26696,
+      "gfxType": "pstuff",
+      "width": 16,
+      "height": 6,
+      "paletteIndex": 240,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 26704,
+      "gfxType": "pstuff",
+      "width": 16,
+      "height": 6,
+      "paletteIndex": 240,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 26712,
+      "gfxType": "pstuff",
+      "width": 16,
+      "height": 6,
+      "paletteIndex": 240,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 27592,
+      "gfxType": "pstuff",
+      "width": 16,
+      "height": 6,
+      "paletteIndex": 240,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 27600,
+      "gfxType": "pstuff",
+      "width": 16,
+      "height": 6,
+      "paletteIndex": 240,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 27608,
+      "gfxType": "pstuff",
+      "width": 16,
+      "height": 6,
+      "paletteIndex": 240,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 27616,
+      "gfxType": "pstuff",
+      "width": 16,
+      "height": 6,
+      "paletteIndex": 240,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 27624,
+      "gfxType": "pstuff",
+      "width": 16,
+      "height": 6,
+      "paletteIndex": 240,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 27632,
+      "gfxType": "pstuff",
+      "width": 16,
+      "height": 6,
+      "paletteIndex": 240,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 27640,
+      "gfxType": "pstuff",
+      "width": 16,
+      "height": 6,
+      "paletteIndex": 240,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 27648,
+      "gfxType": "pstuff",
+      "width": 16,
+      "height": 6,
+      "paletteIndex": 240,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 27656,
+      "gfxType": "pstuff",
+      "width": 16,
+      "height": 6,
+      "paletteIndex": 240,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 27664,
+      "gfxType": "pstuff",
+      "width": 16,
+      "height": 6,
+      "paletteIndex": 240,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 27672,
+      "gfxType": "pstuff",
+      "width": 16,
+      "height": 6,
+      "paletteIndex": 240,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 28552,
+      "gfxType": "pstuff",
+      "width": 16,
+      "height": 6,
+      "paletteIndex": 240,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 28560,
+      "gfxType": "pstuff",
+      "width": 16,
+      "height": 6,
+      "paletteIndex": 240,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 28568,
+      "gfxType": "pstuff",
+      "width": 16,
+      "height": 6,
+      "paletteIndex": 240,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 28576,
+      "gfxType": "pstuff",
+      "width": 16,
+      "height": 6,
+      "paletteIndex": 240,
+      "modX": 0,
+      "modY": 0
+    }
+  ],
+  [
+    {
+      "byteOffset": 32000,
+      "gfxType": "pstuff",
+      "width": 16,
+      "height": 20,
+      "paletteIndex": 240,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 32008,
+      "gfxType": "pstuff",
+      "width": 16,
+      "height": 20,
+      "paletteIndex": 240,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 32016,
+      "gfxType": "pstuff",
+      "width": 16,
+      "height": 20,
+      "paletteIndex": 240,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 32024,
+      "gfxType": "pstuff",
+      "width": 16,
+      "height": 20,
+      "paletteIndex": 240,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 32032,
+      "gfxType": "pstuff",
+      "width": 16,
+      "height": 20,
+      "paletteIndex": 240,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 32040,
+      "gfxType": "pstuff",
+      "width": 16,
+      "height": 20,
+      "paletteIndex": 240,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 32048,
+      "gfxType": "pstuff",
+      "width": 16,
+      "height": 20,
+      "paletteIndex": 240,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 32056,
+      "gfxType": "pstuff",
+      "width": 16,
+      "height": 20,
+      "paletteIndex": 240,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 32064,
+      "gfxType": "pstuff",
+      "width": 16,
+      "height": 20,
+      "paletteIndex": 240,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 32072,
+      "gfxType": "pstuff",
+      "width": 16,
+      "height": 20,
+      "paletteIndex": 240,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 32080,
+      "gfxType": "pstuff",
+      "width": 16,
+      "height": 20,
+      "paletteIndex": 240,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 32088,
+      "gfxType": "pstuff",
+      "width": 16,
+      "height": 20,
+      "paletteIndex": 240,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 32096,
+      "gfxType": "pstuff",
+      "width": 16,
+      "height": 20,
+      "paletteIndex": 240,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 32104,
+      "gfxType": "pstuff",
+      "width": 16,
+      "height": 20,
+      "paletteIndex": 240,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 32112,
+      "gfxType": "pstuff",
+      "width": 16,
+      "height": 20,
+      "paletteIndex": 240,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 32120,
+      "gfxType": "pstuff",
+      "width": 16,
+      "height": 20,
+      "paletteIndex": 240,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 32128,
+      "gfxType": "pstuff",
+      "width": 16,
+      "height": 20,
+      "paletteIndex": 240,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 32136,
+      "gfxType": "pstuff",
+      "width": 16,
+      "height": 20,
+      "paletteIndex": 240,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 32144,
+      "gfxType": "pstuff",
+      "width": 16,
+      "height": 20,
+      "paletteIndex": 240,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 32152,
+      "gfxType": "pstuff",
+      "width": 16,
+      "height": 20,
+      "paletteIndex": 240,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 35200,
+      "gfxType": "pstuff",
+      "width": 16,
+      "height": 20,
+      "paletteIndex": 240,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 35208,
+      "gfxType": "pstuff",
+      "width": 16,
+      "height": 20,
+      "paletteIndex": 240,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 35216,
+      "gfxType": "pstuff",
+      "width": 16,
+      "height": 20,
+      "paletteIndex": 240,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 35224,
+      "gfxType": "pstuff",
+      "width": 16,
+      "height": 20,
+      "paletteIndex": 240,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 35232,
+      "gfxType": "pstuff",
+      "width": 16,
+      "height": 20,
+      "paletteIndex": 240,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 35240,
+      "gfxType": "pstuff",
+      "width": 16,
+      "height": 20,
+      "paletteIndex": 240,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 35256,
+      "gfxType": "pstuff",
+      "width": 16,
+      "height": 20,
+      "paletteIndex": 240,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 35264,
+      "gfxType": "pstuff",
+      "width": 16,
+      "height": 20,
+      "paletteIndex": 240,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 35272,
+      "gfxType": "pstuff",
+      "width": 16,
+      "height": 20,
+      "paletteIndex": 240,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 35280,
+      "gfxType": "pstuff",
+      "width": 16,
+      "height": 20,
+      "paletteIndex": 240,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 35288,
+      "gfxType": "pstuff",
+      "width": 16,
+      "height": 20,
+      "paletteIndex": 240,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 35296,
+      "gfxType": "pstuff",
+      "width": 16,
+      "height": 20,
+      "paletteIndex": 240,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 35304,
+      "gfxType": "pstuff",
+      "width": 16,
+      "height": 20,
+      "paletteIndex": 240,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 35312,
+      "gfxType": "pstuff",
+      "width": 16,
+      "height": 20,
+      "paletteIndex": 240,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 35320,
+      "gfxType": "pstuff",
+      "width": 16,
+      "height": 20,
+      "paletteIndex": 240,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 35328,
+      "gfxType": "pstuff",
+      "width": 16,
+      "height": 20,
+      "paletteIndex": 240,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 35344,
+      "gfxType": "pstuff",
+      "width": 16,
+      "height": 20,
+      "paletteIndex": 240,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 35248,
+      "gfxType": "pstuff",
+      "width": 16,
+      "height": 20,
+      "paletteIndex": 240,
+      "modX": 0,
+      "modY": 0
+    }
+  ],
+  [
+    {
+      "byteOffset": 32160,
+      "gfxType": "pstuff",
+      "width": 16,
+      "height": 1,
+      "paletteIndex": 240,
+      "modX": 0,
+      "modY": 0
+    }
+  ],
+  [
+    {
+      "byteOffset": 32320,
+      "gfxType": "pstuff",
+      "width": 16,
+      "height": 16,
+      "paletteIndex": 240,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 32328,
+      "gfxType": "pstuff",
+      "width": 16,
+      "height": 16,
+      "paletteIndex": 240,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 32336,
+      "gfxType": "pstuff",
+      "width": 16,
+      "height": 16,
+      "paletteIndex": 240,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 32344,
+      "gfxType": "pstuff",
+      "width": 16,
+      "height": 16,
+      "paletteIndex": 240,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 32352,
+      "gfxType": "pstuff",
+      "width": 16,
+      "height": 16,
+      "paletteIndex": 240,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 32360,
+      "gfxType": "pstuff",
+      "width": 16,
+      "height": 16,
+      "paletteIndex": 240,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 32368,
+      "gfxType": "pstuff",
+      "width": 16,
+      "height": 16,
+      "paletteIndex": 240,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 32376,
+      "gfxType": "pstuff",
+      "width": 16,
+      "height": 16,
+      "paletteIndex": 240,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 32384,
+      "gfxType": "pstuff",
+      "width": 16,
+      "height": 16,
+      "paletteIndex": 240,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 32392,
+      "gfxType": "pstuff",
+      "width": 16,
+      "height": 16,
+      "paletteIndex": 240,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 32400,
+      "gfxType": "pstuff",
+      "width": 16,
+      "height": 16,
+      "paletteIndex": 240,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 32408,
+      "gfxType": "pstuff",
+      "width": 16,
+      "height": 16,
+      "paletteIndex": 240,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 32416,
+      "gfxType": "pstuff",
+      "width": 16,
+      "height": 16,
+      "paletteIndex": 240,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 32424,
+      "gfxType": "pstuff",
+      "width": 16,
+      "height": 16,
+      "paletteIndex": 240,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 32432,
+      "gfxType": "pstuff",
+      "width": 16,
+      "height": 16,
+      "paletteIndex": 240,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 32440,
+      "gfxType": "pstuff",
+      "width": 16,
+      "height": 16,
+      "paletteIndex": 240,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 32448,
+      "gfxType": "pstuff",
+      "width": 16,
+      "height": 16,
+      "paletteIndex": 240,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 32456,
+      "gfxType": "pstuff",
+      "width": 16,
+      "height": 16,
+      "paletteIndex": 240,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 32464,
+      "gfxType": "pstuff",
+      "width": 16,
+      "height": 16,
+      "paletteIndex": 240,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 32472,
+      "gfxType": "pstuff",
+      "width": 16,
+      "height": 16,
+      "paletteIndex": 240,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 35520,
+      "gfxType": "pstuff",
+      "width": 16,
+      "height": 16,
+      "paletteIndex": 240,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 35528,
+      "gfxType": "pstuff",
+      "width": 16,
+      "height": 16,
+      "paletteIndex": 240,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 35536,
+      "gfxType": "pstuff",
+      "width": 16,
+      "height": 16,
+      "paletteIndex": 240,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 35544,
+      "gfxType": "pstuff",
+      "width": 16,
+      "height": 16,
+      "paletteIndex": 240,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 35552,
+      "gfxType": "pstuff",
+      "width": 16,
+      "height": 16,
+      "paletteIndex": 240,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 35560,
+      "gfxType": "pstuff",
+      "width": 16,
+      "height": 16,
+      "paletteIndex": 240,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 35576,
+      "gfxType": "pstuff",
+      "width": 16,
+      "height": 16,
+      "paletteIndex": 240,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 35584,
+      "gfxType": "pstuff",
+      "width": 16,
+      "height": 16,
+      "paletteIndex": 240,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 35592,
+      "gfxType": "pstuff",
+      "width": 16,
+      "height": 16,
+      "paletteIndex": 240,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 35600,
+      "gfxType": "pstuff",
+      "width": 16,
+      "height": 16,
+      "paletteIndex": 240,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 35608,
+      "gfxType": "pstuff",
+      "width": 16,
+      "height": 16,
+      "paletteIndex": 240,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 35616,
+      "gfxType": "pstuff",
+      "width": 16,
+      "height": 16,
+      "paletteIndex": 240,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 35624,
+      "gfxType": "pstuff",
+      "width": 16,
+      "height": 16,
+      "paletteIndex": 240,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 35632,
+      "gfxType": "pstuff",
+      "width": 16,
+      "height": 16,
+      "paletteIndex": 240,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 35640,
+      "gfxType": "pstuff",
+      "width": 16,
+      "height": 16,
+      "paletteIndex": 240,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 35648,
+      "gfxType": "pstuff",
+      "width": 16,
+      "height": 16,
+      "paletteIndex": 240,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 35344,
+      "gfxType": "pstuff",
+      "width": 15,
+      "height": 20,
+      "paletteIndex": 240,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 35568,
+      "gfxType": "pstuff",
+      "width": 16,
+      "height": 16,
+      "paletteIndex": 240,
+      "modX": 0,
+      "modY": 0
+    }
+  ]
+]

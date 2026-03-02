@@ -1,0 +1,9026 @@
+[
+  [
+    {
+      "byteOffset": 0,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Soldier Walk\t\tFace Forward"
+    },
+    {
+      "byteOffset": 8,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Soldier Walk\t\tFace Forward"
+    },
+    {
+      "byteOffset": 16,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Soldier Walk\t\tFace Forward"
+    }
+  ],
+  [
+    {
+      "byteOffset": 24,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Soldier Walk\t\tFace Forward + Left"
+    },
+    {
+      "byteOffset": 32,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Soldier Walk\t\tFace Forward + Left"
+    },
+    {
+      "byteOffset": 40,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Soldier Walk\t\tFace Forward + Left"
+    }
+  ],
+  [
+    {
+      "byteOffset": 48,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Soldier Walk\t\tFace Left"
+    },
+    {
+      "byteOffset": 56,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Soldier Walk\t\tFace Left"
+    },
+    {
+      "byteOffset": 64,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Soldier Walk\t\tFace Left"
+    }
+  ],
+  [
+    {
+      "byteOffset": 72,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Soldier Walk\t\tFace Left + Away"
+    },
+    {
+      "byteOffset": 80,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Soldier Walk\t\tFace Left + Away"
+    },
+    {
+      "byteOffset": 88,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Soldier Walk\t\tFace Left + Away"
+    }
+  ],
+  [
+    {
+      "byteOffset": 96,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Soldier Walk\t\tFace Away"
+    },
+    {
+      "byteOffset": 104,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Soldier Walk\t\tFace Away"
+    },
+    {
+      "byteOffset": 112,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Soldier Walk\t\tFace Away"
+    }
+  ],
+  [
+    {
+      "byteOffset": 120,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Soldier Walk\t\tFace Away + Right"
+    },
+    {
+      "byteOffset": 128,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Soldier Walk\t\tFace Away + Right"
+    },
+    {
+      "byteOffset": 136,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Soldier Walk\t\tFace Away + Right"
+    }
+  ],
+  [
+    {
+      "byteOffset": 144,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Soldier Walk\t\tFace Right"
+    },
+    {
+      "byteOffset": 152,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Soldier Walk\t\tFace Right"
+    },
+    {
+      "byteOffset": 2240,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Soldier Walk\t\tFace Right"
+    }
+  ],
+  [
+    {
+      "byteOffset": 2248,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Soldier Walk\t\tFace Right + Forward"
+    },
+    {
+      "byteOffset": 2256,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Soldier Walk\t\tFace Right + Forward"
+    },
+    {
+      "byteOffset": 2264,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Soldier Walk\t\tFace Right + Forward"
+    }
+  ],
+  [
+    {
+      "byteOffset": 2272,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Soldier Throw\tFace Forward"
+    },
+    {
+      "byteOffset": 2280,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Soldier Throw\tFace Forward"
+    },
+    {
+      "byteOffset": 2288,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Soldier Throw\tFace Forward"
+    }
+  ],
+  [
+    {
+      "byteOffset": 2296,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Soldier Throw\tFace Forward + Left"
+    },
+    {
+      "byteOffset": 2304,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Soldier Throw\tFace Forward + Left"
+    },
+    {
+      "byteOffset": 2312,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Soldier Throw\tFace Forward + Left"
+    }
+  ],
+  [
+    {
+      "byteOffset": 2320,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Soldier Throw\tFace Left"
+    },
+    {
+      "byteOffset": 2328,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Soldier Throw\tFace Left"
+    },
+    {
+      "byteOffset": 2336,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Soldier Throw\tFace Left"
+    }
+  ],
+  [
+    {
+      "byteOffset": 2344,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Soldier Throw\tFace Left + Away"
+    },
+    {
+      "byteOffset": 2352,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Soldier Throw\tFace Left + Away"
+    },
+    {
+      "byteOffset": 2360,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Soldier Throw\tFace Left + Away"
+    }
+  ],
+  [
+    {
+      "byteOffset": 2368,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Soldier Throw\tFace Away"
+    },
+    {
+      "byteOffset": 2376,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Soldier Throw\tFace Away"
+    },
+    {
+      "byteOffset": 2384,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Soldier Throw\tFace Away"
+    }
+  ],
+  [
+    {
+      "byteOffset": 2392,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Soldier Throw\tFace Away + Right"
+    },
+    {
+      "byteOffset": 4480,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Soldier Throw\tFace Away + Right"
+    },
+    {
+      "byteOffset": 4488,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Soldier Throw\tFace Away + Right"
+    }
+  ],
+  [
+    {
+      "byteOffset": 4496,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Soldier Throw\tFace Right"
+    },
+    {
+      "byteOffset": 4504,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Soldier Throw\tFace Right"
+    },
+    {
+      "byteOffset": 4512,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Soldier Throw\tFace Right"
+    }
+  ],
+  [
+    {
+      "byteOffset": 4520,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Soldier Throw\tFace Right + Forward"
+    },
+    {
+      "byteOffset": 4528,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Soldier Throw\tFace Right + Forward"
+    },
+    {
+      "byteOffset": 4536,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Soldier Throw\tFace Right + Forward"
+    }
+  ],
+  [
+    {
+      "byteOffset": 4544,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Soldier Prone\tFace Forward"
+    }
+  ],
+  [
+    {
+      "byteOffset": 4552,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Soldier Prone\tFace Forward + Left"
+    }
+  ],
+  [
+    {
+      "byteOffset": 4560,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Soldier Prone\tFace Left"
+    }
+  ],
+  [
+    {
+      "byteOffset": 4568,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Soldier Prone\tFace Left + Away"
+    }
+  ],
+  [
+    {
+      "byteOffset": 4576,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Soldier Prone\tFace Away"
+    }
+  ],
+  [
+    {
+      "byteOffset": 4584,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Soldier Prone\tFace Away + Right"
+    }
+  ],
+  [
+    {
+      "byteOffset": 4592,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Soldier Prone\tFace Right"
+    }
+  ],
+  [
+    {
+      "byteOffset": 4600,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Soldier Prone\tFace Right + Forward"
+    }
+  ],
+  [
+    {
+      "byteOffset": 4608,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Soldier Swim\t\tFace Forward"
+    },
+    {
+      "byteOffset": 4616,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Soldier Swim\t\tFace Forward"
+    }
+  ],
+  [
+    {
+      "byteOffset": 4624,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Soldier Swim\t\tFace Forward + Left"
+    },
+    {
+      "byteOffset": 4632,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Soldier Swim\t\tFace Forward + Left"
+    }
+  ],
+  [
+    {
+      "byteOffset": 6720,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Soldier Swim\t\tFace Left"
+    },
+    {
+      "byteOffset": 6728,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Soldier Swim\t\tFace Left"
+    }
+  ],
+  [
+    {
+      "byteOffset": 6736,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Soldier Swim\t\tFace Left + Away"
+    },
+    {
+      "byteOffset": 6744,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Soldier Swim\t\tFace Left + Away"
+    }
+  ],
+  [
+    {
+      "byteOffset": 6752,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Soldier Swim\t\tFace Away"
+    },
+    {
+      "byteOffset": 6760,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Soldier Swim\t\tFace Away"
+    }
+  ],
+  [
+    {
+      "byteOffset": 6768,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Soldier Swim\t\tFace Away + Right"
+    },
+    {
+      "byteOffset": 6776,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Soldier Swim\t\tFace Away + Right"
+    }
+  ],
+  [
+    {
+      "byteOffset": 6784,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Soldier Swim\t\tFace Right"
+    },
+    {
+      "byteOffset": 6792,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Soldier Swim\t\tFace Right"
+    }
+  ],
+  [
+    {
+      "byteOffset": 6800,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Soldier Swim\t\tFace Right + Forward"
+    },
+    {
+      "byteOffset": 6808,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Soldier Swim\t\tFace Right + Forward"
+    }
+  ],
+  [
+    {
+      "byteOffset": 6816,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Soldier Death\tFace Forward"
+    }
+  ],
+  [
+    {
+      "byteOffset": 6832,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Soldier Death\tFace Forward + Left"
+    },
+    {
+      "byteOffset": 6840,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Soldier Death\tFace Forward + Left"
+    }
+  ],
+  [
+    {
+      "byteOffset": 6848,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Soldier Death\tFace Left"
+    },
+    {
+      "byteOffset": 6856,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Soldier Death\tFace Left"
+    }
+  ],
+  [
+    {
+      "byteOffset": 6864,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Soldier Death\tFace Left + Away"
+    },
+    {
+      "byteOffset": 6872,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Soldier Death\tFace Left + Away"
+    }
+  ],
+  [
+    {
+      "byteOffset": 8960,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Soldier Death\tFace Away"
+    },
+    {
+      "byteOffset": 8968,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Soldier Death\tFace Away"
+    }
+  ],
+  [
+    {
+      "byteOffset": 8976,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Soldier Death\tFace Away + Right"
+    },
+    {
+      "byteOffset": 8984,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Soldier Death\tFace Away + Right"
+    }
+  ],
+  [
+    {
+      "byteOffset": 8992,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Soldier Death\tFace Right"
+    },
+    {
+      "byteOffset": 9000,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Soldier Death\tFace Right"
+    }
+  ],
+  [
+    {
+      "byteOffset": 9008,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Soldier Death\tFace Right + Forward"
+    },
+    {
+      "byteOffset": 9016,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Soldier Death\tFace Right + Forward"
+    }
+  ],
+  [
+    {
+      "byteOffset": 9024,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Soldier Death\tFace Forward"
+    },
+    {
+      "byteOffset": 9032,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Soldier Death\tFace Forward"
+    }
+  ],
+  [
+    {
+      "byteOffset": 9040,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Soldier Death\tFace Forward + Left"
+    },
+    {
+      "byteOffset": 9048,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Soldier Death\tFace Forward + Left"
+    }
+  ],
+  [
+    {
+      "byteOffset": 9056,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Soldier Death\tFace Left"
+    },
+    {
+      "byteOffset": 9064,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Soldier Death\tFace Left"
+    }
+  ],
+  [
+    {
+      "byteOffset": 9072,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Soldier Death\tFace Left + Away"
+    },
+    {
+      "byteOffset": 9080,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Soldier Death\tFace Left + Away"
+    }
+  ],
+  [
+    {
+      "byteOffset": 9088,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Soldier Death\tFace Away"
+    },
+    {
+      "byteOffset": 9096,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Soldier Death\tFace Away"
+    }
+  ],
+  [
+    {
+      "byteOffset": 9104,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Soldier Death\tFace Away + Right"
+    },
+    {
+      "byteOffset": 9112,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Soldier Death\tFace Away + Right"
+    }
+  ],
+  [
+    {
+      "byteOffset": 11200,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Soldier Death\tFace Right"
+    },
+    {
+      "byteOffset": 11208,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Soldier Death\tFace Right"
+    }
+  ],
+  [
+    {
+      "byteOffset": 11216,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Soldier Death\tFace Right + Forward"
+    },
+    {
+      "byteOffset": 11224,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Soldier Death\tFace Right + Forward"
+    }
+  ],
+  [
+    {
+      "byteOffset": 11232,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Start Face Forward"
+    },
+    {
+      "byteOffset": 11240,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Start Face Forward"
+    },
+    {
+      "byteOffset": 11248,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Start Face Forward"
+    }
+  ],
+  [
+    {
+      "byteOffset": 11256,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Start Face Left"
+    },
+    {
+      "byteOffset": 11264,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Start Face Left"
+    },
+    {
+      "byteOffset": 11272,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Start Face Left"
+    }
+  ],
+  [
+    {
+      "byteOffset": 11280,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Start Right"
+    },
+    {
+      "byteOffset": 11288,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Start Right"
+    },
+    {
+      "byteOffset": 11296,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Start Right"
+    }
+  ],
+  [
+    {
+      "byteOffset": 11304,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 11312,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 11320,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    }
+  ],
+  [
+    {
+      "byteOffset": 11328,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Bones"
+    },
+    {
+      "byteOffset": 11336,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Bones"
+    },
+    {
+      "byteOffset": 11344,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Bones"
+    }
+  ],
+  [
+    {
+      "byteOffset": 11352,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 13440,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 13448,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    }
+  ],
+  [
+    {
+      "byteOffset": 13456,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 13464,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 13472,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    }
+  ],
+  [
+    {
+      "byteOffset": 13480,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 13488,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 13496,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    }
+  ],
+  [
+    {
+      "byteOffset": 13504,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 13512,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 13520,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 13528,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 13536,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 13544,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    }
+  ],
+  [
+    {
+      "byteOffset": 15712,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Soldier Fired Rocket"
+    },
+    {
+      "byteOffset": 15720,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Soldier Fired Rocket"
+    },
+    {
+      "byteOffset": 15728,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Soldier Fired Rocket"
+    }
+  ],
+  [
+    {
+      "byteOffset": 15736,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 15744,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 15752,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    }
+  ],
+  [
+    {
+      "byteOffset": 15760,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 15768,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 15776,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    }
+  ],
+  [
+    {
+      "byteOffset": 15784,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 15792,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 15800,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    }
+  ],
+  [
+    {
+      "byteOffset": 15808,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 15816,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 15824,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    }
+  ],
+  [
+    {
+      "byteOffset": 15832,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 17920,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 17928,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 17936,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    }
+  ],
+  [
+    {
+      "byteOffset": 17936,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 17944,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 17952,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    }
+  ],
+  [
+    {
+      "byteOffset": 17960,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 17968,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 17976,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    }
+  ],
+  [
+    {
+      "byteOffset": 13552,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 13560,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 13568,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 13576,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 13584,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 13592,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    }
+  ],
+  [
+    {
+      "byteOffset": 22400,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Enemy Soldier Walk Face Forward"
+    },
+    {
+      "byteOffset": 22408,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Enemy Soldier Walk Face Forward"
+    },
+    {
+      "byteOffset": 22416,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Enemy Soldier Walk Face Forward"
+    }
+  ],
+  [
+    {
+      "byteOffset": 22424,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Enemy Soldier Walk Face Forward + Left"
+    },
+    {
+      "byteOffset": 22432,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Enemy Soldier Walk Face Forward + Left"
+    },
+    {
+      "byteOffset": 22440,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Enemy Soldier Walk Face Forward + Left"
+    }
+  ],
+  [
+    {
+      "byteOffset": 22448,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Enemy Soldier Walk Face Left"
+    },
+    {
+      "byteOffset": 22456,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Enemy Soldier Walk Face Left"
+    },
+    {
+      "byteOffset": 22464,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Enemy Soldier Walk Face Left"
+    }
+  ],
+  [
+    {
+      "byteOffset": 22472,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Enemy Soldier Walk Face Left + Away"
+    },
+    {
+      "byteOffset": 22480,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Enemy Soldier Walk Face Left + Away"
+    },
+    {
+      "byteOffset": 22488,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Enemy Soldier Walk Face Left + Away"
+    }
+  ],
+  [
+    {
+      "byteOffset": 22496,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Enemy Soldier Walk Face Away"
+    },
+    {
+      "byteOffset": 22504,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Enemy Soldier Walk Face Away"
+    },
+    {
+      "byteOffset": 22512,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Enemy Soldier Walk Face Away"
+    }
+  ],
+  [
+    {
+      "byteOffset": 22520,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Enemy Soldier Walk Face Away + Right"
+    },
+    {
+      "byteOffset": 22528,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Enemy Soldier Walk Face Away + Right"
+    },
+    {
+      "byteOffset": 22536,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Enemy Soldier Walk Face Away + Right"
+    }
+  ],
+  [
+    {
+      "byteOffset": 22544,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Enemy Soldier Walk Face Right"
+    },
+    {
+      "byteOffset": 22552,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Enemy Soldier Walk Face Right"
+    },
+    {
+      "byteOffset": 24640,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Enemy Soldier Walk Face Right"
+    }
+  ],
+  [
+    {
+      "byteOffset": 24648,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Enemy Soldier Walk Face Right + Forward"
+    },
+    {
+      "byteOffset": 24656,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Enemy Soldier Walk Face Right + Forward"
+    },
+    {
+      "byteOffset": 24664,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Enemy Soldier Walk Face Right + Forward"
+    }
+  ],
+  [
+    {
+      "byteOffset": 24672,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Enemy Soldier Throw Face Forward"
+    },
+    {
+      "byteOffset": 24680,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Enemy Soldier Throw Face Forward"
+    },
+    {
+      "byteOffset": 24688,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Enemy Soldier Throw Face Forward"
+    }
+  ],
+  [
+    {
+      "byteOffset": 24696,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Enemy Soldier Throw Face Forward + Left"
+    },
+    {
+      "byteOffset": 24704,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Enemy Soldier Throw Face Forward + Left"
+    },
+    {
+      "byteOffset": 24712,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Enemy Soldier Throw Face Forward + Left"
+    }
+  ],
+  [
+    {
+      "byteOffset": 24720,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Enemy Soldier Throw Face Left"
+    },
+    {
+      "byteOffset": 24728,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Enemy Soldier Throw Face Left"
+    },
+    {
+      "byteOffset": 24736,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Enemy Soldier Throw Face Left"
+    }
+  ],
+  [
+    {
+      "byteOffset": 24744,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Enemy Soldier Throw Face Left + Away"
+    },
+    {
+      "byteOffset": 24752,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Enemy Soldier Throw Face Left + Away"
+    },
+    {
+      "byteOffset": 24760,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Enemy Soldier Throw Face Left + Away"
+    }
+  ],
+  [
+    {
+      "byteOffset": 24768,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Enemy Soldier Throw Face Away"
+    },
+    {
+      "byteOffset": 24776,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Enemy Soldier Throw Face Away"
+    },
+    {
+      "byteOffset": 24784,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Enemy Soldier Throw Face Away"
+    }
+  ],
+  [
+    {
+      "byteOffset": 24792,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Enemy Soldier Throw Face Away + Right"
+    },
+    {
+      "byteOffset": 26880,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Enemy Soldier Throw Face Away + Right"
+    },
+    {
+      "byteOffset": 26888,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Enemy Soldier Throw Face Away + Right"
+    }
+  ],
+  [
+    {
+      "byteOffset": 26896,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Enemy Soldier Throw Face Right"
+    },
+    {
+      "byteOffset": 26904,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Enemy Soldier Throw Face Right"
+    },
+    {
+      "byteOffset": 26912,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Enemy Soldier Throw Face Right"
+    }
+  ],
+  [
+    {
+      "byteOffset": 26920,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Enemy Soldier Throw Face Right + Forward"
+    },
+    {
+      "byteOffset": 26928,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Enemy Soldier Throw Face Right + Forward"
+    },
+    {
+      "byteOffset": 26936,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Enemy Soldier Throw Face Right + Forward"
+    }
+  ],
+  [
+    {
+      "byteOffset": 26944,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Enemy Soldier Prone Face Forward"
+    }
+  ],
+  [
+    {
+      "byteOffset": 26952,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Enemy Soldier Prone Face Forward + Left"
+    }
+  ],
+  [
+    {
+      "byteOffset": 26960,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Enemy Soldier Prone Face Left"
+    }
+  ],
+  [
+    {
+      "byteOffset": 26968,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Enemy Soldier Prone Face Left + Away"
+    }
+  ],
+  [
+    {
+      "byteOffset": 26976,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Enemy Soldier Prone Face Away"
+    }
+  ],
+  [
+    {
+      "byteOffset": 26984,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Enemy Soldier Prone Face Away + Right"
+    }
+  ],
+  [
+    {
+      "byteOffset": 26992,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Enemy Soldier Prone Face Right"
+    }
+  ],
+  [
+    {
+      "byteOffset": 27000,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Enemy Soldier Prone Face Right + Forward"
+    }
+  ],
+  [
+    {
+      "byteOffset": 27008,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Enemy Soldier Swim Face Forward"
+    },
+    {
+      "byteOffset": 27016,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Enemy Soldier Swim Face Forward"
+    }
+  ],
+  [
+    {
+      "byteOffset": 27024,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Enemy Soldier Swim Face Forward + Left"
+    },
+    {
+      "byteOffset": 27032,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Enemy Soldier Swim Face Forward + Left"
+    }
+  ],
+  [
+    {
+      "byteOffset": 29120,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Enemy Soldier Swim Face Left"
+    },
+    {
+      "byteOffset": 29128,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Enemy Soldier Swim Face Left"
+    }
+  ],
+  [
+    {
+      "byteOffset": 29136,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Enemy Soldier Swim Face Left + Away"
+    },
+    {
+      "byteOffset": 29144,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Enemy Soldier Swim Face Left + Away"
+    }
+  ],
+  [
+    {
+      "byteOffset": 29152,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Enemy Soldier Swim Face Away"
+    },
+    {
+      "byteOffset": 29160,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Enemy Soldier Swim Face Away"
+    }
+  ],
+  [
+    {
+      "byteOffset": 29168,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Enemy Soldier Swim Face Away + Right"
+    },
+    {
+      "byteOffset": 29176,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Enemy Soldier Swim Face Away + Right"
+    }
+  ],
+  [
+    {
+      "byteOffset": 29184,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Enemy Soldier Swim Face Right"
+    },
+    {
+      "byteOffset": 29192,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Enemy Soldier Swim Face Right"
+    }
+  ],
+  [
+    {
+      "byteOffset": 29200,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Enemy Soldier Swim Face Right + Forward"
+    },
+    {
+      "byteOffset": 29208,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Enemy Soldier Swim Face Right + Forward"
+    }
+  ],
+  [
+    {
+      "byteOffset": 29216,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Enemy Soldier Death\tFace Forward"
+    },
+    {
+      "byteOffset": 29224,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Enemy Soldier Death\tFace Forward"
+    }
+  ],
+  [
+    {
+      "byteOffset": 29232,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Enemy Soldier Death\tFace Forward + Left"
+    },
+    {
+      "byteOffset": 29240,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Enemy Soldier Death\tFace Forward + Left"
+    }
+  ],
+  [
+    {
+      "byteOffset": 29248,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Enemy Soldier Death\tFace Left"
+    },
+    {
+      "byteOffset": 29256,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Enemy Soldier Death\tFace Left"
+    }
+  ],
+  [
+    {
+      "byteOffset": 29264,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Enemy Soldier Death\tFace Left + Away"
+    },
+    {
+      "byteOffset": 29272,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Enemy Soldier Death\tFace Left + Away"
+    }
+  ],
+  [
+    {
+      "byteOffset": 31360,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Enemy Soldier Death\tFace Away"
+    },
+    {
+      "byteOffset": 31368,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Enemy Soldier Death\tFace Away"
+    }
+  ],
+  [
+    {
+      "byteOffset": 31376,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Enemy Soldier Death\tFace Away + Right"
+    },
+    {
+      "byteOffset": 31384,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Enemy Soldier Death\tFace Away + Right"
+    }
+  ],
+  [
+    {
+      "byteOffset": 31392,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Enemy Soldier Death\tFace Right"
+    },
+    {
+      "byteOffset": 31400,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Enemy Soldier Death\tFace Right"
+    }
+  ],
+  [
+    {
+      "byteOffset": 31408,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Enemy Soldier Death\tFace Right + Forward"
+    },
+    {
+      "byteOffset": 31416,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Enemy Soldier Death\tFace Right + Forward"
+    },
+    {
+      "byteOffset": 31424,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Enemy Soldier Death\tFace Right + Forward"
+    }
+  ],
+  [
+    {
+      "byteOffset": 31424,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Enemy Soldier Death-2 Face Forward"
+    },
+    {
+      "byteOffset": 31432,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Enemy Soldier Death-2 Face Forward"
+    }
+  ],
+  [
+    {
+      "byteOffset": 31440,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Enemy Soldier Death-2 Face Forward + Left"
+    },
+    {
+      "byteOffset": 31448,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Enemy Soldier Death-2 Face Forward + Left"
+    }
+  ],
+  [
+    {
+      "byteOffset": 31456,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Enemy Soldier Death-2 Face Left"
+    },
+    {
+      "byteOffset": 31464,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Enemy Soldier Death-2 Face Left"
+    }
+  ],
+  [
+    {
+      "byteOffset": 31472,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Enemy Soldier Death-2 Face Left + Away"
+    },
+    {
+      "byteOffset": 31480,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Enemy Soldier Death-2 Face Left + Away"
+    }
+  ],
+  [
+    {
+      "byteOffset": 31488,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Enemy Soldier Death-2 Face Away"
+    },
+    {
+      "byteOffset": 31496,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Enemy Soldier Death-2 Face Away"
+    }
+  ],
+  [
+    {
+      "byteOffset": 31504,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Enemy Soldier Death-2 Face Away + Right"
+    },
+    {
+      "byteOffset": 31512,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Enemy Soldier Death-2 Face Away + Right"
+    }
+  ],
+  [
+    {
+      "byteOffset": 33600,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Enemy Soldier Death-2 Face Right"
+    },
+    {
+      "byteOffset": 33608,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Enemy Soldier Death-2 Face Right"
+    }
+  ],
+  [
+    {
+      "byteOffset": 33616,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Enemy Soldier Death-2 Face Right + Forward"
+    },
+    {
+      "byteOffset": 33624,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Enemy Soldier Death-2 Face Right + Forward"
+    }
+  ],
+  [
+    {
+      "byteOffset": 33632,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Enemy Soldier Still Face Forward"
+    },
+    {
+      "byteOffset": 33640,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Enemy Soldier Still Face Forward"
+    },
+    {
+      "byteOffset": 33648,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Enemy Soldier Still Face Forward"
+    }
+  ],
+  [
+    {
+      "byteOffset": 33656,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Enemy Soldier Still Face Forward + Left"
+    },
+    {
+      "byteOffset": 33664,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Enemy Soldier Still Face Forward + Left"
+    },
+    {
+      "byteOffset": 33672,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Enemy Soldier Still Face Forward + Left"
+    }
+  ],
+  [
+    {
+      "byteOffset": 33680,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Enemy Soldier Still Face Left"
+    },
+    {
+      "byteOffset": 33688,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Enemy Soldier Still Face Left"
+    },
+    {
+      "byteOffset": 33696,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Enemy Soldier Still Face Left"
+    }
+  ],
+  [
+    {
+      "byteOffset": 33704,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Enemy Soldier Still Face Left + Away"
+    },
+    {
+      "byteOffset": 33712,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Enemy Soldier Still Face Left + Away"
+    },
+    {
+      "byteOffset": 33720,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Enemy Soldier Still Face Left + Away"
+    }
+  ],
+  [
+    {
+      "byteOffset": 33728,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Enemy Soldier Still Face Away"
+    },
+    {
+      "byteOffset": 33736,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Enemy Soldier Still Face Away"
+    },
+    {
+      "byteOffset": 33744,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Enemy Soldier Still Face Away"
+    }
+  ],
+  [
+    {
+      "byteOffset": 33752,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Enemy Soldier Still Face Away + Right"
+    },
+    {
+      "byteOffset": 35840,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Enemy Soldier Still Face Away + Right"
+    },
+    {
+      "byteOffset": 35848,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Enemy Soldier Still Face Away + Right"
+    }
+  ],
+  [
+    {
+      "byteOffset": 35856,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Enemy Soldier Still Face Right"
+    },
+    {
+      "byteOffset": 35864,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Enemy Soldier Still Face Right"
+    },
+    {
+      "byteOffset": 35872,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Enemy Soldier Still Face Right"
+    }
+  ],
+  [
+    {
+      "byteOffset": 35880,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Enemy Soldier Still Face Right + Forward"
+    },
+    {
+      "byteOffset": 35888,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Enemy Soldier Still Face Right + Forward"
+    },
+    {
+      "byteOffset": 35896,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Enemy Soldier Still Face Right + Forward"
+    }
+  ],
+  [
+    {
+      "byteOffset": 35904,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Soldier Salute"
+    },
+    {
+      "byteOffset": 35912,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Soldier Salute"
+    },
+    {
+      "byteOffset": 35920,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Soldier Salute"
+    },
+    {
+      "byteOffset": 35928,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Soldier Salute"
+    },
+    {
+      "byteOffset": 35936,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Soldier Salute"
+    },
+    {
+      "byteOffset": 35944,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0,
+      "description": "Soldier Salute"
+    }
+  ],
+  [
+    {
+      "byteOffset": 2240,
+      "gfxType": "inGame2",
+      "width": 16,
+      "height": 1,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 2240,
+      "gfxType": "inGame2",
+      "width": 16,
+      "height": 1,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 2240,
+      "gfxType": "inGame2",
+      "width": 16,
+      "height": 1,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 2240,
+      "gfxType": "inGame2",
+      "width": 16,
+      "height": 1,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 2240,
+      "gfxType": "inGame2",
+      "width": 16,
+      "height": 1,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 2240,
+      "gfxType": "inGame2",
+      "width": 16,
+      "height": 1,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 2240,
+      "gfxType": "inGame2",
+      "width": 16,
+      "height": 1,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 2240,
+      "gfxType": "inGame2",
+      "width": 16,
+      "height": 1,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0
+    }
+  ],
+  [
+    {
+      "byteOffset": 2240,
+      "gfxType": "inGame2",
+      "width": 16,
+      "height": 1,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 2240,
+      "gfxType": "inGame2",
+      "width": 16,
+      "height": 1,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 2240,
+      "gfxType": "inGame2",
+      "width": 16,
+      "height": 1,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 2240,
+      "gfxType": "inGame2",
+      "width": 16,
+      "height": 1,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 2240,
+      "gfxType": "inGame2",
+      "width": 16,
+      "height": 1,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 2240,
+      "gfxType": "inGame2",
+      "width": 16,
+      "height": 1,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 2240,
+      "gfxType": "inGame2",
+      "width": 16,
+      "height": 1,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 2240,
+      "gfxType": "inGame2",
+      "width": 16,
+      "height": 1,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0
+    }
+  ],
+  [
+    {
+      "byteOffset": 7936,
+      "gfxType": "inGame2",
+      "width": 16,
+      "height": 6,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 7944,
+      "gfxType": "inGame2",
+      "width": 16,
+      "height": 6,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 7952,
+      "gfxType": "inGame2",
+      "width": 16,
+      "height": 6,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 7960,
+      "gfxType": "inGame2",
+      "width": 16,
+      "height": 6,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0
+    }
+  ],
+  [
+    {
+      "byteOffset": 7968,
+      "gfxType": "inGame2",
+      "width": 16,
+      "height": 6,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 7976,
+      "gfxType": "inGame2",
+      "width": 16,
+      "height": 6,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 7984,
+      "gfxType": "inGame2",
+      "width": 16,
+      "height": 6,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 7992,
+      "gfxType": "inGame2",
+      "width": 16,
+      "height": 6,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0
+    }
+  ],
+  [
+    {
+      "byteOffset": 8896,
+      "gfxType": "inGame2",
+      "width": 16,
+      "height": 6,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 8904,
+      "gfxType": "inGame2",
+      "width": 16,
+      "height": 6,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 8912,
+      "gfxType": "inGame2",
+      "width": 16,
+      "height": 6,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 8920,
+      "gfxType": "inGame2",
+      "width": 16,
+      "height": 6,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 9856,
+      "gfxType": "inGame2",
+      "width": 16,
+      "height": 6,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 9864,
+      "gfxType": "inGame2",
+      "width": 16,
+      "height": 6,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 9872,
+      "gfxType": "inGame2",
+      "width": 16,
+      "height": 6,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 9880,
+      "gfxType": "inGame2",
+      "width": 16,
+      "height": 6,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0
+    }
+  ],
+  [
+    {
+      "byteOffset": 13440,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 32,
+      "paletteIndex": 208,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 13456,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 32,
+      "paletteIndex": 208,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 13472,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 32,
+      "paletteIndex": 208,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 13488,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 32,
+      "paletteIndex": 208,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 13504,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 32,
+      "paletteIndex": 208,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 13520,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 32,
+      "paletteIndex": 208,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 13536,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 32,
+      "paletteIndex": 208,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 13872,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 30,
+      "paletteIndex": 208,
+      "modX": 0,
+      "modY": 2
+    },
+    {
+      "byteOffset": 13568,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 32,
+      "paletteIndex": 208,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 13584,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 32,
+      "paletteIndex": 208,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 18560,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 32,
+      "paletteIndex": 208,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 18576,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 32,
+      "paletteIndex": 208,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 18592,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 32,
+      "paletteIndex": 208,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 18608,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 32,
+      "paletteIndex": 208,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 18624,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 32,
+      "paletteIndex": 208,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 18640,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 32,
+      "paletteIndex": 208,
+      "modX": 0,
+      "modY": 0
+    }
+  ],
+  [
+    {
+      "byteOffset": 13440,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 32,
+      "paletteIndex": 208,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 13456,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 32,
+      "paletteIndex": 208,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 13472,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 32,
+      "paletteIndex": 208,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 13488,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 32,
+      "paletteIndex": 208,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 13504,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 32,
+      "paletteIndex": 208,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 13520,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 32,
+      "paletteIndex": 208,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 13536,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 32,
+      "paletteIndex": 208,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 13872,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 30,
+      "paletteIndex": 208,
+      "modX": 0,
+      "modY": 2
+    },
+    {
+      "byteOffset": 13568,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 32,
+      "paletteIndex": 208,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 13584,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 32,
+      "paletteIndex": 208,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 18560,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 32,
+      "paletteIndex": 208,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 18576,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 32,
+      "paletteIndex": 208,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 18592,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 32,
+      "paletteIndex": 208,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 18608,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 32,
+      "paletteIndex": 208,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 18624,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 32,
+      "paletteIndex": 208,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 18640,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 32,
+      "paletteIndex": 208,
+      "modX": 0,
+      "modY": 0
+    }
+  ],
+  [
+    {
+      "byteOffset": 13440,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 32,
+      "paletteIndex": 208,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 13456,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 32,
+      "paletteIndex": 208,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 13472,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 32,
+      "paletteIndex": 208,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 13488,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 32,
+      "paletteIndex": 208,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 13504,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 32,
+      "paletteIndex": 208,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 13520,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 32,
+      "paletteIndex": 208,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 13536,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 32,
+      "paletteIndex": 208,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 13872,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 30,
+      "paletteIndex": 208,
+      "modX": 0,
+      "modY": 2
+    },
+    {
+      "byteOffset": 13568,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 32,
+      "paletteIndex": 208,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 13584,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 32,
+      "paletteIndex": 208,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 18560,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 32,
+      "paletteIndex": 208,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 18576,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 32,
+      "paletteIndex": 208,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 18592,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 32,
+      "paletteIndex": 208,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 18608,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 32,
+      "paletteIndex": 208,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 18624,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 32,
+      "paletteIndex": 208,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 18640,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 32,
+      "paletteIndex": 208,
+      "modX": 0,
+      "modY": 0
+    }
+  ],
+  [
+    {
+      "byteOffset": 13440,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 32,
+      "paletteIndex": 208,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 13456,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 32,
+      "paletteIndex": 208,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 13472,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 32,
+      "paletteIndex": 208,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 13488,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 32,
+      "paletteIndex": 208,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 13504,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 32,
+      "paletteIndex": 208,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 13520,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 32,
+      "paletteIndex": 208,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 13536,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 32,
+      "paletteIndex": 208,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 13872,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 30,
+      "paletteIndex": 208,
+      "modX": 0,
+      "modY": 2
+    },
+    {
+      "byteOffset": 13568,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 32,
+      "paletteIndex": 208,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 13584,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 32,
+      "paletteIndex": 208,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 18560,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 32,
+      "paletteIndex": 208,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 18576,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 32,
+      "paletteIndex": 208,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 18592,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 32,
+      "paletteIndex": 208,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 18608,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 32,
+      "paletteIndex": 208,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 18624,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 32,
+      "paletteIndex": 208,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 18640,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 32,
+      "paletteIndex": 208,
+      "modX": 0,
+      "modY": 0
+    }
+  ],
+  [
+    {
+      "byteOffset": 13440,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 32,
+      "paletteIndex": 208,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 13456,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 32,
+      "paletteIndex": 208,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 13472,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 32,
+      "paletteIndex": 208,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 13488,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 32,
+      "paletteIndex": 208,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 13504,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 32,
+      "paletteIndex": 208,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 13520,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 32,
+      "paletteIndex": 208,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 13536,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 32,
+      "paletteIndex": 208,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 13872,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 30,
+      "paletteIndex": 208,
+      "modX": 0,
+      "modY": 2
+    },
+    {
+      "byteOffset": 13568,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 32,
+      "paletteIndex": 208,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 13584,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 32,
+      "paletteIndex": 208,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 18560,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 32,
+      "paletteIndex": 208,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 18576,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 32,
+      "paletteIndex": 208,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 18592,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 32,
+      "paletteIndex": 208,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 18608,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 32,
+      "paletteIndex": 208,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 18624,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 32,
+      "paletteIndex": 208,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 18640,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 32,
+      "paletteIndex": 208,
+      "modX": 0,
+      "modY": 0
+    }
+  ],
+  [
+    {
+      "byteOffset": 13440,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 32,
+      "paletteIndex": 208,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 13456,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 32,
+      "paletteIndex": 208,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 13472,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 32,
+      "paletteIndex": 208,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 13488,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 32,
+      "paletteIndex": 208,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 13504,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 32,
+      "paletteIndex": 208,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 13520,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 32,
+      "paletteIndex": 208,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 13536,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 32,
+      "paletteIndex": 208,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 13872,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 30,
+      "paletteIndex": 208,
+      "modX": 0,
+      "modY": 2
+    },
+    {
+      "byteOffset": 13568,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 32,
+      "paletteIndex": 208,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 13584,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 32,
+      "paletteIndex": 208,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 18560,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 32,
+      "paletteIndex": 208,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 18576,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 32,
+      "paletteIndex": 208,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 18592,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 32,
+      "paletteIndex": 208,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 18608,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 32,
+      "paletteIndex": 208,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 18624,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 32,
+      "paletteIndex": 208,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 18640,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 32,
+      "paletteIndex": 208,
+      "modX": 0,
+      "modY": 0
+    }
+  ],
+  [
+    {
+      "byteOffset": 13440,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 32,
+      "paletteIndex": 208,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 13456,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 32,
+      "paletteIndex": 208,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 13472,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 32,
+      "paletteIndex": 208,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 13488,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 32,
+      "paletteIndex": 208,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 13504,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 32,
+      "paletteIndex": 208,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 13520,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 32,
+      "paletteIndex": 208,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 13536,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 32,
+      "paletteIndex": 208,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 13872,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 30,
+      "paletteIndex": 208,
+      "modX": 0,
+      "modY": 2
+    },
+    {
+      "byteOffset": 13568,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 32,
+      "paletteIndex": 208,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 13584,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 32,
+      "paletteIndex": 208,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 18560,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 32,
+      "paletteIndex": 208,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 18576,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 32,
+      "paletteIndex": 208,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 18592,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 32,
+      "paletteIndex": 208,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 18608,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 32,
+      "paletteIndex": 208,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 18624,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 32,
+      "paletteIndex": 208,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 18640,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 32,
+      "paletteIndex": 208,
+      "modX": 0,
+      "modY": 0
+    }
+  ],
+  [
+    {
+      "byteOffset": 13440,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 32,
+      "paletteIndex": 208,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 13456,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 32,
+      "paletteIndex": 208,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 13472,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 32,
+      "paletteIndex": 208,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 13488,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 32,
+      "paletteIndex": 208,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 13504,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 32,
+      "paletteIndex": 208,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 13520,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 32,
+      "paletteIndex": 208,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 13536,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 32,
+      "paletteIndex": 208,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 13872,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 30,
+      "paletteIndex": 208,
+      "modX": 0,
+      "modY": 2
+    },
+    {
+      "byteOffset": 13568,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 32,
+      "paletteIndex": 208,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 13584,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 32,
+      "paletteIndex": 208,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 18560,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 32,
+      "paletteIndex": 208,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 18576,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 32,
+      "paletteIndex": 208,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 18592,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 32,
+      "paletteIndex": 208,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 18608,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 32,
+      "paletteIndex": 208,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 18624,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 32,
+      "paletteIndex": 208,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 18640,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 32,
+      "paletteIndex": 208,
+      "modX": 0,
+      "modY": 0
+    }
+  ],
+  [
+    {
+      "byteOffset": 13440,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 32,
+      "paletteIndex": 208,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 13456,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 32,
+      "paletteIndex": 208,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 13472,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 32,
+      "paletteIndex": 208,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 13488,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 32,
+      "paletteIndex": 208,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 13504,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 32,
+      "paletteIndex": 208,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 13520,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 32,
+      "paletteIndex": 208,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 13536,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 32,
+      "paletteIndex": 208,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 13872,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 30,
+      "paletteIndex": 208,
+      "modX": 0,
+      "modY": 2
+    },
+    {
+      "byteOffset": 13568,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 32,
+      "paletteIndex": 208,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 13584,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 32,
+      "paletteIndex": 208,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 18560,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 32,
+      "paletteIndex": 208,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 18576,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 32,
+      "paletteIndex": 208,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 18592,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 32,
+      "paletteIndex": 208,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 18608,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 32,
+      "paletteIndex": 208,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 18624,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 32,
+      "paletteIndex": 208,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 18640,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 32,
+      "paletteIndex": 208,
+      "modX": 0,
+      "modY": 0
+    }
+  ],
+  [
+    {
+      "byteOffset": 13440,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 32,
+      "paletteIndex": 208,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 13456,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 32,
+      "paletteIndex": 208,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 13472,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 32,
+      "paletteIndex": 208,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 13488,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 32,
+      "paletteIndex": 208,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 13504,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 32,
+      "paletteIndex": 208,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 13520,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 32,
+      "paletteIndex": 208,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 13536,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 32,
+      "paletteIndex": 208,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 13872,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 30,
+      "paletteIndex": 208,
+      "modX": 0,
+      "modY": 2
+    },
+    {
+      "byteOffset": 13568,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 32,
+      "paletteIndex": 208,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 13584,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 32,
+      "paletteIndex": 208,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 18560,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 32,
+      "paletteIndex": 208,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 18576,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 32,
+      "paletteIndex": 208,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 18592,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 32,
+      "paletteIndex": 208,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 18608,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 32,
+      "paletteIndex": 208,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 18624,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 32,
+      "paletteIndex": 208,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 18640,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 32,
+      "paletteIndex": 208,
+      "modX": 0,
+      "modY": 0
+    }
+  ],
+  [
+    {
+      "byteOffset": 13440,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 32,
+      "paletteIndex": 208,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 13456,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 32,
+      "paletteIndex": 208,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 13472,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 32,
+      "paletteIndex": 208,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 13488,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 32,
+      "paletteIndex": 208,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 13504,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 32,
+      "paletteIndex": 208,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 13520,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 32,
+      "paletteIndex": 208,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 13536,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 32,
+      "paletteIndex": 208,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 13872,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 30,
+      "paletteIndex": 208,
+      "modX": 0,
+      "modY": 2
+    },
+    {
+      "byteOffset": 13568,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 32,
+      "paletteIndex": 208,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 13584,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 32,
+      "paletteIndex": 208,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 18560,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 32,
+      "paletteIndex": 208,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 18576,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 32,
+      "paletteIndex": 208,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 18592,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 32,
+      "paletteIndex": 208,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 18608,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 32,
+      "paletteIndex": 208,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 18624,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 32,
+      "paletteIndex": 208,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 18640,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 32,
+      "paletteIndex": 208,
+      "modX": 0,
+      "modY": 0
+    }
+  ],
+  [
+    {
+      "byteOffset": 13440,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 32,
+      "paletteIndex": 208,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 13456,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 32,
+      "paletteIndex": 208,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 13472,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 32,
+      "paletteIndex": 208,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 13488,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 32,
+      "paletteIndex": 208,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 13504,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 32,
+      "paletteIndex": 208,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 13520,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 32,
+      "paletteIndex": 208,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 13536,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 32,
+      "paletteIndex": 208,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 13872,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 30,
+      "paletteIndex": 208,
+      "modX": 0,
+      "modY": 2
+    },
+    {
+      "byteOffset": 13568,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 32,
+      "paletteIndex": 208,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 13584,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 32,
+      "paletteIndex": 208,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 18560,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 32,
+      "paletteIndex": 208,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 18576,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 32,
+      "paletteIndex": 208,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 18592,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 32,
+      "paletteIndex": 208,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 18608,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 32,
+      "paletteIndex": 208,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 18624,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 32,
+      "paletteIndex": 208,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 18640,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 32,
+      "paletteIndex": 208,
+      "modX": 0,
+      "modY": 0
+    }
+  ],
+  [
+    {
+      "byteOffset": 18656,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 16,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 18672,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 16,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 18688,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 16,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 18704,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 16,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0
+    }
+  ],
+  [
+    {
+      "byteOffset": 21216,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 11,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 21232,
+      "gfxType": "inGame2",
+      "width": 16,
+      "height": 7,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 22352,
+      "gfxType": "inGame2",
+      "width": 16,
+      "height": 5,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0
+    }
+  ],
+  [
+    {
+      "byteOffset": 0,
+      "gfxType": "inGame2",
+      "width": 16,
+      "height": 15,
+      "paletteIndex": 192,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 8,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 25,
+      "paletteIndex": 192,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 120,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 28,
+      "paletteIndex": 192,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 136,
+      "gfxType": "inGame2",
+      "width": 48,
+      "height": 38,
+      "paletteIndex": 192,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 4000,
+      "gfxType": "inGame2",
+      "width": 48,
+      "height": 43,
+      "paletteIndex": 192,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 5464,
+      "gfxType": "inGame2",
+      "width": 48,
+      "height": 44,
+      "paletteIndex": 192,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 6768,
+      "gfxType": "inGame2",
+      "width": 48,
+      "height": 42,
+      "paletteIndex": 192,
+      "modX": 0,
+      "modY": 0
+    }
+  ],
+  [
+    {
+      "byteOffset": 7752,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 16,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0
+    }
+  ],
+  [
+    {
+      "byteOffset": 7768,
+      "gfxType": "inGame2",
+      "width": 16,
+      "height": 28,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0
+    }
+  ],
+  [
+    {
+      "byteOffset": 10976,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 12,
+      "paletteIndex": 144,
+      "modX": 0,
+      "modY": 0
+    }
+  ],
+  [
+    {
+      "byteOffset": 10880,
+      "gfxType": "inGame2",
+      "width": 16,
+      "height": 16,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0
+    }
+  ],
+  [
+    {
+      "byteOffset": 10888,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 15,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0
+    }
+  ],
+  [
+    {
+      "byteOffset": 23840,
+      "gfxType": "inGame2",
+      "width": 16,
+      "height": 30,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 23848,
+      "gfxType": "inGame2",
+      "width": 16,
+      "height": 30,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 23856,
+      "gfxType": "inGame2",
+      "width": 16,
+      "height": 30,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0
+    }
+  ],
+  [
+    {
+      "byteOffset": 36160,
+      "gfxType": "inGame2",
+      "width": 16,
+      "height": 10,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 36168,
+      "gfxType": "inGame2",
+      "width": 16,
+      "height": 10,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 36176,
+      "gfxType": "inGame2",
+      "width": 16,
+      "height": 10,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 36184,
+      "gfxType": "inGame2",
+      "width": 16,
+      "height": 10,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 36192,
+      "gfxType": "inGame2",
+      "width": 16,
+      "height": 10,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 36200,
+      "gfxType": "inGame2",
+      "width": 16,
+      "height": 10,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 36208,
+      "gfxType": "inGame2",
+      "width": 16,
+      "height": 10,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 36216,
+      "gfxType": "inGame2",
+      "width": 16,
+      "height": 10,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 36224,
+      "gfxType": "inGame2",
+      "width": 16,
+      "height": 10,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 36232,
+      "gfxType": "inGame2",
+      "width": 16,
+      "height": 10,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 36240,
+      "gfxType": "inGame2",
+      "width": 16,
+      "height": 10,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 36248,
+      "gfxType": "inGame2",
+      "width": 16,
+      "height": 10,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 36256,
+      "gfxType": "inGame2",
+      "width": 16,
+      "height": 10,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 36264,
+      "gfxType": "inGame2",
+      "width": 16,
+      "height": 10,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 36272,
+      "gfxType": "inGame2",
+      "width": 16,
+      "height": 10,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 36280,
+      "gfxType": "inGame2",
+      "width": 16,
+      "height": 10,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0
+    }
+  ],
+  [
+    {
+      "byteOffset": 9088,
+      "gfxType": "inGame2",
+      "width": 16,
+      "height": 6,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 9096,
+      "gfxType": "inGame2",
+      "width": 16,
+      "height": 6,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 9104,
+      "gfxType": "inGame2",
+      "width": 16,
+      "height": 6,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 9112,
+      "gfxType": "inGame2",
+      "width": 16,
+      "height": 6,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0
+    }
+  ],
+  [
+    {
+      "byteOffset": 10992,
+      "gfxType": "inGame2",
+      "width": 16,
+      "height": 3,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 11000,
+      "gfxType": "inGame2",
+      "width": 16,
+      "height": 4,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0
+    }
+  ],
+  [
+    {
+      "byteOffset": 23864,
+      "gfxType": "inGame2",
+      "width": 16,
+      "height": 13,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 23872,
+      "gfxType": "inGame2",
+      "width": 16,
+      "height": 13,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0
+    }
+  ],
+  [
+    {
+      "byteOffset": 23880,
+      "gfxType": "inGame2",
+      "width": 16,
+      "height": 15,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0
+    }
+  ],
+  [
+    {
+      "byteOffset": 25176,
+      "gfxType": "inGame2",
+      "width": 16,
+      "height": 11,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 25184,
+      "gfxType": "inGame2",
+      "width": 16,
+      "height": 11,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 25192,
+      "gfxType": "inGame2",
+      "width": 16,
+      "height": 11,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 25200,
+      "gfxType": "inGame2",
+      "width": 16,
+      "height": 11,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0
+    }
+  ],
+  [
+    {
+      "byteOffset": 23888,
+      "gfxType": "inGame2",
+      "width": 16,
+      "height": 15,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0
+    }
+  ],
+  [
+    {
+      "byteOffset": 23896,
+      "gfxType": "inGame2",
+      "width": 16,
+      "height": 8,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 23904,
+      "gfxType": "inGame2",
+      "width": 16,
+      "height": 8,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 23912,
+      "gfxType": "inGame2",
+      "width": 16,
+      "height": 8,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 23920,
+      "gfxType": "inGame2",
+      "width": 16,
+      "height": 8,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0
+    }
+  ],
+  [
+    {
+      "byteOffset": 11328,
+      "gfxType": "inGame2",
+      "width": 16,
+      "height": 7,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 11336,
+      "gfxType": "inGame2",
+      "width": 16,
+      "height": 7,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 11344,
+      "gfxType": "inGame2",
+      "width": 16,
+      "height": 7,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 11352,
+      "gfxType": "inGame2",
+      "width": 16,
+      "height": 7,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 12448,
+      "gfxType": "inGame2",
+      "width": 16,
+      "height": 7,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 12456,
+      "gfxType": "inGame2",
+      "width": 16,
+      "height": 7,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 12464,
+      "gfxType": "inGame2",
+      "width": 16,
+      "height": 7,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 12472,
+      "gfxType": "inGame2",
+      "width": 16,
+      "height": 7,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0
+    }
+  ],
+  [
+    {
+      "byteOffset": 26264,
+      "gfxType": "inGame2",
+      "width": 16,
+      "height": 10,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 26272,
+      "gfxType": "inGame2",
+      "width": 16,
+      "height": 10,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0
+    }
+  ],
+  [
+    {
+      "byteOffset": 15680,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 15688,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 15696,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 15704,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    }
+  ],
+  [
+    {
+      "byteOffset": 31840,
+      "gfxType": "inGame2",
+      "width": 128,
+      "height": 20,
+      "paletteIndex": 192,
+      "modX": 0,
+      "modY": 0
+    }
+  ],
+  [
+    {
+      "byteOffset": 28216,
+      "gfxType": "inGame2",
+      "width": 80,
+      "height": 20,
+      "paletteIndex": 192,
+      "modX": 0,
+      "modY": 0
+    }
+  ],
+  [
+    {
+      "byteOffset": 28640,
+      "gfxType": "inGame2",
+      "width": 112,
+      "height": 20,
+      "paletteIndex": 192,
+      "modX": 0,
+      "modY": 0
+    }
+  ],
+  [
+    {
+      "byteOffset": 21080,
+      "gfxType": "inGame2",
+      "width": 16,
+      "height": 5,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 21088,
+      "gfxType": "inGame2",
+      "width": 16,
+      "height": 5,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 21096,
+      "gfxType": "inGame2",
+      "width": 16,
+      "height": 5,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 21104,
+      "gfxType": "inGame2",
+      "width": 16,
+      "height": 5,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 21112,
+      "gfxType": "inGame2",
+      "width": 16,
+      "height": 5,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 21880,
+      "gfxType": "inGame2",
+      "width": 16,
+      "height": 5,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 21888,
+      "gfxType": "inGame2",
+      "width": 16,
+      "height": 5,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 21896,
+      "gfxType": "inGame2",
+      "width": 16,
+      "height": 5,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 21904,
+      "gfxType": "inGame2",
+      "width": 16,
+      "height": 5,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 21912,
+      "gfxType": "inGame2",
+      "width": 16,
+      "height": 5,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 22680,
+      "gfxType": "inGame2",
+      "width": 16,
+      "height": 5,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 22688,
+      "gfxType": "inGame2",
+      "width": 16,
+      "height": 5,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 22696,
+      "gfxType": "inGame2",
+      "width": 16,
+      "height": 5,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 22704,
+      "gfxType": "inGame2",
+      "width": 16,
+      "height": 5,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 22712,
+      "gfxType": "inGame2",
+      "width": 16,
+      "height": 5,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 23480,
+      "gfxType": "inGame2",
+      "width": 16,
+      "height": 5,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0
+    }
+  ],
+  [
+    {
+      "byteOffset": 17984,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 17992,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 18000,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 18008,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 18016,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 18024,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 18032,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 18040,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    }
+  ],
+  [
+    {
+      "byteOffset": 26992,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 28,
+      "paletteIndex": 224,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 49680,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 27,
+      "paletteIndex": 224,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 27008,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 28,
+      "paletteIndex": 224,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 45840,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 24,
+      "paletteIndex": 224,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 27024,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 28,
+      "paletteIndex": 224,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 45856,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 23,
+      "paletteIndex": 224,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 31440,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 28,
+      "paletteIndex": 224,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 45872,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 25,
+      "paletteIndex": 224,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 31456,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 28,
+      "paletteIndex": 224,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 45888,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 25,
+      "paletteIndex": 224,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 31472,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 28,
+      "paletteIndex": 224,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 45904,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 23,
+      "paletteIndex": 224,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 31488,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 28,
+      "paletteIndex": 224,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 49872,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 25,
+      "paletteIndex": 224,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 31504,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 28,
+      "paletteIndex": 224,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 49536,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 27,
+      "paletteIndex": 224,
+      "modX": 0,
+      "modY": 0
+    }
+  ],
+  [
+    {
+      "byteOffset": 40384,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 40392,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 40400,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 40408,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 40416,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 40424,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 40432,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 40440,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    }
+  ],
+  [
+    {
+      "byteOffset": 40384,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 40392,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 40400,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 40408,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 40416,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 40424,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 40432,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 40440,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    }
+  ],
+  [
+    {
+      "byteOffset": 38112,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 38120,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 38128,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    }
+  ],
+  [
+    {
+      "byteOffset": 38136,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 38144,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 38152,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    }
+  ],
+  [
+    {
+      "byteOffset": 38160,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 38168,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 38176,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    }
+  ],
+  [
+    {
+      "byteOffset": 38184,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 38192,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 38200,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    }
+  ],
+  [
+    {
+      "byteOffset": 38208,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 38216,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 38224,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    }
+  ],
+  [
+    {
+      "byteOffset": 38232,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 40320,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 40328,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 40336,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    }
+  ],
+  [
+    {
+      "byteOffset": 40336,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 40344,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 40352,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    }
+  ],
+  [
+    {
+      "byteOffset": 40360,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 40368,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 40376,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    }
+  ],
+  [
+    {
+      "byteOffset": 11232,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    }
+  ],
+  [
+    {
+      "byteOffset": 11240,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    }
+  ],
+  [
+    {
+      "byteOffset": 11248,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    }
+  ],
+  [
+    {
+      "byteOffset": 11256,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    }
+  ],
+  [
+    {
+      "byteOffset": 11264,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    }
+  ],
+  [
+    {
+      "byteOffset": 11272,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    }
+  ],
+  [
+    {
+      "byteOffset": 11280,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    }
+  ],
+  [
+    {
+      "byteOffset": 11288,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    }
+  ],
+  [
+    {
+      "byteOffset": 33632,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    }
+  ],
+  [
+    {
+      "byteOffset": 33640,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    }
+  ],
+  [
+    {
+      "byteOffset": 33648,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    }
+  ],
+  [
+    {
+      "byteOffset": 33656,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    }
+  ],
+  [
+    {
+      "byteOffset": 33664,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    }
+  ],
+  [
+    {
+      "byteOffset": 33672,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    }
+  ],
+  [
+    {
+      "byteOffset": 33680,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    }
+  ],
+  [
+    {
+      "byteOffset": 33688,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    }
+  ],
+  [
+    {
+      "byteOffset": 24,
+      "gfxType": "inGame2",
+      "width": 48,
+      "height": 34,
+      "paletteIndex": 192,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 48,
+      "gfxType": "inGame2",
+      "width": 48,
+      "height": 42,
+      "paletteIndex": 192,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 72,
+      "gfxType": "inGame2",
+      "width": 48,
+      "height": 48,
+      "paletteIndex": 192,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 96,
+      "gfxType": "inGame2",
+      "width": 48,
+      "height": 48,
+      "paletteIndex": 192,
+      "modX": 0,
+      "modY": 0
+    }
+  ],
+  [
+    {
+      "byteOffset": 24064,
+      "gfxType": "inGame2",
+      "width": 96,
+      "height": 25,
+      "paletteIndex": 192,
+      "modX": 0,
+      "modY": 0
+    }
+  ],
+  [
+    {
+      "byteOffset": 10312,
+      "gfxType": "inGame2",
+      "width": 16,
+      "height": 13,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0
+    }
+  ],
+  [
+    {
+      "byteOffset": 10320,
+      "gfxType": "inGame2",
+      "width": 16,
+      "height": 13,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0
+    }
+  ],
+  [
+    {
+      "byteOffset": 23648,
+      "gfxType": "inGame2",
+      "width": 16,
+      "height": 4,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 23656,
+      "gfxType": "inGame2",
+      "width": 16,
+      "height": 4,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 23664,
+      "gfxType": "inGame2",
+      "width": 16,
+      "height": 4,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 23672,
+      "gfxType": "inGame2",
+      "width": 16,
+      "height": 4,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0
+    }
+  ],
+  [
+    {
+      "byteOffset": 24280,
+      "gfxType": "inGame2",
+      "width": 16,
+      "height": 6,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 25240,
+      "gfxType": "inGame2",
+      "width": 16,
+      "height": 6,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 25248,
+      "gfxType": "inGame2",
+      "width": 16,
+      "height": 6,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0
+    }
+  ],
+  [
+    {
+      "byteOffset": 24288,
+      "gfxType": "inGame2",
+      "width": 16,
+      "height": 6,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 24296,
+      "gfxType": "inGame2",
+      "width": 16,
+      "height": 6,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 24304,
+      "gfxType": "inGame2",
+      "width": 16,
+      "height": 6,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 24312,
+      "gfxType": "inGame2",
+      "width": 16,
+      "height": 6,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0
+    }
+  ],
+  [
+    {
+      "byteOffset": 26272,
+      "gfxType": "inGame2",
+      "width": 16,
+      "height": 4,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0
+    }
+  ],
+  [
+    {
+      "byteOffset": 26280,
+      "gfxType": "inGame2",
+      "width": 16,
+      "height": 13,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0
+    }
+  ],
+  [
+    {
+      "byteOffset": 38080,
+      "gfxType": "inGame2",
+      "width": 16,
+      "height": 17,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 38088,
+      "gfxType": "inGame2",
+      "width": 16,
+      "height": 17,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 38096,
+      "gfxType": "inGame2",
+      "width": 16,
+      "height": 17,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 38104,
+      "gfxType": "inGame2",
+      "width": 16,
+      "height": 17,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 38112,
+      "gfxType": "inGame2",
+      "width": 16,
+      "height": 17,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0
+    }
+  ],
+  [
+    {
+      "byteOffset": 38120,
+      "gfxType": "inGame2",
+      "width": 64,
+      "height": 17,
+      "paletteIndex": 192,
+      "modX": 0,
+      "modY": 0
+    }
+  ],
+  [
+    {
+      "byteOffset": 38152,
+      "gfxType": "inGame2",
+      "width": 96,
+      "height": 17,
+      "paletteIndex": 192,
+      "modX": 10,
+      "modY": 0
+    }
+  ],
+  [
+    {
+      "byteOffset": 20184,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 20192,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 20200,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 20208,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 20216,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    }
+  ],
+  [
+    {
+      "byteOffset": 18072,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 20160,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 20168,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 20176,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    }
+  ],
+  [
+    {
+      "byteOffset": 20256,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 20264,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 20272,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 20280,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 20288,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 20296,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 20304,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    }
+  ],
+  [
+    {
+      "byteOffset": 33696,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 33704,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 33712,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 33720,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 33728,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 33736,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 33744,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 33752,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 35840,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 35848,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 35856,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 35864,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 35872,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 35880,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 35888,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 35896,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    }
+  ],
+  [
+    {
+      "byteOffset": 33696,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 33704,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 33712,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 33720,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 33728,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 33736,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 33744,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 33752,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 35840,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 35848,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 35856,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 35864,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 35872,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 35880,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 35888,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 35896,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    }
+  ],
+  [
+    {
+      "byteOffset": 41072,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 30,
+      "paletteIndex": 208,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 45824,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 31,
+      "paletteIndex": 208,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 40960,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 30,
+      "paletteIndex": 208,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 49584,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 23,
+      "paletteIndex": 208,
+      "modX": 0,
+      "modY": -2
+    },
+    {
+      "byteOffset": 41776,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 23,
+      "paletteIndex": 208,
+      "modX": 0,
+      "modY": -2
+    },
+    {
+      "byteOffset": 45760,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 23,
+      "paletteIndex": 208,
+      "modX": 0,
+      "modY": -2
+    },
+    {
+      "byteOffset": 40992,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 29,
+      "paletteIndex": 208,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 45776,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 31,
+      "paletteIndex": 208,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 41008,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 30,
+      "paletteIndex": 208,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 45792,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 31,
+      "paletteIndex": 208,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 41024,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 29,
+      "paletteIndex": 208,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 49440,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 23,
+      "paletteIndex": 208,
+      "modX": 0,
+      "modY": -2
+    },
+    {
+      "byteOffset": 41840,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 23,
+      "paletteIndex": 208,
+      "modX": 0,
+      "modY": -2
+    },
+    {
+      "byteOffset": 49888,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 23,
+      "paletteIndex": 208,
+      "modX": 0,
+      "modY": -2
+    },
+    {
+      "byteOffset": 41056,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 30,
+      "paletteIndex": 208,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 45808,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 31,
+      "paletteIndex": 208,
+      "modX": 0,
+      "modY": 0
+    }
+  ],
+  [
+    {
+      "byteOffset": 28256,
+      "gfxType": "inGame2",
+      "width": 16,
+      "height": 19,
+      "paletteIndex": 208,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 28264,
+      "gfxType": "inGame2",
+      "width": 16,
+      "height": 17,
+      "paletteIndex": 208,
+      "modX": -2,
+      "modY": -2
+    },
+    {
+      "byteOffset": 39344,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 15,
+      "paletteIndex": 208,
+      "modX": -13,
+      "modY": -4
+    },
+    {
+      "byteOffset": 41888,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 12,
+      "paletteIndex": 208,
+      "modX": -13,
+      "modY": -7
+    },
+    {
+      "byteOffset": 43968,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 12,
+      "paletteIndex": 208,
+      "modX": -13,
+      "modY": -7
+    },
+    {
+      "byteOffset": 41904,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 12,
+      "paletteIndex": 208,
+      "modX": -13,
+      "modY": -7
+    },
+    {
+      "byteOffset": 36128,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 15,
+      "paletteIndex": 208,
+      "modX": -10,
+      "modY": -7
+    },
+    {
+      "byteOffset": 31904,
+      "gfxType": "inGame2",
+      "width": 16,
+      "height": 18,
+      "paletteIndex": 208,
+      "modX": -1,
+      "modY": -7
+    },
+    {
+      "byteOffset": 31912,
+      "gfxType": "inGame2",
+      "width": 16,
+      "height": 19,
+      "paletteIndex": 208,
+      "modX": -1,
+      "modY": -7
+    },
+    {
+      "byteOffset": 39008,
+      "gfxType": "inGame2",
+      "width": 16,
+      "height": 18,
+      "paletteIndex": 208,
+      "modX": -1,
+      "modY": -7
+    },
+    {
+      "byteOffset": 5400,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 15,
+      "paletteIndex": 208,
+      "modX": -5,
+      "modY": -7
+    },
+    {
+      "byteOffset": 38744,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 13,
+      "paletteIndex": 208,
+      "modX": -2,
+      "modY": -7
+    },
+    {
+      "byteOffset": 43984,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 12,
+      "paletteIndex": 208,
+      "modX": -6,
+      "modY": -7
+    },
+    {
+      "byteOffset": 11952,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 12,
+      "paletteIndex": 208,
+      "modX": -10,
+      "modY": -7
+    },
+    {
+      "byteOffset": 36144,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 14,
+      "paletteIndex": 208,
+      "modX": -6,
+      "modY": -5
+    },
+    {
+      "byteOffset": 39016,
+      "gfxType": "inGame2",
+      "width": 16,
+      "height": 17,
+      "paletteIndex": 208,
+      "modX": -1,
+      "modY": -2
+    }
+  ],
+  [
+    {
+      "byteOffset": 44832,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 44840,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 44848,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 44856,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 44864,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 1
+    },
+    {
+      "byteOffset": 44872,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 3
+    }
+  ],
+  [
+    {
+      "byteOffset": 44880,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 44888,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 44896,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 44904,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 44912,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 1
+    },
+    {
+      "byteOffset": 44920,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 3
+    }
+  ],
+  [
+    {
+      "byteOffset": 40448,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 40456,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 40464,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    }
+  ],
+  [
+    {
+      "byteOffset": 11296,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 11304,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 11312,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 11320,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 11328,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 11336,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 11344,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 11352,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 13440,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 13448,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    }
+  ],
+  [
+    {
+      "byteOffset": 13448,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 13456,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 13464,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 13472,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 20224,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 20232,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 20240,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 20248,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    }
+  ],
+  [
+    {
+      "byteOffset": 44928,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 44936,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 44944,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 44952,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 47040,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 47048,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 47056,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 47064,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 47072,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 47080,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 47088,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 47096,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 47104,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 47112,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 47120,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 47128,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 47136,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 47144,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 47152,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 47160,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 47168,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 47176,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 47184,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 47192,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    }
+  ],
+  [
+    {
+      "byteOffset": 49280,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 49288,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 49296,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 49304,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 49312,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 49320,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 49328,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 49336,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 49344,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 49352,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 49360,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 49368,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 49376,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 49384,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 49392,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 49400,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 49408,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 49416,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 49424,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 49432,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 51520,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 51528,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 51536,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 51544,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    }
+  ],
+  [
+    {
+      "byteOffset": 51552,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 49288,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 51560,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    }
+  ],
+  [
+    {
+      "byteOffset": 38080,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 38088,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 38096,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 38104,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 51632,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 51640,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 51648,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 51656,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 51664,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 51672,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    }
+  ],
+  [
+    {
+      "byteOffset": 35960,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    }
+  ],
+  [
+    {
+      "byteOffset": 50736,
+      "gfxType": "inGame2",
+      "width": 32,
+      "height": 20,
+      "paletteIndex": 208,
+      "modX": 0,
+      "modY": 0
+    }
+  ],
+  [
+    {
+      "byteOffset": 50752,
+      "gfxType": "inGame2",
+      "width": 16,
+      "height": 16,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 50760,
+      "gfxType": "inGame2",
+      "width": 16,
+      "height": 16,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 50768,
+      "gfxType": "inGame2",
+      "width": 16,
+      "height": 16,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 50776,
+      "gfxType": "inGame2",
+      "width": 16,
+      "height": 16,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 50784,
+      "gfxType": "inGame2",
+      "width": 16,
+      "height": 16,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0
+    }
+  ],
+  [
+    {
+      "byteOffset": 51584,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 51592,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 51600,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 51608,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 51616,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 51624,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    }
+  ],
+  [
+    {
+      "byteOffset": 26288,
+      "gfxType": "inGame2",
+      "width": 16,
+      "height": 13,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0
+    }
+  ],
+  [
+    {
+      "byteOffset": 51568,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 51576,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 40472,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 35992,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    }
+  ],
+  [
+    {
+      "byteOffset": 35968,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 35976,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 35984,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    }
+  ],
+  [
+    {
+      "byteOffset": 42624,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    }
+  ],
+  [
+    {
+      "byteOffset": 42640,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    }
+  ],
+  [
+    {
+      "byteOffset": 42648,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    }
+  ],
+  [
+    {
+      "byteOffset": 42656,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    }
+  ],
+  [
+    {
+      "byteOffset": 44800,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 44808,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 44816,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 44824,
+      "gfxType": "inGame",
+      "width": 16,
+      "height": 14,
+      "paletteIndex": 160,
+      "modX": 0,
+      "modY": 0
+    }
+  ]
+]

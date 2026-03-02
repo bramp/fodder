@@ -1,0 +1,1175 @@
+[
+  [
+    {
+      "byteOffset": 10880,
+      "gfxType": "recruit",
+      "width": 16,
+      "height": 16,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 10888,
+      "gfxType": "recruit",
+      "width": 16,
+      "height": 16,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 10896,
+      "gfxType": "recruit",
+      "width": 16,
+      "height": 16,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 10904,
+      "gfxType": "recruit",
+      "width": 16,
+      "height": 16,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 10912,
+      "gfxType": "recruit",
+      "width": 16,
+      "height": 16,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 10920,
+      "gfxType": "recruit",
+      "width": 16,
+      "height": 16,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 10928,
+      "gfxType": "recruit",
+      "width": 16,
+      "height": 16,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 10936,
+      "gfxType": "recruit",
+      "width": 16,
+      "height": 16,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 10944,
+      "gfxType": "recruit",
+      "width": 16,
+      "height": 16,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0
+    }
+  ],
+  [
+    {
+      "byteOffset": 5600,
+      "gfxType": "recruit",
+      "width": 16,
+      "height": 13,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0,
+      "description": "Recruit Face Camera"
+    },
+    {
+      "byteOffset": 5608,
+      "gfxType": "recruit",
+      "width": 16,
+      "height": 13,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0,
+      "description": "Recruit Face Camera"
+    }
+  ],
+  [
+    {
+      "byteOffset": 5616,
+      "gfxType": "recruit",
+      "width": 16,
+      "height": 13,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0,
+      "description": "Recruit Face Camera / Left"
+    },
+    {
+      "byteOffset": 5624,
+      "gfxType": "recruit",
+      "width": 16,
+      "height": 13,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0,
+      "description": "Recruit Face Camera / Left"
+    }
+  ],
+  [
+    {
+      "byteOffset": 5632,
+      "gfxType": "recruit",
+      "width": 16,
+      "height": 13,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0,
+      "description": "Recruit Face Left"
+    },
+    {
+      "byteOffset": 5640,
+      "gfxType": "recruit",
+      "width": 16,
+      "height": 13,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0,
+      "description": "Recruit Face Left"
+    }
+  ],
+  [
+    {
+      "byteOffset": 5648,
+      "gfxType": "recruit",
+      "width": 16,
+      "height": 13,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0,
+      "description": "Recruit Face Camera        (Color2)"
+    },
+    {
+      "byteOffset": 5656,
+      "gfxType": "recruit",
+      "width": 16,
+      "height": 13,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0,
+      "description": "Recruit Face Camera        (Color2)"
+    }
+  ],
+  [
+    {
+      "byteOffset": 5664,
+      "gfxType": "recruit",
+      "width": 16,
+      "height": 13,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0,
+      "description": "Recruit Face Camera / Left (Color2)"
+    },
+    {
+      "byteOffset": 5672,
+      "gfxType": "recruit",
+      "width": 16,
+      "height": 13,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0,
+      "description": "Recruit Face Camera / Left (Color2)"
+    }
+  ],
+  [
+    {
+      "byteOffset": 5680,
+      "gfxType": "recruit",
+      "width": 16,
+      "height": 13,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0,
+      "description": "Recruit Face Left          (Color2)"
+    },
+    {
+      "byteOffset": 5688,
+      "gfxType": "recruit",
+      "width": 16,
+      "height": 13,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0,
+      "description": "Recruit Face Left          (Color2)"
+    }
+  ],
+  [
+    {
+      "byteOffset": 8160,
+      "gfxType": "recruit",
+      "width": 16,
+      "height": 13,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0,
+      "description": "Recruit Face Camera        (Color3)"
+    },
+    {
+      "byteOffset": 8168,
+      "gfxType": "recruit",
+      "width": 16,
+      "height": 13,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0,
+      "description": "Recruit Face Camera        (Color3)"
+    }
+  ],
+  [
+    {
+      "byteOffset": 8176,
+      "gfxType": "recruit",
+      "width": 16,
+      "height": 13,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0,
+      "description": "Recruit Face Camera / Left (Color3)"
+    },
+    {
+      "byteOffset": 8184,
+      "gfxType": "recruit",
+      "width": 16,
+      "height": 13,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0,
+      "description": "Recruit Face Camera / Left (Color3)"
+    }
+  ],
+  [
+    {
+      "byteOffset": 8192,
+      "gfxType": "recruit",
+      "width": 16,
+      "height": 13,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0,
+      "description": "Recruit Face Left          (Color3)"
+    },
+    {
+      "byteOffset": 8200,
+      "gfxType": "recruit",
+      "width": 16,
+      "height": 13,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0,
+      "description": "Recruit Face Left          (Color3)"
+    }
+  ],
+  [
+    {
+      "byteOffset": 8208,
+      "gfxType": "recruit",
+      "width": 16,
+      "height": 13,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0,
+      "description": "Recruit Face Camera        (Color4)"
+    },
+    {
+      "byteOffset": 8216,
+      "gfxType": "recruit",
+      "width": 16,
+      "height": 13,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0,
+      "description": "Recruit Face Camera        (Color4)"
+    }
+  ],
+  [
+    {
+      "byteOffset": 8224,
+      "gfxType": "recruit",
+      "width": 16,
+      "height": 13,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0,
+      "description": "Recruit Face Camera / Left (Color4)"
+    },
+    {
+      "byteOffset": 8232,
+      "gfxType": "recruit",
+      "width": 16,
+      "height": 13,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0,
+      "description": "Recruit Face Camera / Left (Color4)"
+    }
+  ],
+  [
+    {
+      "byteOffset": 8240,
+      "gfxType": "recruit",
+      "width": 16,
+      "height": 13,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0,
+      "description": "Recruit Face Left          (Color4)"
+    },
+    {
+      "byteOffset": 8248,
+      "gfxType": "recruit",
+      "width": 16,
+      "height": 13,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0,
+      "description": "Recruit Face Left          (Color4)"
+    }
+  ],
+  [
+    {
+      "byteOffset": 0,
+      "gfxType": "recruit",
+      "width": 16,
+      "height": 13,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0,
+      "description": "Letters/Numbers"
+    },
+    {
+      "byteOffset": 8,
+      "gfxType": "recruit",
+      "width": 16,
+      "height": 13,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0,
+      "description": "Letters/Numbers"
+    },
+    {
+      "byteOffset": 16,
+      "gfxType": "recruit",
+      "width": 16,
+      "height": 13,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0,
+      "description": "Letters/Numbers"
+    },
+    {
+      "byteOffset": 24,
+      "gfxType": "recruit",
+      "width": 16,
+      "height": 13,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0,
+      "description": "Letters/Numbers"
+    },
+    {
+      "byteOffset": 32,
+      "gfxType": "recruit",
+      "width": 16,
+      "height": 13,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0,
+      "description": "Letters/Numbers"
+    },
+    {
+      "byteOffset": 40,
+      "gfxType": "recruit",
+      "width": 16,
+      "height": 13,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0,
+      "description": "Letters/Numbers"
+    },
+    {
+      "byteOffset": 48,
+      "gfxType": "recruit",
+      "width": 16,
+      "height": 13,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0,
+      "description": "Letters/Numbers"
+    },
+    {
+      "byteOffset": 56,
+      "gfxType": "recruit",
+      "width": 16,
+      "height": 13,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0,
+      "description": "Letters/Numbers"
+    },
+    {
+      "byteOffset": 64,
+      "gfxType": "recruit",
+      "width": 16,
+      "height": 13,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0,
+      "description": "Letters/Numbers"
+    },
+    {
+      "byteOffset": 72,
+      "gfxType": "recruit",
+      "width": 16,
+      "height": 13,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0,
+      "description": "Letters/Numbers"
+    },
+    {
+      "byteOffset": 80,
+      "gfxType": "recruit",
+      "width": 16,
+      "height": 13,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0,
+      "description": "Letters/Numbers"
+    },
+    {
+      "byteOffset": 88,
+      "gfxType": "recruit",
+      "width": 16,
+      "height": 13,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0,
+      "description": "Letters/Numbers"
+    },
+    {
+      "byteOffset": 96,
+      "gfxType": "recruit",
+      "width": 16,
+      "height": 13,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0,
+      "description": "Letters/Numbers"
+    },
+    {
+      "byteOffset": 104,
+      "gfxType": "recruit",
+      "width": 16,
+      "height": 13,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0,
+      "description": "Letters/Numbers"
+    },
+    {
+      "byteOffset": 112,
+      "gfxType": "recruit",
+      "width": 16,
+      "height": 13,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0,
+      "description": "Letters/Numbers"
+    },
+    {
+      "byteOffset": 120,
+      "gfxType": "recruit",
+      "width": 16,
+      "height": 13,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0,
+      "description": "Letters/Numbers"
+    },
+    {
+      "byteOffset": 128,
+      "gfxType": "recruit",
+      "width": 16,
+      "height": 13,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0,
+      "description": "Letters/Numbers"
+    },
+    {
+      "byteOffset": 136,
+      "gfxType": "recruit",
+      "width": 16,
+      "height": 13,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0,
+      "description": "Letters/Numbers"
+    },
+    {
+      "byteOffset": 144,
+      "gfxType": "recruit",
+      "width": 16,
+      "height": 13,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0,
+      "description": "Letters/Numbers"
+    },
+    {
+      "byteOffset": 152,
+      "gfxType": "recruit",
+      "width": 16,
+      "height": 13,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0,
+      "description": "Letters/Numbers"
+    },
+    {
+      "byteOffset": 2560,
+      "gfxType": "recruit",
+      "width": 16,
+      "height": 13,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0,
+      "description": "Letters/Numbers"
+    },
+    {
+      "byteOffset": 2568,
+      "gfxType": "recruit",
+      "width": 16,
+      "height": 13,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0,
+      "description": "Letters/Numbers"
+    },
+    {
+      "byteOffset": 2576,
+      "gfxType": "recruit",
+      "width": 16,
+      "height": 13,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0,
+      "description": "Letters/Numbers"
+    },
+    {
+      "byteOffset": 2584,
+      "gfxType": "recruit",
+      "width": 16,
+      "height": 13,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0,
+      "description": "Letters/Numbers"
+    },
+    {
+      "byteOffset": 2592,
+      "gfxType": "recruit",
+      "width": 16,
+      "height": 13,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0,
+      "description": "Letters/Numbers"
+    },
+    {
+      "byteOffset": 2600,
+      "gfxType": "recruit",
+      "width": 16,
+      "height": 13,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0,
+      "description": "Letters/Numbers"
+    },
+    {
+      "byteOffset": 2608,
+      "gfxType": "recruit",
+      "width": 16,
+      "height": 13,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0,
+      "description": "Letters/Numbers"
+    },
+    {
+      "byteOffset": 2616,
+      "gfxType": "recruit",
+      "width": 16,
+      "height": 13,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0,
+      "description": "Letters/Numbers"
+    },
+    {
+      "byteOffset": 2624,
+      "gfxType": "recruit",
+      "width": 16,
+      "height": 13,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0,
+      "description": "Letters/Numbers"
+    },
+    {
+      "byteOffset": 2632,
+      "gfxType": "recruit",
+      "width": 16,
+      "height": 13,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0,
+      "description": "Letters/Numbers"
+    },
+    {
+      "byteOffset": 2640,
+      "gfxType": "recruit",
+      "width": 16,
+      "height": 13,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0,
+      "description": "Letters/Numbers"
+    },
+    {
+      "byteOffset": 2648,
+      "gfxType": "recruit",
+      "width": 16,
+      "height": 13,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0,
+      "description": "Letters/Numbers"
+    },
+    {
+      "byteOffset": 2656,
+      "gfxType": "recruit",
+      "width": 16,
+      "height": 13,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0,
+      "description": "Letters/Numbers"
+    },
+    {
+      "byteOffset": 2664,
+      "gfxType": "recruit",
+      "width": 16,
+      "height": 13,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0,
+      "description": "Letters/Numbers"
+    },
+    {
+      "byteOffset": 2672,
+      "gfxType": "recruit",
+      "width": 16,
+      "height": 13,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0,
+      "description": "Letters/Numbers"
+    },
+    {
+      "byteOffset": 2680,
+      "gfxType": "recruit",
+      "width": 16,
+      "height": 13,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0,
+      "description": "Letters/Numbers"
+    }
+  ],
+  [
+    {
+      "byteOffset": 2688,
+      "gfxType": "recruit",
+      "width": 16,
+      "height": 13,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0,
+      "description": "Colon (:)"
+    }
+  ],
+  [
+    {
+      "byteOffset": 2696,
+      "gfxType": "recruit",
+      "width": 16,
+      "height": 13,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0,
+      "description": "Cursor"
+    }
+  ],
+  [
+    {
+      "byteOffset": 2704,
+      "gfxType": "recruit",
+      "width": 16,
+      "height": 13,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0,
+      "description": "16: Unknown - Blank?"
+    }
+  ],
+  [
+    {
+      "byteOffset": 13440,
+      "gfxType": "recruit",
+      "width": 16,
+      "height": 19,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 13448,
+      "gfxType": "recruit",
+      "width": 16,
+      "height": 19,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 13456,
+      "gfxType": "recruit",
+      "width": 16,
+      "height": 19,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 13464,
+      "gfxType": "recruit",
+      "width": 16,
+      "height": 19,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 13472,
+      "gfxType": "recruit",
+      "width": 16,
+      "height": 19,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 13480,
+      "gfxType": "recruit",
+      "width": 16,
+      "height": 19,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 13488,
+      "gfxType": "recruit",
+      "width": 16,
+      "height": 19,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 13496,
+      "gfxType": "recruit",
+      "width": 16,
+      "height": 19,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 13504,
+      "gfxType": "recruit",
+      "width": 16,
+      "height": 19,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 13512,
+      "gfxType": "recruit",
+      "width": 16,
+      "height": 19,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 13520,
+      "gfxType": "recruit",
+      "width": 16,
+      "height": 19,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 13528,
+      "gfxType": "recruit",
+      "width": 16,
+      "height": 19,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 13536,
+      "gfxType": "recruit",
+      "width": 16,
+      "height": 19,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 13544,
+      "gfxType": "recruit",
+      "width": 16,
+      "height": 19,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 13552,
+      "gfxType": "recruit",
+      "width": 16,
+      "height": 19,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 13560,
+      "gfxType": "recruit",
+      "width": 16,
+      "height": 19,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 13568,
+      "gfxType": "recruit",
+      "width": 16,
+      "height": 19,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 13576,
+      "gfxType": "recruit",
+      "width": 16,
+      "height": 19,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 13584,
+      "gfxType": "recruit",
+      "width": 16,
+      "height": 19,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 13592,
+      "gfxType": "recruit",
+      "width": 16,
+      "height": 19,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 16488,
+      "gfxType": "recruit",
+      "width": 16,
+      "height": 19,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 16496,
+      "gfxType": "recruit",
+      "width": 16,
+      "height": 19,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 16504,
+      "gfxType": "recruit",
+      "width": 16,
+      "height": 19,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0
+    }
+  ],
+  [
+    {
+      "byteOffset": 16480,
+      "gfxType": "recruit",
+      "width": 16,
+      "height": 19,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0,
+      "description": "Symbol ^"
+    }
+  ],
+  [
+    {
+      "byteOffset": 38528,
+      "gfxType": "recruit",
+      "width": 16,
+      "height": 1,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0,
+      "description": "Unknown ___"
+    }
+  ],
+  [
+    {
+      "byteOffset": 13544,
+      "gfxType": "recruit",
+      "width": 16,
+      "height": 13,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0,
+      "description": "20: Hill Overlays"
+    },
+    {
+      "byteOffset": 13560,
+      "gfxType": "recruit",
+      "width": 32,
+      "height": 16,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0,
+      "description": "20: Hill Overlays"
+    },
+    {
+      "byteOffset": 13580,
+      "gfxType": "recruit",
+      "width": 32,
+      "height": 30,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0,
+      "description": "20: Hill Overlays"
+    }
+  ],
+  [
+    {
+      "byteOffset": 5856,
+      "gfxType": "recruit",
+      "width": 16,
+      "height": 18,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 5864,
+      "gfxType": "recruit",
+      "width": 16,
+      "height": 18,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 5872,
+      "gfxType": "recruit",
+      "width": 16,
+      "height": 18,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 5880,
+      "gfxType": "recruit",
+      "width": 16,
+      "height": 18,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 5888,
+      "gfxType": "recruit",
+      "width": 16,
+      "height": 18,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 5896,
+      "gfxType": "recruit",
+      "width": 16,
+      "height": 18,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 9696,
+      "gfxType": "recruit",
+      "width": 16,
+      "height": 18,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 9704,
+      "gfxType": "recruit",
+      "width": 16,
+      "height": 18,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 9712,
+      "gfxType": "recruit",
+      "width": 16,
+      "height": 18,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 9720,
+      "gfxType": "recruit",
+      "width": 16,
+      "height": 18,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 9728,
+      "gfxType": "recruit",
+      "width": 16,
+      "height": 18,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 9736,
+      "gfxType": "recruit",
+      "width": 16,
+      "height": 18,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0
+    }
+  ],
+  [
+    {
+      "byteOffset": 5904,
+      "gfxType": "recruit",
+      "width": 32,
+      "height": 22,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0
+    }
+  ],
+  [
+    {
+      "byteOffset": 5904,
+      "gfxType": "recruit",
+      "width": 16,
+      "height": 16,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0
+    }
+  ],
+  [
+    {
+      "byteOffset": 10952,
+      "gfxType": "recruit",
+      "width": 16,
+      "height": 24,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0
+    }
+  ],
+  [
+    {
+      "byteOffset": 10960,
+      "gfxType": "recruit",
+      "width": 16,
+      "height": 24,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0
+    },
+    {
+      "byteOffset": 10968,
+      "gfxType": "recruit",
+      "width": 16,
+      "height": 24,
+      "paletteIndex": 176,
+      "modX": 0,
+      "modY": 0
+    }
+  ]
+]

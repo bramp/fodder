@@ -8,6 +8,7 @@ workspace:
 
 environment:
   sdk: ^3.11.0
+  flutter: ^3.41.2
 
 dev_dependencies:
   melos: ^7.4.0
