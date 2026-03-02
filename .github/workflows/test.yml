@@ -42,7 +42,7 @@ jobs:
         run: |
           COMMIT_HASH=$(git rev-parse --short HEAD)
           BUILD_DATE=$(date -u +"%Y-%m-%d %H:%M UTC")
-          melos exec -c 1 -- \
+          melos exec -c 1 --dir-exists=test -- \
             "flutter test --exclude-tags mac \
             --dart-define=COMMIT_HASH=$COMMIT_HASH \
             --dart-define=BUILD_DATE=\"$BUILD_DATE\""
