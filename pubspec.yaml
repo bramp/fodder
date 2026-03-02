@@ -4,6 +4,7 @@ publish_to: none
 workspace:
   - apps/fodder_game
   - packages/fodder_tools
+  - packages/fodder_assets
 
 environment:
   sdk: ^3.11.0
@@ -21,9 +22,18 @@ melos:
     analyze:
       run: melos exec -c 1 -- "flutter analyze"
       description: Run `flutter analyze` in all packages.
+
     test:
-      run: melos exec -c 1 -- "flutter test"
+      run: melos run test:all --no-select
       description: Run `flutter test` in all packages.
+
+    test:all:
+      run: flutter test
+      exec:
+        concurrency: 1
+      packageFilters:
+        dirExists: test
+
     format:
       run: melos exec -c 1 -- "dart format ."
       description: Run `dart format` in all packages.
