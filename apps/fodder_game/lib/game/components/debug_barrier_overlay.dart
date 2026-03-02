@@ -12,19 +12,19 @@ import 'package:fodder_game/game/systems/walkability_grid.dart';
 const _terrainColors = <TerrainType, Color>{
   // TerrainType.land is not drawn (transparent).
   TerrainType.rocky: Color(0x55888888), // grey
-  TerrainType.boulders: Color(0x55666666), // dark grey
+  TerrainType.rocky2: Color(0x55666666), // dark grey
   TerrainType.block: Color(0x88800080), // purple (impassable)
-  TerrainType.wood: Color(0x55228B22), // forest green
-  TerrainType.mud: Color(0x55654321), // brown
+  TerrainType.quickSand: Color(0x55FFD700), // gold
+  TerrainType.waterEdge: Color(0x550055CC), // dark blue
   TerrainType.water: Color(0x550077FF), // blue
   TerrainType.snow: Color(0x55FFFFFF), // white
-  TerrainType.quickSand: Color(0x55FFD700), // gold
-  TerrainType.wall: Color(0x55CC4444), // dark red
-  TerrainType.fence: Color(0x55FF8800), // orange
-  TerrainType.drop: Color(0x55FF00FF), // magenta
-  TerrainType.drop2: Color(0x55FF44FF), // light magenta
-  TerrainType.intbase: Color(0x5500CCCC), // teal
-  TerrainType.intbase2: Color(0x5500AAAA), // dark teal
+  TerrainType.quickSandEdge: Color(0x55CCAA00), // dark gold
+  TerrainType.drop: Color(0x55CC4444), // dark red
+  TerrainType.drop2: Color(0x55FF8800), // orange
+  TerrainType.sink: Color(0x55FF00FF), // magenta
+  TerrainType.terrainC: Color(0x55FF44FF), // light magenta
+  TerrainType.terrainD: Color(0x5500CCCC), // teal
+  TerrainType.jump: Color(0x5500AAAA), // dark teal
 };
 
 /// Semi-transparent green colour used for path dots.

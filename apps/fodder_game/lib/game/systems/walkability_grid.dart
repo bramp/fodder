@@ -2,23 +2,24 @@ import 'package:flame_tiled/flame_tiled.dart';
 
 /// Terrain types matching OpenFodder's `eTerrainFeature` enum.
 ///
-/// See `docs/PC_GRAPHICS_FORMATS.md` §5.1 for the full table.
+/// See `docs/PC_GRAPHICS_FORMATS.md` §5.1 for the full table and
+/// `vendor/openfodder/Source/Tiles.hpp` for the canonical names.
 enum TerrainType {
   land(0, 'Land'),
   rocky(1, 'Rocky'),
-  boulders(2, 'Boulders'),
+  rocky2(2, 'Rocky2'),
   block(3, 'Block'),
-  wood(4, 'Wood'),
-  mud(5, 'Mud'),
+  quickSand(4, 'Quick Sand'),
+  waterEdge(5, 'Water Edge'),
   water(6, 'Water'),
   snow(7, 'Snow'),
-  quickSand(8, 'Quick Sand'),
-  wall(9, 'Wall'),
-  fence(10, 'Fence'),
-  drop(11, 'Drop'),
-  drop2(12, 'Drop2'),
-  intbase(13, 'Intbase'),
-  intbase2(14, 'Intbase2')
+  quickSandEdge(8, 'Quick Sand Edge'),
+  drop(9, 'Drop'),
+  drop2(10, 'Drop2'),
+  sink(11, 'Sink'),
+  terrainC(12, 'C'),
+  terrainD(13, 'D'),
+  jump(14, 'Jump')
   ;
 
   const TerrainType(this.value, this.label);
@@ -38,6 +39,37 @@ enum TerrainType {
   static TerrainType fromValue(int value) {
     if (value < 0 || value >= values.length) return land;
     return values[value];
+  }
+
+  /// Resolves a raw `.hit` int16 value into a [TerrainType] for tile-level
+  /// queries.
+  ///
+  /// The `.hit` file encodes terrain in the lower 4 bits (`raw & 0x0F`).
+  /// Negative values (bit 15 set) indicate **mixed terrain**: the lower
+  /// nibble is the primary type and bits 4–7 (`(raw >> 4) & 0x0F`) are the
+  /// secondary type (selected per sub-pixel by the BHIT bitmask).
+  ///
+  /// Since we don't have sub-pixel coordinates at tile level, we apply a
+  /// conservative policy: if **either** terrain type blocks walking, we
+  /// return [block]. Otherwise we return the non-[land] type (or [land] if
+  /// both nibbles are 0).
+  static TerrainType fromRawHit(int raw) {
+    final primary = TerrainType.fromValue(raw & 0x0F);
+
+    if (raw >= 0) return primary;
+
+    // Mixed terrain — extract secondary type from bits 4–7.
+    // Dart's >> is arithmetic (sign-extending), which matches the C behaviour
+    // in OpenFodder's `Tile_Terrain_Get`.
+    final secondary = TerrainType.fromValue((raw >> 4) & 0x0F);
+
+    // If either type blocks walking, the whole tile is conservatively blocked.
+    if (primary.blocksWalking) return primary;
+    if (secondary.blocksWalking) return secondary;
+
+    // Return the more "interesting" (non-land) type for the debug overlay.
+    if (primary != land) return primary;
+    return secondary;
   }
 }
 
@@ -93,7 +125,7 @@ class WalkabilityGrid {
         final tileset = map.tilesetByTileGId(gid.tile);
         final localId = gid.tile - (tileset.firstGid ?? 0);
         final raw = terrainByLocalId[localId];
-        return raw != null ? TerrainType.fromValue(raw) : TerrainType.land;
+        return raw != null ? TerrainType.fromRawHit(raw) : TerrainType.land;
       });
     });
 

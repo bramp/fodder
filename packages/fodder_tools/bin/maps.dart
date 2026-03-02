@@ -11,6 +11,11 @@ import 'package:fodder_tools/tiled_writer.dart';
 import 'package:fodder_tools/tileset_builder.dart';
 import 'package:path/path.dart' as p;
 
+/// Prints a warning prefixed with the current context (file being processed).
+void _warn(String context, String message) {
+  stderr.writeln('  [$context] $message');
+}
+
 // ---------------------------------------------------------------------------
 // Terrain metadata
 // ---------------------------------------------------------------------------
@@ -118,7 +123,7 @@ void main(List<String> arguments) {
 
   for (final mapFilename in mapFiles) {
     final data = getFile(mapFilename);
-    final map = MapData.parse(data);
+    final map = MapData.parse(data, warn: (msg) => _warn(mapFilename, msg));
 
     final terrain = map.terrainPrefix;
     final baseName =
@@ -158,7 +163,11 @@ void main(List<String> arguments) {
       final baseBlk = getFile(map.baseBlockFilename);
       final subBlk = getFile(map.subBlockFilename);
 
-      final pngBytes = buildTilesetPng(baseBlk: baseBlk, subBlk: subBlk);
+      final pngBytes = buildTilesetPng(
+        baseBlk: baseBlk,
+        subBlk: subBlk,
+        warn: (msg) => _warn(resolvedName, msg),
+      );
       final pngFilename = '$resolvedName.png';
       File(p.join(outputDir.path, pngFilename)).writeAsBytesSync(pngBytes);
 
@@ -174,6 +183,7 @@ void main(List<String> arguments) {
         terrainTypes = buildCombinedTerrainTypes(
           baseHitData: getFile(baseHitName),
           subHitData: getFile(subHitName),
+          warn: (msg) => _warn(resolvedName, msg),
         );
       } else {
         print(
@@ -188,6 +198,7 @@ void main(List<String> arguments) {
         imageWidth: imageWidth,
         imageHeight: imageHeight,
         terrainTypes: terrainTypes,
+        warn: (msg) => _warn(resolvedName, msg),
       );
       final tsxFilename = '$resolvedName.tsx';
       File(p.join(outputDir.path, tsxFilename)).writeAsStringSync(tsx);

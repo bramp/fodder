@@ -11,6 +11,8 @@ import 'package:fodder_tools/tileset_builder.dart';
 /// When [terrainTypes] is provided (length = [totalTileCount]), each tile
 /// receives a custom `terrain` integer property from the original `.hit`
 /// data. See `hit_reader.dart` for the terrain type table.
+///
+/// Pass [warn] to receive diagnostic messages about unexpected data.
 // TODO(bramp): Is there a tiled library we should be using instead?
 String generateTsx({
   required String name,
@@ -18,7 +20,14 @@ String generateTsx({
   required int imageWidth,
   required int imageHeight,
   List<int>? terrainTypes,
+  void Function(String)? warn,
 }) {
+  if (terrainTypes != null && terrainTypes.length != totalTileCount) {
+    warn?.call(
+      'TSX "$name": terrainTypes length ${terrainTypes.length} '
+      'does not match expected $totalTileCount.',
+    );
+  }
   final buf = StringBuffer()
     ..writeln('<?xml version="1.0" encoding="UTF-8"?>')
     ..writeln(

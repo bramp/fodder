@@ -99,5 +99,61 @@ void main() {
       final truncated = Uint8List.sublistView(data, 0, 0x62);
       expect(() => MapData.parse(truncated), throwsA(isA<FormatException>()));
     });
+
+    test('throws on zero dimensions', () {
+      final data = buildMapBytes(width: 0, height: 5);
+      expect(() => MapData.parse(data), throwsA(isA<FormatException>()));
+    });
+
+    test('warns on bad marker', () {
+      final data = buildMapBytes();
+      // Overwrite marker at 0x50 with "XXXX".
+      data[0x50] = 0x58;
+      data[0x51] = 0x58;
+      data[0x52] = 0x58;
+      data[0x53] = 0x58;
+      final warnings = <String>[];
+      MapData.parse(data, warn: warnings.add);
+      expect(warnings, contains(contains('marker')));
+    });
+
+    test('warns on excess bytes', () {
+      final data = buildMapBytes();
+      // Append extra bytes.
+      final padded = Uint8List(data.length + 10)..setAll(0, data);
+      // Need to keep the marker valid.
+      padded[0x50] = 0x63;
+      padded[0x51] = 0x66;
+      padded[0x52] = 0x65;
+      padded[0x53] = 0x64;
+      final warnings = <String>[];
+      MapData.parse(padded, warn: warnings.add);
+      expect(warnings, contains(contains('excess')));
+    });
+
+    test('warns on non-zero gap bytes', () {
+      final data = buildMapBytes();
+      // Set a byte in gap1 (0x0B–0x0F) to non-zero.
+      data[0x0C] = 0x42;
+      final warnings = <String>[];
+      MapData.parse(data, warn: warnings.add);
+      expect(warnings, contains(contains('gap1')));
+    });
+
+    test('warns on out-of-range tile index', () {
+      // Tile index 480 (> 479) in bits 0–8.
+      final tiles = [0x01E0]; // 0x01E0 = 480
+      final data = buildMapBytes(width: 1, height: 1, tiles: tiles);
+      final warnings = <String>[];
+      MapData.parse(data, warn: warnings.add);
+      expect(warnings, contains(contains('out-of-range')));
+    });
+
+    test('emits summary line', () {
+      final data = buildMapBytes();
+      final warnings = <String>[];
+      MapData.parse(data, warn: warnings.add);
+      expect(warnings, contains(contains('MAP 2x2')));
+    });
   });
 }

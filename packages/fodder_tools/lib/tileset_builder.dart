@@ -16,6 +16,13 @@ const tileSize = 16;
 /// Columns per row in a .blk canvas.
 const blkColumns = 20;
 
+/// Expected size of a `.blk` file in bytes (0xFD00).
+///
+/// Layout: 240 tiles × 16 × 16 bytes of pixel data (0xFA00 = 64000) plus
+/// 128 palette entries × 3 bytes each (0x0180 = 384) starting at offset
+/// 0xFA00, total 0xFD00 = 64768.
+const expectedBlkSize = 0xFD00;
+
 /// Builds a combined tileset PNG from a base and sub `.blk` tile block.
 ///
 /// The resulting image places all 480 tiles (240 base + 240 sub) in a grid
@@ -25,11 +32,27 @@ const blkColumns = 20;
 /// The palette is loaded from the [baseBlk] data at offset `0xFA00`
 /// (128 VGA colours, indices 0x00–0x7F).
 ///
+/// Pass [warn] to receive diagnostic messages about unexpected data.
+///
 /// Returns the encoded PNG bytes.
 Uint8List buildTilesetPng({
   required Uint8List baseBlk,
   required Uint8List subBlk,
+  void Function(String)? warn,
 }) {
+  if (baseBlk.length != expectedBlkSize) {
+    warn?.call(
+      'Base BLK file size ${baseBlk.length} (0x${baseBlk.length.toRadixString(16)}) '
+      'differs from expected $expectedBlkSize (0x${expectedBlkSize.toRadixString(16)}).',
+    );
+  }
+  if (subBlk.length != expectedBlkSize) {
+    warn?.call(
+      'Sub BLK file size ${subBlk.length} (0x${subBlk.length.toRadixString(16)}) '
+      'differs from expected $expectedBlkSize (0x${expectedBlkSize.toRadixString(16)}).',
+    );
+  }
+
   final palette = Palette()..load(data: baseBlk, offset: 0xFA00, count: 0x80);
 
   const columns = blkColumns;
