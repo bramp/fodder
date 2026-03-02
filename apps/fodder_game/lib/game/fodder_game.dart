@@ -49,12 +49,9 @@ class FodderGame extends FlameGame with HasCollisionDetection, TapCallbacks {
 
     playerSoldier = PlayerSoldier(soldierAnimations: anims);
 
-    // Place soldier at the first walkable tile (scan from top-left).
-    final spawnTile = _findFirstWalkableTile();
-    playerSoldier.position = Vector2(
-      spawnTile.$1 * LevelMap.destTileSize + LevelMap.destTileSize / 2,
-      spawnTile.$2 * LevelMap.destTileSize + LevelMap.destTileSize / 2,
-    );
+    // Place soldier at the first player spawn point, or fall back to
+    // scanning for the first walkable tile.
+    playerSoldier.position = _playerSpawnPosition();
 
     await world.add(playerSoldier);
 
@@ -62,6 +59,7 @@ class FodderGame extends FlameGame with HasCollisionDetection, TapCallbacks {
     _debugOverlay = DebugBarrierOverlay(
       grid: grid ?? WalkabilityGrid.fromData([]),
       player: playerSoldier,
+      spawnData: levelMap.spawnData,
     );
     await world.add(_debugOverlay);
   }
@@ -115,16 +113,13 @@ class FodderGame extends FlameGame with HasCollisionDetection, TapCallbacks {
     }
 
     // Reposition soldier.
-    final spawnTile = _findFirstWalkableTile();
-    playerSoldier.position = Vector2(
-      spawnTile.$1 * LevelMap.destTileSize + LevelMap.destTileSize / 2,
-      spawnTile.$2 * LevelMap.destTileSize + LevelMap.destTileSize / 2,
-    );
+    playerSoldier.position = _playerSpawnPosition();
     playerSoldier.followPath([]);
     await world.add(playerSoldier);
 
-    // Update the overlay's grid reference for the new map.
+    // Update the overlay's grid and spawn data for the new map.
     _debugOverlay.grid = grid ?? WalkabilityGrid.fromData([]);
+    _debugOverlay.spawnData = levelMap.spawnData;
   }
 
   /// Toggles the debug barrier overlay on/off.
@@ -132,16 +127,30 @@ class FodderGame extends FlameGame with HasCollisionDetection, TapCallbacks {
     _debugOverlay.isVisible = !_debugOverlay.isVisible;
   }
 
-  /// Scans the walkability grid for the first walkable tile.
-  (int, int) _findFirstWalkableTile() {
-    final grid = levelMap.walkabilityGrid;
-    if (grid == null) return (1, 1);
+  /// Returns the world position for the first player spawn point.
+  ///
+  /// Falls back to the first walkable tile if the map has no player spawns.
+  Vector2 _playerSpawnPosition() {
+    final spawns = levelMap.spawnData.players;
+    if (spawns.isNotEmpty) return spawns.first.position.clone();
 
-    for (var y = 0; y < grid.height; y++) {
-      for (var x = 0; x < grid.width; x++) {
-        if (grid.isWalkable(x, y)) return (x, y);
+    // Fallback: scan the grid for the first walkable tile.
+    final grid = levelMap.walkabilityGrid;
+    if (grid != null) {
+      for (var y = 0; y < grid.height; y++) {
+        for (var x = 0; x < grid.width; x++) {
+          if (grid.isWalkable(x, y)) {
+            return Vector2(
+              x * LevelMap.destTileSize + LevelMap.destTileSize / 2,
+              y * LevelMap.destTileSize + LevelMap.destTileSize / 2,
+            );
+          }
+        }
       }
     }
-    return (1, 1);
+    return Vector2(
+      LevelMap.destTileSize + LevelMap.destTileSize / 2,
+      LevelMap.destTileSize + LevelMap.destTileSize / 2,
+    );
   }
 }

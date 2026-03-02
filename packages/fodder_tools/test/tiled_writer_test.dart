@@ -1,6 +1,7 @@
 import 'dart:typed_data';
 
 import 'package:fodder_tools/map_reader.dart';
+import 'package:fodder_tools/spt_reader.dart';
 import 'package:fodder_tools/tiled_writer.dart';
 import 'package:fodder_tools/tileset_builder.dart';
 import 'package:test/test.dart';
@@ -68,6 +69,57 @@ void main() {
       final dataEnd = tmx.indexOf('</data>', dataStart);
       final csvBlock = tmx.substring(dataStart, dataEnd);
       expect(csvBlock, contains('0,0,7'));
+    });
+
+    test('emits Sprites objectgroup when sprites are provided', () {
+      final sprites = [
+        const SptSprite(x: 155, y: 213, type: 0), // Player
+        const SptSprite(x: 97, y: 49, type: 5), // Enemy
+      ];
+      final tmx = generateTmx(
+        map: map,
+        tilesetTsxFilename: 'test.tsx',
+        sprites: sprites,
+      );
+
+      expect(tmx, contains('<objectgroup id="3" name="Sprites">'));
+      expect(tmx, contains('name="player"'));
+      expect(tmx, contains('x="155" y="213"'));
+      expect(tmx, contains('name="enemy"'));
+      expect(tmx, contains('x="97" y="49"'));
+      expect(
+        tmx,
+        contains('<property name="sprite_type" type="int" value="0"/>'),
+      );
+      expect(
+        tmx,
+        contains('<property name="sprite_type" type="int" value="5"/>'),
+      );
+      expect(tmx, contains('</objectgroup>'));
+    });
+
+    test('omits objectgroup when sprites list is empty', () {
+      final tmx = generateTmx(map: map, tilesetTsxFilename: 'test.tsx');
+      expect(tmx, isNot(contains('objectgroup')));
+      expect(tmx, contains('nextlayerid="3"'));
+      expect(tmx, contains('nextobjectid="1"'));
+    });
+
+    test('nextlayerid and nextobjectid account for sprites', () {
+      final sprites = [
+        const SptSprite(x: 10, y: 20, type: 0),
+        const SptSprite(x: 30, y: 40, type: 5),
+        const SptSprite(x: 50, y: 60, type: 13),
+      ];
+      final tmx = generateTmx(
+        map: map,
+        tilesetTsxFilename: 'test.tsx',
+        sprites: sprites,
+      );
+      // 2 tile layers + 1 objectgroup = 3, so nextlayerid = 4.
+      expect(tmx, contains('nextlayerid="4"'));
+      // 3 objects → nextobjectid = 4.
+      expect(tmx, contains('nextobjectid="4"'));
     });
   });
 }

@@ -8,6 +8,7 @@ import 'package:fodder_tools/bht_reader.dart';
 import 'package:fodder_tools/dat_reader.dart';
 import 'package:fodder_tools/hit_reader.dart';
 import 'package:fodder_tools/map_reader.dart';
+import 'package:fodder_tools/spt_reader.dart';
 import 'package:fodder_tools/terrain_data.dart';
 import 'package:fodder_tools/tiled_writer.dart';
 import 'package:fodder_tools/tileset_builder.dart';
@@ -234,7 +235,24 @@ void main(List<String> arguments) {
 
     // Export .tmx map.
     final tsxFilename = exportedTilesets[blockKey]!;
-    final tmx = generateTmx(map: map, tilesetTsxFilename: tsxFilename);
+
+    // Load sprite placement data from the corresponding .spt file.
+    final sptFilename = mapFilename.replaceAll('.map', '.spt');
+    var sprites = const <SptSprite>[];
+    if (hasFile(sptFilename)) {
+      sprites = parseSpt(
+        getFile(sptFilename),
+        warn: (msg) => _warn(sptFilename, msg),
+      );
+    } else {
+      print('  Warning: .spt file not found: $sptFilename');
+    }
+
+    final tmx = generateTmx(
+      map: map,
+      tilesetTsxFilename: tsxFilename,
+      sprites: sprites,
+    );
     final tmxFilename = '${p.basenameWithoutExtension(mapFilename)}.tmx';
     File(p.join(outputDir.path, tmxFilename)).writeAsStringSync(tmx);
     mapCount++;

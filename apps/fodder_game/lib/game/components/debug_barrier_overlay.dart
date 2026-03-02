@@ -4,6 +4,7 @@ import 'package:flame/components.dart';
 
 import 'package:fodder_game/game/components/player_soldier.dart';
 import 'package:fodder_game/game/map/level_map.dart';
+import 'package:fodder_game/game/map/spawn_data.dart';
 import 'package:fodder_game/game/systems/walkability_grid.dart';
 
 /// Semi-transparent colours for each terrain type in the debug overlay.
@@ -37,6 +38,21 @@ final Map<TerrainType, Paint> _terrainPaints = {
 /// Semi-transparent green colour used for path dots.
 final Paint _pathPaint = Paint()..color = const Color(0xAA00FF00);
 
+/// Green paint for player spawn markers.
+final Paint _playerSpawnPaint = Paint()..color = const Color(0xCC00DD00);
+
+/// Red paint for enemy spawn markers.
+final Paint _enemySpawnPaint = Paint()..color = const Color(0xCCDD0000);
+
+/// Grey paint for other (non-player, non-enemy) spawn markers.
+final Paint _otherSpawnPaint = Paint()..color = const Color(0xCC888888);
+
+/// White paint for spawn marker outlines.
+final Paint _spawnOutlinePaint = Paint()
+  ..color = const Color(0xCCFFFFFF)
+  ..style = PaintingStyle.stroke
+  ..strokeWidth = 1;
+
 /// Debug overlay that draws semi-transparent coloured rectangles over
 /// non-walkable tiles and visualises the player's current A* path.
 ///
@@ -54,14 +70,17 @@ class DebugBarrierOverlay extends Component with HasVisibility {
   DebugBarrierOverlay({
     required WalkabilityGrid grid,
     required this.player,
+    SpawnData spawnData = SpawnData.empty,
     bool visible = false,
   }) : _grid = grid,
+       _spawnData = spawnData,
        super(priority: 20) {
     isVisible = visible;
   }
 
   WalkabilityGrid _grid;
   final PlayerSoldier player;
+  SpawnData _spawnData;
 
   /// Cached picture of the static terrain overlay.
   Picture? _cachedPicture;
@@ -74,6 +93,15 @@ class DebugBarrierOverlay extends Component with HasVisibility {
 
   /// Returns the current walkability grid.
   WalkabilityGrid get grid => _grid;
+
+  /// Updates the spawn data and invalidates the cached picture.
+  set spawnData(SpawnData value) {
+    _spawnData = value;
+    invalidateCache();
+  }
+
+  /// Returns the current spawn data.
+  SpawnData get spawnData => _spawnData;
 
   /// Forces the cached terrain picture to be rebuilt on the next render.
   void invalidateCache() {
@@ -135,7 +163,34 @@ class DebugBarrierOverlay extends Component with HasVisibility {
       }
     }
 
+    // Draw spawn point markers on top of the terrain overlay.
+    _renderSpawnMarkers(canvas);
+
     return recorder.endRecording();
+  }
+
+  /// Renders spawn point markers into the terrain picture.
+  void _renderSpawnMarkers(Canvas canvas) {
+    const radius = 6.0;
+
+    for (final spawn in _spawnData.all) {
+      final Paint fill;
+      // Player type == 0.
+      if (spawn.spriteType == 0) {
+        fill = _playerSpawnPaint;
+      } else if (spawn.spriteType == 5 ||
+          spawn.spriteType == 36 ||
+          spawn.spriteType == 106) {
+        fill = _enemySpawnPaint;
+      } else {
+        fill = _otherSpawnPaint;
+      }
+
+      final offset = Offset(spawn.position.x, spawn.position.y);
+      canvas
+        ..drawCircle(offset, radius, fill)
+        ..drawCircle(offset, radius, _spawnOutlinePaint);
+    }
   }
 
   /// Renders the 8×8 sub-tile grid for a mixed-terrain tile.

@@ -1,4 +1,5 @@
 import 'package:fodder_tools/map_reader.dart';
+import 'package:fodder_tools/spt_reader.dart';
 import 'package:fodder_tools/terrain_data.dart';
 import 'package:fodder_tools/tileset_builder.dart';
 
@@ -85,11 +86,23 @@ String generateTsx({
 ///
 /// [map] contains the parsed map data (dimensions and tile indices).
 /// [tilesetTsxFilename] is the relative path to the `.tsx` tileset file.
+/// [sprites] contains sprite entries from the `.spt` file; when
+/// non-empty, an `<objectgroup>` layer named "Sprites" is emitted
+/// with a `<object>` per sprite encoding its pixel position and type.
 ///
 /// Tiled uses **1-based** Global Tile IDs (GID). GID 0 means "empty".
 /// Since our tileset starts at firstgid=1, the GID for a tile with
 /// graphic index `i` is `i + 1`.
-String generateTmx({required MapData map, required String tilesetTsxFilename}) {
+String generateTmx({
+  required MapData map,
+  required String tilesetTsxFilename,
+  List<SptSprite> sprites = const [],
+}) {
+  // Compute nextlayerid / nextobjectid based on content.
+  final hasSprites = sprites.isNotEmpty;
+  final nextLayerId = hasSprites ? 4 : 3;
+  final nextObjectId = hasSprites ? sprites.length + 1 : 1;
+
   final buf = StringBuffer()
     ..writeln('<?xml version="1.0" encoding="UTF-8"?>')
     ..writeln(
@@ -98,7 +111,7 @@ String generateTmx({required MapData map, required String tilesetTsxFilename}) {
       'width="${map.width}" height="${map.height}" '
       'tilewidth="$tileSize" tileheight="$tileSize" '
       'infinite="0" '
-      'nextlayerid="3" nextobjectid="1">',
+      'nextlayerid="$nextLayerId" nextobjectid="$nextObjectId">',
     )
     ..writeln(' <tileset firstgid="1" source="$tilesetTsxFilename"/>')
     // --- Tile layer ---
@@ -152,8 +165,29 @@ String generateTmx({required MapData map, required String tilesetTsxFilename}) {
 
   buf
     ..writeln('  </data>')
-    ..writeln(' </layer>')
-    ..writeln('</map>');
+    ..writeln(' </layer>');
 
+  // --- Sprite object group ---
+  if (hasSprites) {
+    buf.writeln(' <objectgroup id="3" name="Sprites">');
+    for (var i = 0; i < sprites.length; i++) {
+      final s = sprites[i];
+      final typeName = s.spriteType?.name ?? 'Type${s.type}';
+      buf
+        ..writeln(
+          '  <object id="${i + 1}" name="$typeName" '
+          'x="${s.x}" y="${s.y}" width="0" height="0">',
+        )
+        ..writeln('   <properties>')
+        ..writeln(
+          '    <property name="sprite_type" type="int" value="${s.type}"/>',
+        )
+        ..writeln('   </properties>')
+        ..writeln('  </object>');
+    }
+    buf.writeln(' </objectgroup>');
+  }
+
+  buf.writeln('</map>');
   return buf.toString();
 }
