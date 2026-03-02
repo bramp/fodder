@@ -1,9 +1,12 @@
+import 'dart:typed_data';
+
 import 'package:flame_tiled/flame_tiled.dart';
 
-/// Terrain types matching OpenFodder's `eTerrainFeature` enum.
+/// Terrain types from the Tiled tileset `terrain` property.
 ///
-/// See `docs/PC_GRAPHICS_FORMATS.md` §5.1 for the full table and
-/// `vendor/openfodder/Source/Tiles.hpp` for the canonical names.
+/// These values (0–14) correspond to Cannon Fodder's terrain features.
+/// The tools pipeline resolves all original-format encoding; the game
+/// only ever sees clean integer values in the TSX properties.
 enum TerrainType {
   land(0, 'Land'),
   rocky(1, 'Rocky'),
@@ -24,7 +27,7 @@ enum TerrainType {
 
   const TerrainType(this.value, this.label);
 
-  /// The raw integer value stored in `.hit` files and TSX properties.
+  /// The integer value stored in the TSX `terrain` property.
   final int value;
 
   /// Human-readable name for debug display.
@@ -35,41 +38,10 @@ enum TerrainType {
 
   /// Look up a [TerrainType] by its integer [value].
   ///
-  /// Returns [land] for unknown or negative values.
+  /// Returns [land] for unknown or out-of-range values.
   static TerrainType fromValue(int value) {
     if (value < 0 || value >= values.length) return land;
     return values[value];
-  }
-
-  /// Resolves a raw `.hit` int16 value into a [TerrainType] for tile-level
-  /// queries.
-  ///
-  /// The `.hit` file encodes terrain in the lower 4 bits (`raw & 0x0F`).
-  /// Negative values (bit 15 set) indicate **mixed terrain**: the lower
-  /// nibble is the primary type and bits 4–7 (`(raw >> 4) & 0x0F`) are the
-  /// secondary type (selected per sub-pixel by the BHIT bitmask).
-  ///
-  /// Since we don't have sub-pixel coordinates at tile level, we apply a
-  /// conservative policy: if **either** terrain type blocks walking, we
-  /// return [block]. Otherwise we return the non-[land] type (or [land] if
-  /// both nibbles are 0).
-  static TerrainType fromRawHit(int raw) {
-    final primary = TerrainType.fromValue(raw & 0x0F);
-
-    if (raw >= 0) return primary;
-
-    // Mixed terrain — extract secondary type from bits 4–7.
-    // Dart's >> is arithmetic (sign-extending), which matches the C behaviour
-    // in OpenFodder's `Tile_Terrain_Get`.
-    final secondary = TerrainType.fromValue((raw >> 4) & 0x0F);
-
-    // If either type blocks walking, the whole tile is conservatively blocked.
-    if (primary.blocksWalking) return primary;
-    if (secondary.blocksWalking) return secondary;
-
-    // Return the more "interesting" (non-land) type for the debug overlay.
-    if (primary != land) return primary;
-    return secondary;
   }
 }
 
@@ -77,19 +49,30 @@ enum TerrainType {
 /// properties.
 ///
 /// Each cell stores a [TerrainType] from the tileset's `terrain` custom
-/// property. Use [isWalkable] for pathfinding or [terrainAt] for detailed
-/// terrain inspection.
+/// property. For mixed-terrain tiles (those with `terrain_secondary` and
+/// `terrain_mask` properties), a conservative tile-level policy is applied:
+/// if either terrain type blocks walking the whole tile is treated as
+/// blocked. The sub-tile bitmask is also stored for future sub-pixel
+/// resolution.
+///
+/// Use [isWalkable] for pathfinding or [terrainAt] for detailed terrain
+/// inspection.
 class WalkabilityGrid {
   WalkabilityGrid._({
     required List<List<TerrainType>> grid,
     required this.width,
     required this.height,
-  }) : _grid = grid;
+    List<List<SubTileTerrain?>>? subTileGrid,
+  }) : _grid = grid,
+       _subTileGrid = subTileGrid;
 
   /// Builds a [WalkabilityGrid] from a loaded [TiledComponent].
   ///
   /// Reads the `"Tiles"` layer's GID data, resolves each GID to its tileset
-  /// `Tile`, and reads the custom `terrain` integer property.
+  /// `Tile`, and reads the custom terrain properties:
+  ///   - `terrain` (int 0–14): primary terrain type
+  ///   - `terrain_secondary` (int 0–14): secondary type for mixed tiles
+  ///   - `terrain_mask` (string, 16 hex chars): BHIT sub-tile bitmask
   factory WalkabilityGrid.fromTiled(TiledComponent tiled) {
     final map = tiled.tileMap.map;
     final tilesLayer = map.layerByName('Tiles');
@@ -106,30 +89,82 @@ class WalkabilityGrid {
     final mapHeight = tileData.length;
     final mapWidth = tileData.first.length;
 
-    // Pre-build a lookup from local tile ID → terrain type for the tileset.
+    // Pre-build lookups from local tile ID → terrain properties.
     final terrainByLocalId = <int, int>{};
+    final secondaryByLocalId = <int, int>{};
+    final maskByLocalId = <int, Uint8List>{};
+
     for (final tileset in map.tilesets) {
       for (final tile in tileset.tiles) {
         final t = tile.properties.getValue<int>('terrain');
         if (t != null) {
           terrainByLocalId[tile.localId] = t;
         }
+        final s = tile.properties.getValue<int>('terrain_secondary');
+        if (s != null) {
+          secondaryByLocalId[tile.localId] = s;
+        }
+        final m = tile.properties.getValue<String>('terrain_mask');
+        if (m != null && m.length == 16) {
+          maskByLocalId[tile.localId] = _parseHexMask(m);
+        }
       }
     }
+
+    final hasMixed = secondaryByLocalId.isNotEmpty;
+    final subTileGrid = hasMixed
+        ? List<List<SubTileTerrain?>>.generate(
+            mapHeight,
+            (_) => List<SubTileTerrain?>.filled(mapWidth, null),
+          )
+        : null;
 
     final grid = List<List<TerrainType>>.generate(mapHeight, (y) {
       return List<TerrainType>.generate(mapWidth, (x) {
         final gid = tileData[y][x];
-        if (gid.tile == 0) return TerrainType.land; // empty tile → land
+        if (gid.tile == 0) return TerrainType.land;
 
         final tileset = map.tilesetByTileGId(gid.tile);
         final localId = gid.tile - (tileset.firstGid ?? 0);
-        final raw = terrainByLocalId[localId];
-        return raw != null ? TerrainType.fromRawHit(raw) : TerrainType.land;
+        final primaryVal = terrainByLocalId[localId];
+        if (primaryVal == null) return TerrainType.land;
+
+        final primary = TerrainType.fromValue(primaryVal);
+        final secondaryVal = secondaryByLocalId[localId];
+
+        if (secondaryVal != null) {
+          final secondary = TerrainType.fromValue(secondaryVal);
+          final mask = maskByLocalId[localId];
+
+          // Store sub-tile data for future pixel-level queries.
+          if (subTileGrid != null && mask != null) {
+            subTileGrid[y][x] = SubTileTerrain(
+              primary: primary,
+              secondary: secondary,
+              mask: mask,
+            );
+          }
+
+          // Conservative tile-level policy: if either blocks, tile blocks.
+          if (primary.blocksWalking || secondary.blocksWalking) {
+            return TerrainType.block;
+          }
+
+          // Return the more "interesting" (non-land) type for display.
+          if (primary != TerrainType.land) return primary;
+          return secondary;
+        }
+
+        return primary;
       });
     });
 
-    return WalkabilityGrid._(grid: grid, width: mapWidth, height: mapHeight);
+    return WalkabilityGrid._(
+      grid: grid,
+      width: mapWidth,
+      height: mapHeight,
+      subTileGrid: subTileGrid,
+    );
   }
 
   /// Creates a [WalkabilityGrid] from raw [TerrainType] data (for testing).
@@ -140,6 +175,12 @@ class WalkabilityGrid {
   }
 
   final List<List<TerrainType>> _grid;
+
+  /// Optional sub-tile terrain data for mixed-terrain tiles.
+  ///
+  /// `null` if no mixed-terrain tiles exist. Otherwise, same dimensions as
+  /// [_grid]; entries are `null` for single-terrain cells.
+  final List<List<SubTileTerrain?>>? _subTileGrid;
 
   /// Map width in tiles.
   final int width;
@@ -162,5 +203,65 @@ class WalkabilityGrid {
   /// Out-of-bounds coordinates return `false`.
   bool isWalkable(int tileX, int tileY) {
     return !terrainAt(tileX, tileY).blocksWalking;
+  }
+
+  /// Returns the sub-tile terrain at a **pixel** coordinate, or `null` if
+  /// the tile is not mixed terrain.
+  ///
+  /// [subX] and [subY] are the sub-tile column/row (0–7) within the tile's
+  /// 8×8 grid (each sub-cell covers 2×2 pixels of the 16×16 tile).
+  ///
+  /// Use this for pixel-level terrain queries where sub-tile accuracy matters
+  /// (e.g. determining whether a soldier's exact pixel position is on water
+  /// vs land within a mixed tile).
+  TerrainType? subTileTerrainAt(int tileX, int tileY, int subX, int subY) {
+    if (_subTileGrid == null) return null;
+    if (tileX < 0 || tileX >= width || tileY < 0 || tileY >= height) {
+      return null;
+    }
+    final st = _subTileGrid[tileY][tileX];
+    if (st == null) return null;
+    return st.terrainAt(subX, subY);
+  }
+
+  /// Parses a 16-character hex string into an 8-byte [Uint8List].
+  static Uint8List _parseHexMask(String hex) {
+    final result = Uint8List(8);
+    for (var i = 0; i < 8; i++) {
+      result[i] = int.parse(hex.substring(i * 2, i * 2 + 2), radix: 16);
+    }
+    return result;
+  }
+}
+
+/// Sub-tile terrain data for a mixed-terrain tile.
+///
+/// Stores two terrain types and an 8×8 bitmask that selects between them
+/// per sub-pixel (each sub-cell is 2×2 pixels within a 16×16 tile).
+class SubTileTerrain {
+  /// Creates sub-tile terrain data.
+  const SubTileTerrain({
+    required this.primary,
+    required this.secondary,
+    required this.mask,
+  });
+
+  /// Terrain where the mask bit is 0.
+  final TerrainType primary;
+
+  /// Terrain where the mask bit is 1.
+  final TerrainType secondary;
+
+  /// 8-byte bitmask (8 rows × 8 columns). Bit 7 = leftmost column.
+  final Uint8List mask;
+
+  /// Returns the terrain at sub-tile position ([subX], [subY]).
+  ///
+  /// [subX] and [subY] are 0–7, mapping to the 8×8 grid within the tile.
+  TerrainType terrainAt(int subX, int subY) {
+    if (subX < 0 || subX > 7 || subY < 0 || subY > 7) return primary;
+    final bitIndex = 7 - subX; // bit 7 = leftmost column
+    final row = mask[subY];
+    return (row & (1 << bitIndex)) != 0 ? secondary : primary;
   }
 }

@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:flutter_test/flutter_test.dart';
 
 import 'package:fodder_game/game/systems/walkability_grid.dart';
@@ -86,43 +88,61 @@ void main() {
       expect(TerrainType.quickSand.label, 'Quick Sand');
       expect(TerrainType.waterEdge.label, 'Water Edge');
     });
+  });
 
-    group('fromRawHit', () {
-      test('positive values: masks lower 4 bits', () {
-        // Raw value 3 → Block
-        expect(TerrainType.fromRawHit(3), TerrainType.block);
-        // Raw value 0x33 (51) → lower nibble 3 → Block
-        expect(TerrainType.fromRawHit(0x33), TerrainType.block);
-        // Raw value 0x73 (115) → lower nibble 3 → Block
-        expect(TerrainType.fromRawHit(0x73), TerrainType.block);
-        // Raw value 0x30 (48) → lower nibble 0 → Land
-        expect(TerrainType.fromRawHit(0x30), TerrainType.land);
-      });
+  group('SubTileTerrain', () {
+    test('terrainAt selects primary where mask bit is 0', () {
+      // Mask: all zeros → all primary
+      final st = SubTileTerrain(
+        primary: _land,
+        secondary: _water,
+        mask: Uint8List(8),
+      );
+      expect(st.terrainAt(0, 0), _land);
+      expect(st.terrainAt(7, 7), _land);
+    });
 
-      test('negative values: resolves mixed terrain with block', () {
-        // 0x8030 → primary=Land(0), secondary=Block(3) → Block wins
-        expect(TerrainType.fromRawHit(-32720), TerrainType.block); // 0x8030
-        // 0x8003 → primary=Block(3), secondary=Land(0) → Block
-        expect(TerrainType.fromRawHit(-32765), TerrainType.block); // 0x8003
-        // 0x8073 → primary=Block(3), secondary=Snow(7) → Block
-        expect(TerrainType.fromRawHit(-32653), TerrainType.block); // 0x8073
-      });
+    test('terrainAt selects secondary where mask bit is 1', () {
+      // Mask: all 0xFF → all secondary
+      final st = SubTileTerrain(
+        primary: _land,
+        secondary: _water,
+        mask: Uint8List.fromList(
+          [0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF],
+        ),
+      );
+      expect(st.terrainAt(0, 0), _water);
+      expect(st.terrainAt(7, 7), _water);
+    });
 
-      test('negative values: non-blocking mixed returns interesting type', () {
-        // 0x8070 → primary=Land(0), secondary=Snow(7) → Snow
-        expect(TerrainType.fromRawHit(-32656), TerrainType.snow); // 0x8070
-        // 0x8002 → primary=Rocky2(2), secondary=Land(0) → Rocky2
-        expect(TerrainType.fromRawHit(-32766), TerrainType.rocky2); // 0x8002
-        // 0x8050 → primary=Land(0), secondary=WaterEdge(5) → WaterEdge
-        expect(
-          TerrainType.fromRawHit(-32688),
-          TerrainType.waterEdge,
-        ); // 0x8050
-      });
+    test('terrainAt resolves individual bits correctly', () {
+      // Row 0: 0x80 = bit 7 set (leftmost column = secondary)
+      // Rows 1-7: 0x00 = all primary
+      final st = SubTileTerrain(
+        primary: _land,
+        secondary: _block,
+        mask: Uint8List.fromList([0x80, 0, 0, 0, 0, 0, 0, 0]),
+      );
+      // subX=0 → bit 7 of row 0 → set → secondary (block)
+      expect(st.terrainAt(0, 0), _block);
+      // subX=1 → bit 6 of row 0 → clear → primary (land)
+      expect(st.terrainAt(1, 0), _land);
+      // subX=0, subY=1 → row 1 bit 7 → clear → primary
+      expect(st.terrainAt(0, 1), _land);
+    });
 
-      test('zero returns land', () {
-        expect(TerrainType.fromRawHit(0), TerrainType.land);
-      });
+    test('terrainAt returns primary for out-of-range coordinates', () {
+      final st = SubTileTerrain(
+        primary: _land,
+        secondary: _block,
+        mask: Uint8List.fromList(
+          [0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF],
+        ),
+      );
+      expect(st.terrainAt(-1, 0), _land);
+      expect(st.terrainAt(8, 0), _land);
+      expect(st.terrainAt(0, -1), _land);
+      expect(st.terrainAt(0, 8), _land);
     });
   });
 }

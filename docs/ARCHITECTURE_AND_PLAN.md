@@ -1,6 +1,24 @@
 # Technical Plan & Implementation
 
-## Asset Pre-Conversion Pipeline
+## Design Principles
+
+### No Original-Format Leakage
+
+The **remake game** (`apps/fodder_game`) must **never** depend on internal
+details of the original Cannon Fodder file formats (`.hit`, `.blk`, `.bht`,
+`.map`, `.swp`, etc.). All original-format knowledge lives exclusively in the
+**tools** (`packages/fodder_tools`), which convert legacy data into standard,
+editor-friendly formats (Tiled `.tmx` / `.tsx`, PNG, etc.).
+
+The game reads only these standard formats at runtime. This means:
+
+- Maps can be fully edited in a modern tool like **Tiled** without needing
+  the original game files or any custom tooling.
+- New maps can be created from scratch in Tiled and loaded directly.
+- The game code never performs bit-twiddling on raw `.hit` int16 values,
+  BHIT bitmask lookups, or any other original-format decoding.
+
+### Asset Pre-Conversion Pipeline
 We will not parse `.MAP` or `.SPT` files in the game loop. Instead, a standalone Dart CLI script located in `tool/` will run offline.
 
 - **`tool/convert_assets.dart`**: Parses OpenFodder legacy binary formats and palette info.

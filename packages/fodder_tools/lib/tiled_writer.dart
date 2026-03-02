@@ -1,4 +1,5 @@
 import 'package:fodder_tools/map_reader.dart';
+import 'package:fodder_tools/terrain_data.dart';
 import 'package:fodder_tools/tileset_builder.dart';
 
 /// Generates a Tiled `.tsx` tileset definition in XML format.
@@ -8,9 +9,15 @@ import 'package:fodder_tools/tileset_builder.dart';
 /// `jungle.png`).
 /// [imageWidth] and [imageHeight] are the tileset PNG dimensions in pixels.
 ///
-/// When [terrainTypes] is provided (length = [totalTileCount]), each tile
-/// receives a custom `terrain` integer property from the original `.hit`
-/// data. See `hit_reader.dart` for the terrain type table.
+/// When [terrainData] is provided (length = [totalTileCount]), each tile
+/// receives custom properties:
+///   - `terrain` (int 0–14): the primary terrain type.
+///   - `terrain_secondary` (int 0–14): the secondary terrain type, only
+///     present for mixed-terrain tiles.
+///   - `terrain_mask` (string, 16 hex chars): the 8-byte BHIT sub-tile
+///     bitmask, only present for mixed-terrain tiles. Each pair of hex
+///     digits represents one row (top to bottom); within each byte bit 7
+///     is the leftmost column.
 ///
 /// Pass [warn] to receive diagnostic messages about unexpected data.
 // TODO(bramp): Is there a tiled library we should be using instead?
@@ -19,12 +26,12 @@ String generateTsx({
   required String imageFilename,
   required int imageWidth,
   required int imageHeight,
-  List<int>? terrainTypes,
+  List<TileTerrainData>? terrainData,
   void Function(String)? warn,
 }) {
-  if (terrainTypes != null && terrainTypes.length != totalTileCount) {
+  if (terrainData != null && terrainData.length != totalTileCount) {
     warn?.call(
-      'TSX "$name": terrainTypes length ${terrainTypes.length} '
+      'TSX "$name": terrainData length ${terrainData.length} '
       'does not match expected $totalTileCount.',
     );
   }
@@ -43,13 +50,28 @@ String generateTsx({
     );
 
   // Emit per-tile terrain properties when available.
-  if (terrainTypes != null) {
-    for (var id = 0; id < terrainTypes.length; id++) {
-      final t = terrainTypes[id];
+  if (terrainData != null) {
+    for (var id = 0; id < terrainData.length; id++) {
+      final td = terrainData[id];
       buf
         ..writeln(' <tile id="$id">')
         ..writeln('  <properties>')
-        ..writeln('   <property name="terrain" type="int" value="$t"/>')
+        ..writeln(
+          '   <property name="terrain" type="int" value="${td.primary}"/>',
+        );
+
+      if (td.isMixed) {
+        buf.writeln(
+          '   <property name="terrain_secondary" type="int" '
+          'value="${td.secondary}"/>',
+        );
+        final hex = td.mask!
+            .map((b) => b.toRadixString(16).padLeft(2, '0'))
+            .join();
+        buf.writeln('   <property name="terrain_mask" value="$hex"/>');
+      }
+
+      buf
         ..writeln('  </properties>')
         ..writeln(' </tile>');
     }

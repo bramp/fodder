@@ -4,9 +4,11 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:args/args.dart';
+import 'package:fodder_tools/bht_reader.dart';
 import 'package:fodder_tools/dat_reader.dart';
 import 'package:fodder_tools/hit_reader.dart';
 import 'package:fodder_tools/map_reader.dart';
+import 'package:fodder_tools/terrain_data.dart';
 import 'package:fodder_tools/tiled_writer.dart';
 import 'package:fodder_tools/tileset_builder.dart';
 import 'package:path/path.dart' as p;
@@ -174,15 +176,38 @@ void main(List<String> arguments) {
       const imageWidth = blkColumns * tileSize; // 320
       const imageHeight = (totalTileCount ~/ blkColumns) * tileSize; // 384
 
-      // Load .hit terrain data when available.
+      // Load .hit and .bht terrain data when available.
       final baseHitName = map.baseBlockFilename.replaceAll('.blk', '.hit');
       final subHitName = map.subBlockFilename.replaceAll('.blk', '.hit');
+      final baseBhtName = map.baseBlockFilename.replaceAll('.blk', '.bht');
+      final subBhtName = map.subBlockFilename.replaceAll('.blk', '.bht');
 
-      List<int>? terrainTypes;
+      List<TileTerrainData>? terrainData;
       if (hasFile(baseHitName) && hasFile(subHitName)) {
-        terrainTypes = buildCombinedTerrainTypes(
+        final rawHit = buildCombinedTerrainTypes(
           baseHitData: getFile(baseHitName),
           subHitData: getFile(subHitName),
+          warn: (msg) => _warn(resolvedName, msg),
+        );
+
+        List<Uint8List> bhtMasks;
+        if (hasFile(baseBhtName) && hasFile(subBhtName)) {
+          bhtMasks = buildCombinedBhtMasks(
+            baseBhtData: getFile(baseBhtName),
+            subBhtData: getFile(subBhtName),
+            warn: (msg) => _warn(resolvedName, msg),
+          );
+        } else {
+          print(
+            '  Warning: .bht files not found for $resolvedName '
+            '($baseBhtName / $subBhtName) — sub-tile masks will be empty.',
+          );
+          bhtMasks = List.generate(rawHit.length, (_) => Uint8List(8));
+        }
+
+        terrainData = buildTileTerrainData(
+          rawHitValues: rawHit,
+          bhtMasks: bhtMasks,
           warn: (msg) => _warn(resolvedName, msg),
         );
       } else {
@@ -197,7 +222,7 @@ void main(List<String> arguments) {
         imageFilename: pngFilename,
         imageWidth: imageWidth,
         imageHeight: imageHeight,
-        terrainTypes: terrainTypes,
+        terrainData: terrainData,
         warn: (msg) => _warn(resolvedName, msg),
       );
       final tsxFilename = '$resolvedName.tsx';
