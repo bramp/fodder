@@ -203,18 +203,18 @@ abstract class Soldier extends SpriteAnimationGroupComponent<SoldierState>
 
   /// Randomly swaps the dying animation from the available death variants.
   void _pickDeathVariant() {
-    final anims = <Map<Direction8, SpriteAnimation>>[
-      if (soldierAnimations.deathAnimations.isNotEmpty)
-        soldierAnimations.deathAnimations,
-      if (soldierAnimations.death2Animations.isNotEmpty)
-        soldierAnimations.death2Animations,
+    final variants = [
+      if (soldierAnimations.deathAnimations != null)
+        soldierAnimations.deathAnimations!,
+      if (soldierAnimations.death2Animations != null)
+        soldierAnimations.death2Animations!,
     ];
 
-    if (anims.isEmpty) return;
+    if (variants.isEmpty) return;
 
-    final chosen = anims[_random.nextInt(anims.length)];
-    final anim = chosen[facing] ?? chosen[Direction8.south];
-    if (anim != null && animations != null) {
+    final chosen = variants[_random.nextInt(variants.length)];
+    final anim = chosen[facing];
+    if (animations != null) {
       // Flame wraps animations in UnmodifiableMapView, so we must create a
       // new map with the chosen variant rather than modifying in place.
       animations = Map<SoldierState, SpriteAnimation>.of(animations!)
@@ -225,22 +225,18 @@ abstract class Soldier extends SpriteAnimationGroupComponent<SoldierState>
   /// Rebuilds the animation map based on the current [facing] direction.
   void updateAnimations() {
     animations = {
-      SoldierState.walking:
-          soldierAnimations.walkAnimations[facing] ??
-          soldierAnimations.walkAnimations[Direction8.south]!,
-      SoldierState.idle:
-          soldierAnimations.idleAnimations[facing] ??
-          soldierAnimations.idleAnimations[Direction8.south]!,
-      if (soldierAnimations.firingAnimations.containsKey(facing))
-        SoldierState.firing: soldierAnimations.firingAnimations[facing]!,
-      if (soldierAnimations.throwAnimations.containsKey(facing))
-        SoldierState.throwing: soldierAnimations.throwAnimations[facing]!,
-      if (soldierAnimations.proneAnimations.containsKey(facing))
-        SoldierState.prone: soldierAnimations.proneAnimations[facing]!,
-      if (soldierAnimations.swimAnimations.containsKey(facing))
-        SoldierState.swimming: soldierAnimations.swimAnimations[facing]!,
-      if (soldierAnimations.deathAnimations.containsKey(facing))
-        SoldierState.dying: soldierAnimations.deathAnimations[facing]!,
+      SoldierState.walking: soldierAnimations.walkAnimations[facing],
+      SoldierState.idle: soldierAnimations.idleAnimations[facing],
+      if (soldierAnimations.firingAnimations != null)
+        SoldierState.firing: soldierAnimations.firingAnimations![facing],
+      if (soldierAnimations.throwAnimations != null)
+        SoldierState.throwing: soldierAnimations.throwAnimations![facing],
+      if (soldierAnimations.proneAnimations != null)
+        SoldierState.prone: soldierAnimations.proneAnimations![facing],
+      if (soldierAnimations.swimAnimations != null)
+        SoldierState.swimming: soldierAnimations.swimAnimations![facing],
+      if (soldierAnimations.deathAnimations != null)
+        SoldierState.dying: soldierAnimations.deathAnimations![facing],
     };
   }
 

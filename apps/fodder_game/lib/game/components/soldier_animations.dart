@@ -85,45 +85,62 @@ class SoldierAnimations {
   /// Creates a [SoldierAnimations] from pre-built animation maps.
   ///
   /// Intended for testing; production code should use [load].
-  /// The [firingAnimations], [throwAnimations], and [deathAnimations] maps
-  /// default to empty when omitted, preserving backward compatibility with
-  /// existing tests.
+  /// Required maps must contain all 8 directions.
+  /// Optional maps (firing, throw, etc.) must either contain all 8 directions
+  /// or be empty (defaulting to null).
   SoldierAnimations.fromMaps({
-    required this.walkAnimations,
-    required this.idleAnimations,
-    this.firingAnimations = const {},
-    this.throwAnimations = const {},
-    this.proneAnimations = const {},
-    this.swimAnimations = const {},
-    this.deathAnimations = const {},
-    this.death2Animations = const {},
-  });
-
-  // TODO(bramp): Replace Map with List with fixed offsets.
+    required Map<Direction8, SpriteAnimation> walkAnimations,
+    required Map<Direction8, SpriteAnimation> idleAnimations,
+    Map<Direction8, SpriteAnimation> firingAnimations = const {},
+    Map<Direction8, SpriteAnimation> throwAnimations = const {},
+    Map<Direction8, SpriteAnimation> proneAnimations = const {},
+    Map<Direction8, SpriteAnimation> swimAnimations = const {},
+    Map<Direction8, SpriteAnimation> deathAnimations = const {},
+    Map<Direction8, SpriteAnimation> death2Animations = const {},
+  }) : walkAnimations = Directional.fromMap(walkAnimations),
+       idleAnimations = Directional.fromMap(idleAnimations),
+       firingAnimations = firingAnimations.isEmpty
+           ? null
+           : Directional.fromMap(firingAnimations),
+       throwAnimations = throwAnimations.isEmpty
+           ? null
+           : Directional.fromMap(throwAnimations),
+       proneAnimations = proneAnimations.isEmpty
+           ? null
+           : Directional.fromMap(proneAnimations),
+       swimAnimations = swimAnimations.isEmpty
+           ? null
+           : Directional.fromMap(swimAnimations),
+       deathAnimations = deathAnimations.isEmpty
+           ? null
+           : Directional.fromMap(deathAnimations),
+       death2Animations = death2Animations.isEmpty
+           ? null
+           : Directional.fromMap(death2Animations);
 
   /// Walk animations keyed by direction (3 frames each, looping).
-  final Map<Direction8, SpriteAnimation> walkAnimations;
+  final Directional<SpriteAnimation> walkAnimations;
 
   /// Idle animations keyed by direction (single frame, non-looping).
-  final Map<Direction8, SpriteAnimation> idleAnimations;
+  final Directional<SpriteAnimation> idleAnimations;
 
   /// Standing-with-gun (firing pose) keyed by direction (single frame).
-  final Map<Direction8, SpriteAnimation> firingAnimations;
+  final Directional<SpriteAnimation>? firingAnimations;
 
   /// Throw animations keyed by direction (3 frames each).
-  final Map<Direction8, SpriteAnimation> throwAnimations;
+  final Directional<SpriteAnimation>? throwAnimations;
 
   /// Prone (lying down) animations keyed by direction.
-  final Map<Direction8, SpriteAnimation> proneAnimations;
+  final Directional<SpriteAnimation>? proneAnimations;
 
   /// Swimming animations keyed by direction.
-  final Map<Direction8, SpriteAnimation> swimAnimations;
+  final Directional<SpriteAnimation>? swimAnimations;
 
   /// Death animations keyed by direction (1–2 frames, non-looping).
-  final Map<Direction8, SpriteAnimation> deathAnimations;
+  final Directional<SpriteAnimation>? deathAnimations;
 
   /// Death-2 variant animations keyed by direction (1–2 frames, non-looping).
-  final Map<Direction8, SpriteAnimation> death2Animations;
+  final Directional<SpriteAnimation>? death2Animations;
 
   /// Loads animations from the given atlas JSON and sprite sheet image.
   ///
@@ -190,12 +207,15 @@ class SoldierAnimations {
         '${walkPrefix}_$dirSuffix',
         _walkStepTime,
       );
-      if (walkFrames.isNotEmpty) {
-        walkAnims[dir] = SpriteAnimation(walkFrames);
-        idleAnims[dir] = SpriteAnimation(
-          [SpriteAnimationFrame(walkFrames.first.sprite, _idleStepTime)],
+      if (walkFrames.isEmpty) {
+        throw StateError(
+          'Missing walk animation for $dir ($walkPrefix)',
         );
       }
+      walkAnims[dir] = SpriteAnimation(walkFrames);
+      idleAnims[dir] = SpriteAnimation(
+        [SpriteAnimationFrame(walkFrames.first.sprite, _idleStepTime)],
+      );
 
       // --- Firing (standing-with-gun) ---
       final firingFrames = _loadFrames(
@@ -267,15 +287,27 @@ class SoldierAnimations {
       }
     }
 
+    Directional<SpriteAnimation>? toDir(Map<Direction8, SpriteAnimation> map) {
+      if (map.isEmpty) return null;
+      if (map.length != 8) {
+        throw StateError('Animation must have all 8 directions if any exist');
+      }
+      return Directional.fromMap(map);
+    }
+
     return SoldierAnimations._(
-      walkAnimations: walkAnims,
-      idleAnimations: idleAnims,
-      firingAnimations: firingAnims,
-      throwAnimations: throwAnims,
-      proneAnimations: proneAnims,
-      swimAnimations: swimAnims,
-      deathAnimations: deathAnims,
-      death2Animations: death2Anims,
+      walkAnimations: Directional(
+        Direction8.values.map((d) => walkAnims[d]!).toList(),
+      ),
+      idleAnimations: Directional(
+        Direction8.values.map((d) => idleAnims[d]!).toList(),
+      ),
+      firingAnimations: toDir(firingAnims),
+      throwAnimations: toDir(throwAnims),
+      proneAnimations: toDir(proneAnims),
+      swimAnimations: toDir(swimAnims),
+      deathAnimations: toDir(deathAnims),
+      death2Animations: toDir(death2Anims),
     );
   }
 
@@ -316,9 +348,7 @@ class SoldierAnimations {
 
   /// Returns the sprite size at 2× scale based on the first walk-south frame.
   Vector2 get scaledSize {
-    final anim = walkAnimations[Direction8.south];
-    if (anim == null) return Vector2.all(32);
-    final frame = anim.frames.first.sprite;
+    final frame = walkAnimations[Direction8.south].frames.first.sprite;
     return Vector2(
       frame.srcSize.x * _spriteScale,
       frame.srcSize.y * _spriteScale,
