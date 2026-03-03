@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import 'package:fodder_game/game/fodder_game.dart';
+import 'package:fodder_game/ui/debug_panel.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -17,12 +18,6 @@ void main() async {
   runApp(const MainApp());
 }
 
-/// Total number of maps available in Cannon Fodder 1.
-const _cf1Maps = 72;
-
-/// Total number of maps available in Cannon Fodder 2.
-const _cf2Maps = 72;
-
 class MainApp extends StatefulWidget {
   const MainApp({super.key});
 
@@ -33,6 +28,7 @@ class MainApp extends StatefulWidget {
 class _MainAppState extends State<MainApp> {
   final _game = FodderGame();
   String _currentMap = 'cf1/maps/mapm1.tmx';
+  bool _debugPanelOpen = false;
 
   @override
   Widget build(BuildContext context) {
@@ -42,105 +38,20 @@ class _MainAppState extends State<MainApp> {
         body: Stack(
           children: [
             GameWidget(game: _game),
-            Positioned(
-              top: 8,
-              right: 8,
-              child: Row(
-                children: [
-                  _DebugButton(
-                    onPressed: _game.toggleDebugMode,
-                  ),
-                  const SizedBox(width: 8),
-                  _LevelDropdown(
-                    currentMap: _currentMap,
-                    onChanged: (map) async {
-                      setState(() => _currentMap = map);
-                      await _game.loadMap(map);
-                    },
-                  ),
-                ],
-              ),
+            DebugPanel(
+              game: _game,
+              isOpen: _debugPanelOpen,
+              onToggle: () {
+                setState(() => _debugPanelOpen = !_debugPanelOpen);
+              },
+              currentMap: _currentMap,
+              onMapChanged: (map) async {
+                setState(() => _currentMap = map);
+                await _game.loadMap(map);
+              },
             ),
           ],
         ),
-      ),
-    );
-  }
-}
-
-class _LevelDropdown extends StatelessWidget {
-  const _LevelDropdown({
-    required this.currentMap,
-    required this.onChanged,
-  });
-
-  final String currentMap;
-  final ValueChanged<String> onChanged;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-      decoration: BoxDecoration(
-        color: Colors.black54,
-        borderRadius: BorderRadius.circular(8),
-      ),
-      child: DropdownButton<String>(
-        value: currentMap,
-        dropdownColor: Colors.black87,
-        style: const TextStyle(color: Colors.white, fontSize: 14),
-        underline: const SizedBox.shrink(),
-        icon: const Icon(Icons.arrow_drop_down, color: Colors.white),
-        items: [
-          const DropdownMenuItem(
-            enabled: false,
-            child: Text(
-              'Cannon Fodder 1',
-              style: TextStyle(fontWeight: FontWeight.bold, color: Colors.grey),
-            ),
-          ),
-          for (var i = 1; i <= _cf1Maps; i++)
-            DropdownMenuItem(
-              value: 'cf1/maps/mapm$i.tmx',
-              child: Text('Map $i'),
-            ),
-          const DropdownMenuItem(
-            enabled: false,
-            child: Text(
-              'Cannon Fodder 2',
-              style: TextStyle(fontWeight: FontWeight.bold, color: Colors.grey),
-            ),
-          ),
-          for (var i = 1; i <= _cf2Maps; i++)
-            DropdownMenuItem(
-              value: 'cf2/maps/mapm$i.tmx',
-              child: Text('Map $i'),
-            ),
-        ],
-        onChanged: (value) {
-          if (value != null) onChanged(value);
-        },
-      ),
-    );
-  }
-}
-
-class _DebugButton extends StatelessWidget {
-  const _DebugButton({required this.onPressed});
-
-  final VoidCallback onPressed;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.black54,
-        borderRadius: BorderRadius.circular(8),
-      ),
-      child: IconButton(
-        icon: const Icon(Icons.bug_report, color: Colors.white, size: 20),
-        tooltip: 'Toggle debug overlay',
-        onPressed: onPressed,
       ),
     );
   }

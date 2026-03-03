@@ -65,6 +65,12 @@ abstract class Soldier extends SpriteAnimationGroupComponent<SoldierState>
   /// Whether this soldier is still alive.
   bool isAlive = true;
 
+  /// Whether this soldier is invincible (immune to bullet damage).
+  ///
+  /// When true, bullet collisions are ignored. This is a cheat/debug
+  /// feature matching the original game's F9 key.
+  bool isInvincible = false;
+
   /// Whether this soldier is currently moving (affects dodge chance).
   bool isMoving = false;
 
@@ -142,6 +148,9 @@ abstract class Soldier extends SpriteAnimationGroupComponent<SoldierState>
 
     if (!isAlive) return;
     if (other is Bullet && other.faction == opposingFaction) {
+      // Invincibility cheat: ignore all incoming damage.
+      if (isInvincible) return;
+
       // Dodge mechanic (PLAYER.md §1.2): moving soldiers have a 1/8 chance
       // to dodge. Close-range bullets (age ≤ 0.24s) cannot be dodged.
       if (isMoving && other.age > config.dodgeMinBulletAge) {

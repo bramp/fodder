@@ -34,6 +34,23 @@ class FodderGame extends FlameGame
   /// Active enemy soldiers on the current map.
   final List<EnemySoldier> _enemies = [];
 
+  /// Unmodifiable view of active enemies (for debug stats).
+  List<EnemySoldier> get enemies =>
+      isLoaded ? List.unmodifiable(_enemies) : const [];
+
+  /// Number of bullets currently in-flight.
+  int get activeBulletCount =>
+      isLoaded ? world.children.whereType<Bullet>().length : 0;
+
+  /// Whether the player soldier is currently invincible.
+  bool get isPlayerInvincible => isLoaded && playerSoldier.isInvincible;
+
+  /// Toggles player invincibility (cheat).
+  set isPlayerInvincible(bool value) {
+    if (!isLoaded) return;
+    playerSoldier.isInvincible = value;
+  }
+
   /// Bullet sprites loaded from the copt atlas.
   late BulletSprites bulletSprites;
 
@@ -214,7 +231,23 @@ class FodderGame extends FlameGame
 
   /// Toggles the debug barrier overlay on/off.
   void toggleDebugMode() {
+    if (!isLoaded) return;
     _debugOverlay.isVisible = !_debugOverlay.isVisible;
+  }
+
+  /// Whether the debug terrain overlay is currently visible.
+  bool get isDebugOverlayVisible => isLoaded && _debugOverlay.isVisible;
+
+  /// Shows the debug terrain overlay.
+  void showDebugOverlay() {
+    if (!isLoaded) return;
+    _debugOverlay.isVisible = true;
+  }
+
+  /// Hides the debug terrain overlay.
+  void hideDebugOverlay() {
+    if (!isLoaded) return;
+    _debugOverlay.isVisible = false;
   }
 
   @override
