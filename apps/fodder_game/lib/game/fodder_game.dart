@@ -9,6 +9,7 @@ import 'package:fodder_game/game/components/bullet_sprites.dart';
 import 'package:fodder_game/game/components/debug_barrier_overlay.dart';
 import 'package:fodder_game/game/components/enemy_soldier.dart';
 import 'package:fodder_game/game/components/player_soldier.dart';
+import 'package:fodder_game/game/components/soldier.dart';
 import 'package:fodder_game/game/components/soldier_animations.dart';
 import 'package:fodder_game/game/map/level_map.dart';
 import 'package:fodder_game/game/models/squad.dart';
@@ -207,6 +208,7 @@ class FodderGame extends FlameGame
       maxLifetime: bullet.maxLifetime,
       walkabilityGrid: levelMap.walkabilityGrid,
     );
+    _applyBulletDebugMode(spawnedBullet);
     // ignore: discarded_futures, Bullet.onLoad is synchronous; safe to fire-and-forget.
     world.add(spawnedBullet);
   }
@@ -262,9 +264,12 @@ class FodderGame extends FlameGame
   }
 
   /// Toggles the debug barrier overlay on/off.
+  ///
+  /// Also enables/disables collision hitbox rendering on all soldiers.
   void toggleDebugMode() {
     if (!isLoaded) return;
     _debugOverlay.isVisible = !_debugOverlay.isVisible;
+    _syncSoldierDebugMode();
   }
 
   /// Whether the debug terrain overlay is currently visible.
@@ -274,12 +279,30 @@ class FodderGame extends FlameGame
   void showDebugOverlay() {
     if (!isLoaded) return;
     _debugOverlay.isVisible = true;
+    _syncSoldierDebugMode();
   }
 
   /// Hides the debug terrain overlay.
   void hideDebugOverlay() {
     if (!isLoaded) return;
     _debugOverlay.isVisible = false;
+    _syncSoldierDebugMode();
+  }
+
+  /// Sets `debugMode` on every soldier and its children to match overlay
+  /// visibility. Only the soldier itself shows coordinates; child hitboxes
+  /// have their coordinate text suppressed.
+  void _syncSoldierDebugMode() {
+    final visible = _debugOverlay.isVisible;
+    for (final soldier in world.children.whereType<Soldier>()) {
+      soldier.debugMode = visible;
+      for (final child in soldier.children) {
+        child.debugMode = visible;
+        if (child is PositionComponent) {
+          child.debugCoordinatesPrecision = null;
+        }
+      }
+    }
   }
 
   @override
@@ -423,7 +446,17 @@ class FodderGame extends FlameGame
       size: bulletSprites.scaledSize.clone(),
       walkabilityGrid: levelMap.walkabilityGrid,
     );
+    _applyBulletDebugMode(spawnedBullet);
     // ignore: discarded_futures, Bullet.onLoad is synchronous; safe to fire-and-forget.
     world.add(spawnedBullet);
+  }
+
+  /// Applies debug-mode settings to a newly spawned [bullet] so its hitbox
+  /// outline is visible when the debug overlay is active.
+  void _applyBulletDebugMode(Bullet bullet) {
+    if (!_debugOverlay.isVisible) return;
+    bullet
+      ..debugMode = true
+      ..debugCoordinatesPrecision = null;
   }
 }
