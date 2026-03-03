@@ -4,7 +4,7 @@
 /// enemies on the same map have varying aggression spread evenly across the
 /// range.
 ///
-/// See `docs/ENEMY_AI_SPEC.md` §4 for the original algorithm.
+/// See `docs/ENEMY_AI.md` §4 for the original algorithm.
 class AggressionAssigner {
   /// Creates an assigner that oscillates between [min] and [max].
   ///

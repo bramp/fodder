@@ -18,3 +18,5 @@ Features
 - [ ] Increase the drawing size, maybe to 4x. Or scale with the window (keeping a view window)
 - [ ] Add sound effects
 - [ ] Optionally show enemy detection radii in debug overlay
+- [ ] Add turning animation ENGINE.md 3.4 Turning
+- [ ] Can we reverse engineer the rank names PLAYER.md 5.2 Rank range - This might be easier found online?
