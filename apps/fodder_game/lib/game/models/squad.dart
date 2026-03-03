@@ -124,4 +124,13 @@ class Squad {
     rockets--;
     return true;
   }
+
+  /// Cycles the speed mode: halted → normal → running → halted.
+  void cycleSpeedMode() {
+    speedMode = switch (speedMode) {
+      SpeedMode.halted => SpeedMode.normal,
+      SpeedMode.normal => SpeedMode.running,
+      SpeedMode.running => SpeedMode.halted,
+    };
+  }
 }

@@ -8,6 +8,16 @@ import 'package:fodder_game/game/config/game_config.dart' as config;
 import 'package:fodder_game/game/systems/line_of_sight.dart';
 import 'package:fodder_game/game/systems/walkability_grid.dart';
 
+/// Terrain types that count as water for movement purposes.
+const Set<TerrainType> _waterTerrains = {
+  TerrainType.water,
+  TerrainType.waterEdge,
+  TerrainType.sink,
+};
+
+/// Offset (pixels) from soldier centre to bullet spawn point.
+const double _bulletSpawnOffset = 16;
+
 /// Internal AI states for enemy soldiers.
 enum EnemyAiState {
   /// Standing still, scanning for players.
@@ -50,9 +60,6 @@ class EnemySoldier extends Soldier {
   /// time. Set at spawn time for staggered fire timers (Step 9).
   double initialFireDelay = 0;
 
-  /// The walkability grid used for line-of-sight checks.
-  WalkabilityGrid? walkabilityGrid;
-
   /// Live player soldiers to target.
   List<PlayerSoldier> players = [];
 
@@ -78,7 +85,10 @@ class EnemySoldier extends Soldier {
   void Function(Bullet bullet)? onFireBullet;
 
   /// Movement speed derived from aggression: `(12 + aggression) * 5`, capped.
+  ///
+  /// When on water terrain, speed is forced to [config.playerSpeedWater].
   double get _speed {
+    if (isInWater) return config.playerSpeedWater;
     final raw = (config.enemySpeedBase + aggression) * config.speedScale;
     return raw.clamp(0, config.enemySpeedMax);
   }
@@ -96,6 +106,9 @@ class EnemySoldier extends Soldier {
     super.update(dt);
 
     if (!isAlive) return;
+
+    // Update water state from terrain.
+    _updateTerrainState();
 
     // Consume initial fire delay.
     if (!_initialDelayConsumed) {
@@ -164,7 +177,7 @@ class EnemySoldier extends Soldier {
         facing = newFacing;
         updateAnimations();
       }
-      setState(SoldierState.walking);
+      setState(isInWater ? SoldierState.swimming : SoldierState.walking);
     }
   }
 
@@ -194,15 +207,17 @@ class EnemySoldier extends Soldier {
 
     final direction = toTarget.normalized();
     final bulletSpeed = 60.0 + aggression;
-    // Bullet lifetime in ticks → seconds: ((aggression >> 3) + 8) * 0.05
+    // Bullet lifetime in ticks → seconds.
     final lifetimeTicks = ((aggression >> 3) + 8).clamp(8, 16);
-    final bulletRange = bulletSpeed * lifetimeTicks * 0.05 * 5;
+    final lifetimeSeconds = lifetimeTicks * config.tickDuration;
+    final bulletRange = bulletSpeed * config.speedScale * lifetimeSeconds;
 
     final bullet = Bullet(
-      position: position.clone(),
-      velocity: direction * bulletSpeed * 5, // Convert tick speed to px/s
+      position: position + direction * _bulletSpawnOffset,
+      velocity: direction * bulletSpeed * config.speedScale,
       faction: Faction.enemy,
       maxRange: bulletRange,
+      maxLifetime: lifetimeSeconds,
     );
 
     onFireBullet?.call(bullet);
@@ -251,7 +266,8 @@ class EnemySoldier extends Soldier {
   double get effectiveBulletRange {
     final bulletSpeed = 60.0 + aggression;
     final lifetimeTicks = ((aggression >> 3) + 8).clamp(8, 16);
-    return bulletSpeed * lifetimeTicks * 0.05 * 5;
+    final lifetimeSeconds = lifetimeTicks * config.tickDuration;
+    return bulletSpeed * config.speedScale * lifetimeSeconds;
   }
 
   /// Returns `true` if this enemy can fire at a target at [distance].
@@ -287,12 +303,24 @@ class EnemySoldier extends Soldier {
 
     switch (newState) {
       case EnemyAiState.idle:
-        setState(SoldierState.idle);
+        setState(isInWater ? SoldierState.swimming : SoldierState.idle);
       case EnemyAiState.chasing:
-        setState(SoldierState.walking);
+        setState(isInWater ? SoldierState.swimming : SoldierState.walking);
       case EnemyAiState.firing:
         setState(SoldierState.firing);
         _fireTimer = 0; // Fire immediately on entering firing state.
+    }
+  }
+
+  /// Updates [isInWater] based on the terrain under the soldier.
+  void _updateTerrainState() {
+    final terrain = terrainUnderFoot();
+    final wasInWater = isInWater;
+    isInWater = _waterTerrains.contains(terrain);
+
+    // If water state changed, rebuild animations so swimming is available.
+    if (isInWater != wasInWater) {
+      updateAnimations();
     }
   }
 }

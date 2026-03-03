@@ -21,13 +21,17 @@ class _FakeImage extends Fake implements Image {
   int get height => 1;
 }
 
-SoldierAnimations _buildFakeAnims({bool includeCombatAnims = false}) {
+SoldierAnimations _buildFakeAnims({
+  bool includeCombatAnims = false,
+  bool includeSwimAnims = false,
+}) {
   final image = _FakeImage();
   final walkAnims = <Direction8, SpriteAnimation>{};
   final idleAnims = <Direction8, SpriteAnimation>{};
   final firingAnims = <Direction8, SpriteAnimation>{};
   final throwAnims = <Direction8, SpriteAnimation>{};
   final deathAnims = <Direction8, SpriteAnimation>{};
+  final swimAnims = <Direction8, SpriteAnimation>{};
 
   for (final dir in Direction8.values) {
     final sprite = Sprite(image, srcSize: Vector2.all(16));
@@ -54,6 +58,13 @@ SoldierAnimations _buildFakeAnims({bool includeCombatAnims = false}) {
         stepTime: 0.2,
       );
     }
+
+    if (includeSwimAnims) {
+      swimAnims[dir] = SpriteAnimation.spriteList(
+        [sprite, sprite],
+        stepTime: 0.2,
+      );
+    }
   }
 
   return SoldierAnimations.fromMaps(
@@ -62,6 +73,7 @@ SoldierAnimations _buildFakeAnims({bool includeCombatAnims = false}) {
     firingAnimations: firingAnims,
     throwAnimations: throwAnims,
     deathAnimations: deathAnims,
+    swimAnimations: swimAnims,
   );
 }
 
@@ -325,6 +337,107 @@ void main() {
 
       // Should not have moved.
       expect(enemy.position.x, closeTo(posBefore.x, 0.01));
+    });
+  });
+
+  group('EnemySoldier water mechanics', () {
+    /// Grid with water in the right half (tiles 2–3).
+    WalkabilityGrid waterGrid() {
+      return WalkabilityGrid.fromData([
+        [
+          TerrainType.land,
+          TerrainType.land,
+          TerrainType.water,
+          TerrainType.water,
+        ],
+        [
+          TerrainType.land,
+          TerrainType.land,
+          TerrainType.water,
+          TerrainType.water,
+        ],
+        [
+          TerrainType.land,
+          TerrainType.land,
+          TerrainType.land,
+          TerrainType.land,
+        ],
+        [
+          TerrainType.land,
+          TerrainType.land,
+          TerrainType.land,
+          TerrainType.land,
+        ],
+      ]);
+    }
+
+    test('speed is forced to water speed on water tile', () {
+      final player = _makePlayer()..position = Vector2(100, 16);
+      final enemy =
+          EnemySoldier(
+              soldierAnimations: _buildFakeAnims(
+                includeCombatAnims: true,
+                includeSwimAnims: true,
+              ),
+            )
+            ..position =
+                Vector2(80, 16) // tile (2, 0) = water
+            ..players = [player]
+            ..walkabilityGrid = waterGrid()
+            ..updateAnimations()
+            ..current = SoldierState.idle
+            // Update to detect terrain.
+            ..update(0.01);
+
+      expect(enemy.isInWater, isTrue);
+    });
+
+    test('uses swimming state when chasing on water', () {
+      final player = _makePlayer()..position = Vector2(100, 16);
+      final enemy =
+          EnemySoldier(
+              soldierAnimations: _buildFakeAnims(
+                includeCombatAnims: true,
+                includeSwimAnims: true,
+              ),
+            )
+            ..position =
+                Vector2(80, 16) // tile (2, 0) = water
+            ..players = [player]
+            ..walkabilityGrid = waterGrid()
+            ..updateAnimations()
+            ..current = SoldierState.idle
+            // Tick to detect and start chasing (on water).
+            ..update(0.1);
+
+      expect(enemy.aiState, EnemyAiState.chasing);
+      expect(enemy.current, SoldierState.swimming);
+    });
+
+    test('isInWater resets when moving to land', () {
+      final player = _makePlayer()..position = Vector2(16, 16);
+      final enemy =
+          EnemySoldier(
+              soldierAnimations: _buildFakeAnims(
+                includeCombatAnims: true,
+                includeSwimAnims: true,
+              ),
+            )
+            ..position =
+                Vector2(80, 16) // water
+            ..players = [player]
+            ..walkabilityGrid = waterGrid()
+            ..updateAnimations()
+            ..current = SoldierState.idle
+            ..update(0.1);
+
+      expect(enemy.isInWater, isTrue);
+
+      // Force position to land tile.
+      enemy
+        ..position = Vector2(16, 16)
+        ..update(0.1);
+      expect(enemy.isInWater, isFalse);
     });
   });
 }

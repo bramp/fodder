@@ -7,6 +7,8 @@ import 'package:fodder_game/game/components/bullet.dart';
 import 'package:fodder_game/game/components/direction8.dart';
 import 'package:fodder_game/game/components/soldier_animations.dart';
 import 'package:fodder_game/game/config/game_config.dart' as config;
+import 'package:fodder_game/game/map/level_map.dart';
+import 'package:fodder_game/game/systems/walkability_grid.dart';
 
 /// The high-level state of a soldier.
 enum SoldierState {
@@ -66,8 +68,16 @@ abstract class Soldier extends SpriteAnimationGroupComponent<SoldierState>
   /// Whether this soldier is currently moving (affects dodge chance).
   bool isMoving = false;
 
-  /// Counts down after death; when it reaches zero the component is removed.
-  // TODO(bramp): Consider leaving a dead body forever
+  /// Whether the death sequence (animation + fade) has finished.
+  ///
+  /// Once true the corpse stays on screen but no longer updates.
+  bool _deathComplete = false;
+
+  /// Whether this soldier's death sequence has finished and the corpse is
+  /// frozen in place.
+  bool get isCorpse => _deathComplete;
+
+  /// Counts down after death; when it reaches zero the corpse is finalised.
   double _deathTimer = 0;
 
   /// Random number generator for death variant selection and dodge.
@@ -87,6 +97,27 @@ abstract class Soldier extends SpriteAnimationGroupComponent<SoldierState>
 
   /// The [Faction] that opposes this soldier (bullets from this faction hurt).
   Faction get opposingFaction;
+
+  /// The walkability grid used for terrain queries (water, quicksand, etc.).
+  WalkabilityGrid? walkabilityGrid;
+
+  /// Whether this soldier is currently standing on a water tile.
+  ///
+  /// Updated each frame by subclasses calling [terrainUnderFoot].
+  bool isInWater = false;
+
+  /// Returns the [TerrainType] under this soldier's current position.
+  ///
+  /// Uses tile-level terrain lookup. Returns [TerrainType.land] when no
+  /// walkability grid is available.
+  TerrainType terrainUnderFoot() {
+    final grid = walkabilityGrid;
+    if (grid == null) return TerrainType.land;
+
+    final tileX = (position.x / LevelMap.destTileSize).floor();
+    final tileY = (position.y / LevelMap.destTileSize).floor();
+    return grid.terrainAt(tileX, tileY);
+  }
 
   @override
   Future<void> onLoad() async {
@@ -129,9 +160,16 @@ abstract class Soldier extends SpriteAnimationGroupComponent<SoldierState>
     super.update(dt);
 
     if (!isAlive) {
+      if (_deathComplete) return; // Corpse — nothing more to do.
+
       _deathTimer -= dt;
       if (_deathTimer <= 0) {
-        removeFromParent();
+        // Death sequence finished — freeze the corpse in place.
+        opacity = 0;
+        _deathComplete = true;
+
+        // Remove the collision hitbox so corpses don't interact with bullets.
+        children.whereType<RectangleHitbox>().forEach(remove);
         return;
       }
 
@@ -207,9 +245,28 @@ abstract class Soldier extends SpriteAnimationGroupComponent<SoldierState>
   }
 
   /// Sets the current state if it has changed.
+  ///
+  /// If the requested [state] has no loaded animation, falls back to the
+  /// closest equivalent that does. This prevents assertion failures when
+  /// e.g. swimming animations are not available.
   void setState(SoldierState state) {
-    if (current != state) {
+    if (current == state) return;
+
+    // If the animation exists, use it directly.
+    if (animations?.containsKey(state) ?? false) {
       current = state;
+      return;
+    }
+
+    // Fallback mapping when animation is missing.
+    // TODO(bramp): Should we allow fallbacks? or fail the game?
+    final fallback = switch (state) {
+      SoldierState.swimming => SoldierState.walking,
+      SoldierState.prone => SoldierState.idle,
+      _ => null,
+    };
+    if (fallback != null && (animations?.containsKey(fallback) ?? false)) {
+      current = fallback;
     }
   }
 }

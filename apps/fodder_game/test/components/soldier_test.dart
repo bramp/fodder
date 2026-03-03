@@ -8,6 +8,7 @@ import 'package:fodder_game/game/components/bullet.dart';
 import 'package:fodder_game/game/components/direction8.dart';
 import 'package:fodder_game/game/components/soldier.dart';
 import 'package:fodder_game/game/components/soldier_animations.dart';
+import 'package:fodder_game/game/systems/walkability_grid.dart';
 
 /// A minimal concrete [Soldier] subclass for testing.
 class _TestSoldier extends Soldier {
@@ -345,10 +346,10 @@ void main() {
 
       // Should be fading — opacity < 1.
       expect(soldier.opacity, lessThan(1.0));
-      expect(soldier.opacity, greaterThan(0.0));
+      expect(soldier.opacity, greaterThan(0));
     });
 
-    test('opacity reaches zero at end of death', () {
+    test('opacity reaches zero at end of death sequence', () {
       final soldier =
           _TestSoldier(
               soldierAnimations: _buildFakeAnims(includeCombatAnims: true),
@@ -356,10 +357,93 @@ void main() {
             ..updateAnimations()
             ..current = SoldierState.idle
             ..die()
-            // Advance to just before full removal (1.0 s total - epsilon).
-            ..update(0.99);
+            // Advance past the full death sequence (1.0 s total).
+            ..update(1.1);
 
-      expect(soldier.opacity, closeTo(0, 0.1));
+      expect(soldier.opacity, 0);
+    });
+  });
+
+  group('Soldier corpse persistence', () {
+    test('soldier becomes corpse after death sequence', () {
+      final soldier =
+          _TestSoldier(
+              soldierAnimations: _buildFakeAnims(includeCombatAnims: true),
+            )
+            ..updateAnimations()
+            ..current = SoldierState.idle
+            ..die()
+            ..update(1.5); // Well past death sequence.
+
+      expect(soldier.isCorpse, isTrue);
+      expect(soldier.isAlive, isFalse);
+    });
+
+    test('soldier is not a corpse during death animation', () {
+      final soldier =
+          _TestSoldier(
+              soldierAnimations: _buildFakeAnims(includeCombatAnims: true),
+            )
+            ..updateAnimations()
+            ..current = SoldierState.idle
+            ..die()
+            ..update(0.3); // Mid death animation.
+
+      expect(soldier.isCorpse, isFalse);
+    });
+
+    test('corpse stops updating (no further opacity changes)', () {
+      final soldier =
+          _TestSoldier(
+              soldierAnimations: _buildFakeAnims(includeCombatAnims: true),
+            )
+            ..updateAnimations()
+            ..current = SoldierState.idle
+            ..die()
+            ..update(1.5); // Become corpse.
+
+      expect(soldier.isCorpse, isTrue);
+      final opacityBefore = soldier.opacity;
+
+      // Further updates should not change anything.
+      soldier.update(1);
+      expect(soldier.opacity, opacityBefore);
+    });
+
+    test('isCorpse is false for living soldier', () {
+      final soldier = _TestSoldier(
+        soldierAnimations: _buildFakeAnims(),
+      );
+
+      expect(soldier.isCorpse, isFalse);
+    });
+  });
+
+  group('Soldier terrain awareness', () {
+    test('terrainUnderFoot returns land when no grid', () {
+      final soldier = _TestSoldier(soldierAnimations: _buildFakeAnims())
+        ..position = Vector2(50, 50);
+
+      expect(soldier.terrainUnderFoot(), TerrainType.land);
+    });
+
+    test('terrainUnderFoot returns water when on water tile', () {
+      final grid = WalkabilityGrid.fromData([
+        [TerrainType.land, TerrainType.water],
+        [TerrainType.land, TerrainType.land],
+      ]);
+
+      // destTileSize is 32, so tile (1,0) starts at x=32.
+      final soldier = _TestSoldier(soldierAnimations: _buildFakeAnims())
+        ..walkabilityGrid = grid
+        ..position = Vector2(48, 16); // tile (1, 0)
+
+      expect(soldier.terrainUnderFoot(), TerrainType.water);
+    });
+
+    test('isInWater defaults to false', () {
+      final soldier = _TestSoldier(soldierAnimations: _buildFakeAnims());
+      expect(soldier.isInWater, isFalse);
     });
   });
 

@@ -79,7 +79,7 @@ Legend: ✅ = implemented, 🔶 = partial, ❌ = not started
 - [x] Halted/slow: 8 (mode 0) → 40 px/s
 - [x] Normal walk: 16 (mode 1) → 80 px/s
 - [x] Running (default): 24 (mode 2) → 120 px/s
-- [ ] In water/sinking: forced to 6 → 30 px/s (constant defined, not wired)
+- [x] In water/sinking: forced to 6 → 30 px/s
 - [x] Speed modes switchable per squad (starts at mode 2 = running)
 
 ### 2.4 Controls
@@ -264,8 +264,8 @@ Legend: ✅ = implemented, 🔶 = partial, ❌ = not started
 - [ ] `rocky` (type 1): elevate soldier height (toggle 0→1→2)
 - [ ] `rocky2` (type 2): elevate height up to 6
 - [ ] `quickSand` (type 4): movement penalty (`field_50 = 3`)
-- [ ] `waterEdge` (type 5): heavier movement penalty (`field_50 = 6`)
-- [ ] `water` (type 6): in-water flag, speed → 6, natives immune
+- [x] `waterEdge` (type 5): heavier movement penalty (`field_50 = 6`)
+- [x] `water` (type 6): in-water flag, speed → 6, natives immune
 - [ ] `snow` (type 7): reduce unit speed
 - [ ] `quickSandEdge` (type 8): 1/64 chance per tick of slide animation
 - [ ] `drop` (type 9): increment fall counter
@@ -273,12 +273,12 @@ Legend: ✅ = implemented, 🔶 = partial, ❌ = not started
 - [ ] `sink` (type 11): human sinking
 
 ### 4.2 Water Mechanics
-- [ ] In-water flag (`field_4F = -1`)
-- [ ] All units in water have speed forced to 6
+- [x] In-water flag (`field_4F = -1`)
+- [x] All units in water have speed forced to 6
 - [ ] Natives immune to drowning
 - [ ] Soldiers sink gradually (`field_52` increases)
 - [ ] At `field_52 ≥ 5`, dodge roll vs bullets
-- [ ] Swimming animation (8 dirs)
+- [x] Swimming animation (8 dirs)
 
 ### 4.3 Terrain Vehicle Effects
 - [ ] Tanks cannot traverse Water or QuickSand tiles
@@ -418,8 +418,8 @@ Legend: ✅ = implemented, 🔶 = partial, ❌ = not started
 - [ ] Sprite priority system matching original allocation zones
 
 ### 5.6 Input
-- [ ] Right-click on web (context menu blocks it)
-- [ ] Keyboard shortcuts (squad switching, speed modes)
+- [x] Right-click on web (context menu blocks it)
+- [x] Keyboard shortcuts (squad switching, speed modes)
 
 ---
 
@@ -427,11 +427,15 @@ Legend: ✅ = implemented, 🔶 = partial, ❌ = not started
 
 - [ ] Clicking unwalkable area should path to nearest walkable cell
 - [ ] Z-order: sprites should sort by Y position (south on top)
-- [ ] Right-click does not work in web build (browser context menu)
-- [ ] When a solider dies, their corpse should remain
-- [ ] The bullets coming from the enemeires start at the wrong position relative to the enermy sprite
+- [ ] When a solider dies, their corpse should remain visible.
+- [x] The bullets coming from the enemeires start at the wrong position relative to the enermy sprite
+- [x] When the player fire, they squat, which seems wrong.
+- [x] The bullets go though trees, etc
+- [x] The bullets seem to go forever
 
 ## 7. Other
 
--- [ ] Change path finding to consider cost of different terrain
--- [ ] Optionally show enemy detection radii in debug overlay
+- [ ] Change path finding to consider cost of different terrain
+- [ ] Optionally show enemy detection radii in debug overlay
+- [ ] Can debug overlay work like the Tiles, so its cheaper to render
+- [ ] Add loading screen (and pre-loading on html page)

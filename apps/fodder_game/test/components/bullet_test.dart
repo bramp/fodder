@@ -2,6 +2,7 @@ import 'package:flame/components.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'package:fodder_game/game/components/bullet.dart';
+import 'package:fodder_game/game/systems/walkability_grid.dart';
 
 void main() {
   group('Bullet', () {
@@ -88,6 +89,56 @@ void main() {
     test('has player and enemy values', () {
       expect(Faction.values, contains(Faction.player));
       expect(Faction.values, contains(Faction.enemy));
+    });
+  });
+
+  group('Bullet terrain collision', () {
+    // Each tile = 32px, sub-tile = 4px. A 2×2 tile grid:
+    //   (0,0)=land, (1,0)=block
+    //   (0,1)=land, (1,1)=land
+    WalkabilityGrid blockGrid() {
+      return WalkabilityGrid.fromData([
+        [TerrainType.land, TerrainType.block],
+        [TerrainType.land, TerrainType.land],
+      ]);
+    }
+
+    test('bullet is removed when entering blocked terrain', () {
+      final grid = blockGrid();
+      // Start on land (x=16), moving east toward block tile (x≥32).
+      final bullet = Bullet(
+        position: Vector2(16, 16),
+        velocity: Vector2(500, 0),
+        faction: Faction.player,
+        walkabilityGrid: grid,
+      )..update(0.1); // moves 50px east → x=66, deep into block tile
+
+      // Bullet detects blocked terrain and marks itself destroyed.
+      expect(bullet.isDestroyed, isTrue);
+    });
+
+    test('bullet survives on walkable terrain', () {
+      final grid = blockGrid();
+      // Start on land, move south (stays in land tiles).
+      final bullet = Bullet(
+        position: Vector2(16, 16),
+        velocity: Vector2(0, 50),
+        faction: Faction.player,
+        walkabilityGrid: grid,
+      )..update(0.1);
+
+      expect(bullet.isDestroyed, isFalse);
+    });
+
+    test('bullet without grid ignores terrain', () {
+      // No walkabilityGrid → bullet cannot check terrain.
+      final bullet = Bullet(
+        position: Vector2(50, 16),
+        velocity: Vector2(100, 0),
+        faction: Faction.player,
+      )..update(0.1);
+
+      expect(bullet.isDestroyed, isFalse);
     });
   });
 }

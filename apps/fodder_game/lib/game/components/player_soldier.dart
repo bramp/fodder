@@ -7,10 +7,13 @@ import 'package:fodder_game/game/config/game_config.dart' as config;
 import 'package:fodder_game/game/config/weapon_data.dart';
 import 'package:fodder_game/game/models/mission_troop.dart';
 import 'package:fodder_game/game/models/squad.dart';
+import 'package:fodder_game/game/systems/walkability_grid.dart';
 
-/// Duration (seconds) the player holds the firing pose before returning
-/// to the previous state.
-const double firingHoldDuration = config.playerFiringHoldDuration;
+/// Offset (pixels) from soldier centre to bullet spawn point.
+///
+/// Approximately half the sprite size at 2× scale, so bullets appear to
+/// leave from the edge of the sprite rather than the centre.
+const double _bulletSpawnOffset = 16;
 
 /// Default bullet speed when no troop data is available (pixels/second).
 const double playerBulletSpeed = config.defaultPlayerBulletSpeed;
@@ -41,10 +44,13 @@ class PlayerSoldier extends Soldier {
 
   /// Movement speed in pixels per second.
   ///
-  /// Derived from the squad's speed mode, or [config.playerSpeedNormal]
-  /// if no squad is assigned.
-  double get speed =>
-      squad?.speedMode.pixelsPerSecond ?? config.playerSpeedNormal;
+  /// When on water terrain, speed is forced to [config.playerSpeedWater]
+  /// regardless of squad speed mode. Otherwise derived from the squad's
+  /// speed mode, or [config.playerSpeedNormal] if no squad is assigned.
+  double get speed {
+    if (isInWater) return config.playerSpeedWater;
+    return squad?.speedMode.pixelsPerSecond ?? config.playerSpeedNormal;
+  }
 
   /// Weapon stats for this soldier (based on rank).
   WeaponStats get weaponStats => troop?.weaponStats ?? fallbackWeaponStats(0);
@@ -53,20 +59,14 @@ class PlayerSoldier extends Soldier {
   /// `_path.first` and removes it when reached.
   final List<Vector2> _path = [];
 
-  /// Whether the soldier is currently in a firing hold.
-  bool _isFiring = false;
-
-  /// Countdown timer for the firing hold duration.
-  double _firingTimer = 0;
-
-  /// The state to return to after the firing hold ends.
-  SoldierState _preFireState = SoldierState.idle;
+  /// Countdown timer for fire cooldown between shots.
+  double _fireCooldownTimer = 0;
 
   /// The current list of path waypoints (read-only view, for debug overlay).
   List<Vector2> get currentPath => List.unmodifiable(_path);
 
-  /// Whether the soldier is currently in a firing hold.
-  bool get isFiring => _isFiring;
+  /// Whether the soldier is currently in a fire cooldown.
+  bool get isFiring => _fireCooldownTimer > 0;
 
   @override
   void update(double dt) {
@@ -78,16 +78,12 @@ class PlayerSoldier extends Soldier {
       return;
     }
 
-    // Handle firing hold countdown.
-    if (_isFiring) {
-      isMoving = false;
-      _firingTimer -= dt;
-      if (_firingTimer <= 0) {
-        _isFiring = false;
-        // Return to previous state.
-        setState(_path.isNotEmpty ? SoldierState.walking : _preFireState);
-      }
-      return; // Don't move while firing.
+    // Check terrain under the soldier for water effects.
+    _updateTerrainState();
+
+    // Tick fire cooldown.
+    if (_fireCooldownTimer > 0) {
+      _fireCooldownTimer -= dt;
     }
 
     if (_path.isEmpty) {
@@ -107,7 +103,7 @@ class PlayerSoldier extends Soldier {
 
       if (_path.isEmpty) {
         isMoving = false;
-        setState(SoldierState.idle);
+        setState(isInWater ? SoldierState.swimming : SoldierState.idle);
       }
     } else {
       // Move toward waypoint.
@@ -122,39 +118,48 @@ class PlayerSoldier extends Soldier {
         updateAnimations();
       }
 
-      setState(SoldierState.walking);
+      setState(isInWater ? SoldierState.swimming : SoldierState.walking);
+    }
+  }
+
+  /// Updates [isInWater] based on the terrain under the soldier.
+  void _updateTerrainState() {
+    final terrain = terrainUnderFoot();
+    final wasInWater = isInWater;
+    isInWater =
+        terrain == TerrainType.water ||
+        terrain == TerrainType.waterEdge ||
+        terrain == TerrainType.sink;
+
+    // If water state changed, rebuild animations so swimming is available.
+    if (isInWater != wasInWater) {
+      updateAnimations();
     }
   }
 
   /// Fires a bullet toward [targetWorld].
   ///
-  /// The soldier turns to face the target, enters the firing pose for
-  /// [firingHoldDuration] seconds (during which movement is paused), and
-  /// returns a [Bullet] that the caller should add to the world.
+  /// Returns a [Bullet] that the caller should add to the world, or `null`
+  /// if the soldier is dead or still on cooldown.
   ///
-  /// Returns `null` if the soldier is dead or already firing.
+  /// The soldier does **not** change animation or facing direction; in the
+  /// original Cannon Fodder the player keeps walking while firing.
   Bullet? fire(Vector2 targetWorld) {
-    if (!isAlive || _isFiring) return null;
+    if (!isAlive || isFiring) return null;
 
     // Calculate direction from soldier to target.
     final delta = targetWorld - position;
     if (delta.isZero()) return null;
 
-    // Turn to face the target.
-    facing = Direction8.fromVector(delta.x, delta.y);
-    updateAnimations();
+    // Start fire cooldown.
+    _fireCooldownTimer = weaponStats.cooldown;
 
-    // Enter firing hold.
-    _preFireState = _path.isNotEmpty ? SoldierState.walking : SoldierState.idle;
-    _isFiring = true;
-    _firingTimer = firingHoldDuration;
-    setState(SoldierState.firing);
-
-    // Create the bullet using rank-based weapon stats.
+    // Create the bullet using rank-based weapon stats, spawning slightly
+    // ahead of the soldier centre so it appears from the sprite edge.
     final stats = weaponStats;
     final direction = delta.normalized();
     return Bullet(
-      position: position.clone(),
+      position: position + direction * _bulletSpawnOffset,
       velocity: direction * stats.bulletSpeed,
       faction: Faction.player,
       maxRange: stats.range,

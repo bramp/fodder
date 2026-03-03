@@ -166,4 +166,30 @@ void main() {
       expect(squad.hasRockets, isFalse);
     });
   });
+
+  group('Squad.cycleSpeedMode', () {
+    test('cycles halted → normal', () {
+      final squad = Squad(speedMode: SpeedMode.halted)..cycleSpeedMode();
+      expect(squad.speedMode, SpeedMode.normal);
+    });
+
+    test('cycles normal → running', () {
+      final squad = Squad(speedMode: SpeedMode.normal)..cycleSpeedMode();
+      expect(squad.speedMode, SpeedMode.running);
+    });
+
+    test('cycles running → halted', () {
+      final squad = Squad()..cycleSpeedMode(); // default is running
+      expect(squad.speedMode, SpeedMode.halted);
+    });
+
+    test('full cycle returns to original', () {
+      final squad =
+          Squad() // running
+            ..cycleSpeedMode() // halted
+            ..cycleSpeedMode() // normal
+            ..cycleSpeedMode(); // running
+      expect(squad.speedMode, SpeedMode.running);
+    });
+  });
 }

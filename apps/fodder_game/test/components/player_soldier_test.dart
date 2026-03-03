@@ -8,7 +8,9 @@ import 'package:fodder_game/game/components/direction8.dart';
 import 'package:fodder_game/game/components/player_soldier.dart';
 import 'package:fodder_game/game/components/soldier.dart';
 import 'package:fodder_game/game/components/soldier_animations.dart';
+import 'package:fodder_game/game/config/game_config.dart' as config;
 import 'package:fodder_game/game/config/weapon_data.dart';
+import 'package:fodder_game/game/systems/walkability_grid.dart';
 
 /// Minimal fake [Image] for testing (1×1 pixel).
 class _FakeImage extends Fake implements Image {
@@ -20,13 +22,17 @@ class _FakeImage extends Fake implements Image {
 }
 
 /// Builds a fake [SoldierAnimations] with 1×1 transparent sprites.
-SoldierAnimations _buildFakeAnims({bool includeCombatAnims = false}) {
+SoldierAnimations _buildFakeAnims({
+  bool includeCombatAnims = false,
+  bool includeSwimAnims = false,
+}) {
   final image = _FakeImage();
   final walkAnims = <Direction8, SpriteAnimation>{};
   final idleAnims = <Direction8, SpriteAnimation>{};
   final firingAnims = <Direction8, SpriteAnimation>{};
   final throwAnims = <Direction8, SpriteAnimation>{};
   final deathAnims = <Direction8, SpriteAnimation>{};
+  final swimAnims = <Direction8, SpriteAnimation>{};
 
   for (final dir in Direction8.values) {
     final sprite = Sprite(image, srcSize: Vector2.all(16));
@@ -53,6 +59,13 @@ SoldierAnimations _buildFakeAnims({bool includeCombatAnims = false}) {
         stepTime: 0.2,
       );
     }
+
+    if (includeSwimAnims) {
+      swimAnims[dir] = SpriteAnimation.spriteList(
+        [sprite, sprite],
+        stepTime: 0.2,
+      );
+    }
   }
 
   return SoldierAnimations.fromMaps(
@@ -61,6 +74,7 @@ SoldierAnimations _buildFakeAnims({bool includeCombatAnims = false}) {
     firingAnimations: firingAnims,
     throwAnimations: throwAnims,
     deathAnimations: deathAnims,
+    swimAnimations: swimAnims,
   );
 }
 
@@ -149,10 +163,11 @@ void main() {
       expect(bullet!.faction, Faction.player);
     });
 
-    test('bullet starts at soldier position', () {
+    test('bullet starts offset from soldier position', () {
+      // Target to the east → offset is 16px east.
       final bullet = soldier.fire(Vector2(200, 100));
 
-      expect(bullet!.position.x, closeTo(100, 0.01));
+      expect(bullet!.position.x, closeTo(116, 0.01));
       expect(bullet.position.y, closeTo(100, 0.01));
     });
 
@@ -173,23 +188,19 @@ void main() {
       expect(bullet.velocity.y, closeTo(expectedSpeed, 0.1));
     });
 
-    test('sets soldier to firing state', () {
+    test('does not change soldier animation state', () {
       soldier.fire(Vector2(200, 100));
 
-      expect(soldier.current, SoldierState.firing);
+      expect(soldier.current, SoldierState.idle);
       expect(soldier.isFiring, isTrue);
     });
 
-    test('updates facing direction toward target', () {
-      soldier.fire(Vector2(200, 100)); // East
+    test('does not change facing direction', () {
+      soldier
+        ..facing = Direction8.south
+        ..fire(Vector2(200, 100)); // East target
 
-      expect(soldier.facing, Direction8.east);
-    });
-
-    test('updates facing direction toward target (north)', () {
-      soldier.fire(Vector2(100, 0)); // North
-
-      expect(soldier.facing, Direction8.north);
+      expect(soldier.facing, Direction8.south);
     });
 
     test('returns null when dead', () {
@@ -199,7 +210,7 @@ void main() {
       expect(bullet, isNull);
     });
 
-    test('returns null when already firing', () {
+    test('returns null when on cooldown', () {
       soldier.fire(Vector2(200, 100));
       final secondBullet = soldier.fire(Vector2(300, 100));
 
@@ -213,7 +224,7 @@ void main() {
     });
   });
 
-  group('PlayerSoldier firing hold', () {
+  group('PlayerSoldier fire cooldown', () {
     late PlayerSoldier soldier;
 
     setUp(() {
@@ -226,57 +237,179 @@ void main() {
             ..current = SoldierState.idle;
     });
 
-    test('remains firing during hold duration', () {
+    test('isFiring true during cooldown', () {
+      final cooldown = soldier.weaponStats.cooldown;
       soldier
         ..fire(Vector2(200, 100))
-        // Advance less than firingHoldDuration.
-        ..update(firingHoldDuration * 0.5);
+        ..update(cooldown * 0.5);
 
       expect(soldier.isFiring, isTrue);
-      expect(soldier.current, SoldierState.firing);
     });
 
-    test('returns to idle after hold duration', () {
+    test('isFiring false after cooldown expires', () {
+      final cooldown = soldier.weaponStats.cooldown;
       soldier
         ..fire(Vector2(200, 100))
-        // Advance past firingHoldDuration.
-        ..update(firingHoldDuration + 0.01);
+        ..update(cooldown + 0.01);
 
       expect(soldier.isFiring, isFalse);
-      expect(soldier.current, SoldierState.idle);
     });
 
-    test('returns to walking if path was active', () {
-      soldier
-        ..followPath([Vector2(300, 100)])
-        ..fire(Vector2(200, 100))
-        // Path is still active, fire hold should remember we were walking.
-        ..update(firingHoldDuration + 0.01);
-
-      expect(soldier.isFiring, isFalse);
-      expect(soldier.current, SoldierState.walking);
-    });
-
-    test('does not move while firing hold is active', () {
+    test('soldier keeps moving during cooldown', () {
       soldier.followPath([Vector2(300, 100)]);
       final posBefore = soldier.position.clone();
       soldier
         ..fire(Vector2(200, 100))
-        // Update should not move the soldier.
         ..update(0.1);
 
-      expect(soldier.position.x, closeTo(posBefore.x, 0.01));
-      expect(soldier.position.y, closeTo(posBefore.y, 0.01));
+      // Soldier should have moved toward waypoint.
+      expect(soldier.position.x, greaterThan(posBefore.x));
     });
 
-    test('can fire again after hold expires', () {
+    test('can fire again after cooldown expires', () {
+      final cooldown = soldier.weaponStats.cooldown;
       soldier
         ..fire(Vector2(200, 100))
-        ..update(firingHoldDuration + 0.01);
+        ..update(cooldown + 0.01);
 
-      // Should be able to fire again.
       final bullet = soldier.fire(Vector2(200, 100));
       expect(bullet, isNotNull);
+    });
+  });
+
+  group('PlayerSoldier water mechanics', () {
+    late PlayerSoldier soldier;
+
+    /// Builds a 4×4 grid: top-left is land, top-right is water.
+    WalkabilityGrid waterGrid() {
+      return WalkabilityGrid.fromData([
+        [
+          TerrainType.land,
+          TerrainType.land,
+          TerrainType.water,
+          TerrainType.water,
+        ],
+        [
+          TerrainType.land,
+          TerrainType.land,
+          TerrainType.water,
+          TerrainType.water,
+        ],
+        [
+          TerrainType.land,
+          TerrainType.land,
+          TerrainType.land,
+          TerrainType.land,
+        ],
+        [
+          TerrainType.land,
+          TerrainType.land,
+          TerrainType.land,
+          TerrainType.land,
+        ],
+      ]);
+    }
+
+    setUp(() {
+      soldier =
+          PlayerSoldier(
+              soldierAnimations: _buildFakeAnims(
+                includeCombatAnims: true,
+                includeSwimAnims: true,
+              ),
+            )
+            ..position =
+                Vector2(16, 16) // tile (0, 0) = land
+            ..walkabilityGrid = waterGrid()
+            ..updateAnimations()
+            ..current = SoldierState.idle;
+    });
+
+    test('speed is normal on land', () {
+      // Ensure terrain is checked.
+      soldier.update(0.01);
+      expect(soldier.speed, config.playerSpeedNormal);
+    });
+
+    test('speed is forced to water speed on water tile', () {
+      // Move to tile (2, 0) = water. destTileSize=32, so x=80.
+      soldier
+        ..position = Vector2(80, 16)
+        ..followPath([Vector2(90, 16)])
+        ..update(0.01);
+
+      expect(soldier.isInWater, isTrue);
+      expect(soldier.speed, config.playerSpeedWater);
+    });
+
+    test('switches to swimming state when walking on water', () {
+      soldier
+        ..position = Vector2(80, 16)
+        ..followPath([Vector2(90, 16)])
+        ..update(0.01);
+
+      expect(soldier.current, SoldierState.swimming);
+    });
+
+    test('returns to walking state when leaving water', () {
+      // Start on water.
+      soldier
+        ..position = Vector2(80, 16)
+        ..followPath([Vector2(90, 16)])
+        ..update(0.01);
+      expect(soldier.isInWater, isTrue);
+
+      // Move back to land: tile (0, 0).
+      soldier
+        ..position = Vector2(16, 16)
+        ..followPath([Vector2(20, 16)])
+        ..update(0.01);
+
+      expect(soldier.isInWater, isFalse);
+      expect(soldier.current, SoldierState.walking);
+    });
+
+    test('isInWater is true for waterEdge terrain', () {
+      final grid = WalkabilityGrid.fromData([
+        [TerrainType.waterEdge, TerrainType.land],
+        [TerrainType.land, TerrainType.land],
+      ]);
+      soldier
+        ..walkabilityGrid = grid
+        ..position =
+            Vector2(16, 16) // tile (0, 0) = waterEdge
+        ..followPath([Vector2(20, 16)])
+        ..update(0.01);
+
+      expect(soldier.isInWater, isTrue);
+    });
+
+    test('isInWater is true for sink terrain', () {
+      final grid = WalkabilityGrid.fromData([
+        [TerrainType.sink, TerrainType.land],
+        [TerrainType.land, TerrainType.land],
+      ]);
+      soldier
+        ..walkabilityGrid = grid
+        ..position =
+            Vector2(16, 16) // tile (0, 0) = sink
+        ..followPath([Vector2(20, 16)])
+        ..update(0.01);
+
+      expect(soldier.isInWater, isTrue);
+    });
+
+    test('idle on water uses swimming state', () {
+      soldier
+        ..position = Vector2(80, 16)
+        // No path — stationary but on water.
+        ..update(0.01)
+        // Give it a path that completes immediately (same position).
+        ..followPath([Vector2(80, 16)])
+        ..update(0.01);
+
+      // Position matches waypoint → path clears → idle-on-water = swimming.
+      expect(soldier.current, SoldierState.swimming);
     });
   });
 }

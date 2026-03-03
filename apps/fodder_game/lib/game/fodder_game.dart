@@ -1,6 +1,8 @@
 import 'package:flame/components.dart';
 import 'package:flame/events.dart';
 import 'package:flame/game.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter/widgets.dart';
 
 import 'package:fodder_game/game/components/bullet.dart';
 import 'package:fodder_game/game/components/bullet_sprites.dart';
@@ -14,7 +16,11 @@ import 'package:fodder_game/game/systems/pathfinder.dart';
 import 'package:fodder_game/game/systems/walkability_grid.dart';
 
 class FodderGame extends FlameGame
-    with HasCollisionDetection, TapCallbacks, SecondaryTapCallbacks {
+    with
+        HasCollisionDetection,
+        TapCallbacks,
+        SecondaryTapCallbacks,
+        KeyboardEvents {
   FodderGame({this.initialMap = 'cf1/maps/mapm1.tmx'});
 
   /// The relative path to the `.tmx` map file to load on start.
@@ -63,6 +69,9 @@ class FodderGame extends FlameGame
     // Place soldier at the first player spawn point, or fall back to
     // scanning for the first walkable tile.
     playerSoldier.position = _playerSpawnPosition();
+
+    // Wire up the walkability grid for terrain-aware movement (water, etc.).
+    playerSoldier.walkabilityGrid = grid;
 
     await world.add(playerSoldier);
 
@@ -148,6 +157,9 @@ class FodderGame extends FlameGame
         faction: bullet.faction,
         bulletSprite: bulletSprites.spriteFor(Faction.player),
         size: bulletSprites.scaledSize.clone(),
+        maxRange: bullet.maxRange,
+        maxLifetime: bullet.maxLifetime,
+        walkabilityGrid: levelMap.walkabilityGrid,
       );
       // ignore: discarded_futures, Bullet.onLoad is synchronous; safe to fire-and-forget.
       world.add(spawnedBullet);
@@ -176,6 +188,9 @@ class FodderGame extends FlameGame
 
     // Reposition soldier.
     playerSoldier.position = _playerSpawnPosition();
+    // TODO(bramp): Consider using collision instead of grid reference for
+    // terrain-aware movement.
+    playerSoldier.walkabilityGrid = grid;
     playerSoldier.followPath([]);
     await world.add(playerSoldier);
 
@@ -200,6 +215,32 @@ class FodderGame extends FlameGame
   /// Toggles the debug barrier overlay on/off.
   void toggleDebugMode() {
     _debugOverlay.isVisible = !_debugOverlay.isVisible;
+  }
+
+  @override
+  KeyEventResult onKeyEvent(
+    KeyEvent event,
+    Set<LogicalKeyboardKey> keysPressed,
+  ) {
+    if (event is! KeyDownEvent) return KeyEventResult.ignored;
+
+    switch (event.logicalKey) {
+      // Debug overlay toggle.
+      case LogicalKeyboardKey.keyD:
+        toggleDebugMode();
+        return KeyEventResult.handled;
+
+      // Speed mode cycling: S key cycles halted → normal → running → halted.
+      case LogicalKeyboardKey.keyS:
+        final squad = playerSoldier.squad;
+        if (squad != null) {
+          squad.cycleSpeedMode();
+        }
+        return KeyEventResult.handled;
+
+      default:
+        return KeyEventResult.ignored;
+    }
   }
 
   /// Returns the world position for the first player spawn point.
@@ -265,8 +306,10 @@ class FodderGame extends FlameGame
       velocity: bullet.velocity,
       faction: bullet.faction,
       maxRange: bullet.maxRange,
+      maxLifetime: bullet.maxLifetime,
       bulletSprite: bulletSprites.spriteFor(Faction.enemy),
       size: bulletSprites.scaledSize.clone(),
+      walkabilityGrid: levelMap.walkabilityGrid,
     );
     // ignore: discarded_futures, Bullet.onLoad is synchronous; safe to fire-and-forget.
     world.add(spawnedBullet);
