@@ -146,6 +146,118 @@ Campaign data can override these values. Pickups:
 - `eSprite_GrenadeBox` (type 37): **+4 grenades**
 - `eSprite_RocketBox` (type 38): **+4 rockets**
 
+### 4.3 Squad movement — follow-the-leader chain
+
+Squads do **not** use formation offsets or grids. Instead, soldiers walk in a
+**chain** where each soldier follows the previous soldier's position, creating
+a natural snake-like file.
+
+When the player left-clicks a destination (`Squad_Walk_Target_Set`):
+
+1. **First move (squad is idle):**
+   - The click position is placed at the **end** of the waypoint queue.
+   - Working from the squad leader (index 0) to the last member, each
+     soldier's **current position** is inserted as a waypoint for the soldier
+     behind them.
+   - The leader gets a waypoint index pointing directly at the click target.
+   - Each subsequent member gets an index pointing at the previous member's
+     old position, then the chain of positions ahead of it, then the click
+     target.
+   - Result: the leader walks straight to the target; each follower walks
+     first to where the soldier ahead of them **was standing**, then follows
+     the chain to the target.
+
+2. **Already moving (append):**
+   - The new click position is simply appended to the existing waypoint queue.
+   - All soldiers continue along their current chain and will reach the new
+     target in order.
+
+3. **Walk steps cooldown:**
+   - After each walk target is set, `mSquad_Walk_Target_Steps[squad]` is set
+     to **8**. This counter decrements each tick, preventing immediate
+     re-queuing of targets (acts as a debounce).
+
+#### Per-soldier movement fields
+
+| Field | Purpose |
+| ----- | ------- |
+| `field_26/field_28` | Immediate move target (x, y) |
+| `field_40` | Current index into the squad's walk target array |
+| `field_32` | Squad number (0–2) |
+| `field_36` | Movement speed (set by speed mode) |
+| `field_43` | Bump flag: 0 = normal, 1 = bumped into squad member, −1 = idle |
+| `field_3C` | Current facing direction (0–14, step 2) |
+
+### 4.4 Squad member collision avoidance
+
+When two squad members get too close, the follower's movement is **undone**
+for that frame (`Sprite_XY_Restore`), preventing stacking:
+
+| Parameter | Value |
+| --------- | ----- |
+| X proximity threshold | ±8 pixels |
+| Y proximity threshold | ±2 pixels |
+| Effective collision box | ~16 × 4 pixels |
+
+The check compares the current sprite against the member **two positions
+before** it in the squad array (not the immediately preceding one). When a
+bump is detected, `field_43` is set to 1 and the walking animation frame is
+frozen to prevent visual jitter.
+
+### 4.5 Direction-based speed modifier
+
+When a soldier's facing direction differs from their movement direction, speed
+is reduced. The modifier table (8 entries) maps angular difference to speed:
+
+| Angular diff (index) | Speed |
+| -------------------- | ----- |
+| 0 (same direction) | 24 (0x18) |
+| 1 | 20 (0x14) |
+| 2 | 14 (0x0E) |
+| 3 | 10 (0x0A) |
+| 4 (opposite) | 8 (0x08) |
+| 5 | 10 (0x0A) |
+| 6 | 14 (0x0E) |
+| 7 | 20 (0x14) |
+
+This modifier is applied **after** the base speed from the squad's speed mode
+and **only** for the currently selected squad's walking soldiers.
+
+### 4.6 Squad selection
+
+| Input | Action |
+| ----- | ------ |
+| Key 1 / 2 / 3 | Select squad 0 / 1 / 2 (if it has living members) |
+| Auto-select | After 20 ticks (~1.2 s) if current squad is empty |
+
+Selecting a squad centres the camera on its **leader** (first living member in
+the squad array). The leader is always `mSquads[n][0]` — determined by
+mission troop allocation order.
+
+### 4.7 Squad joining (merge)
+
+When a soldier finishes all waypoints in its chain and
+`mSquad_Join_TargetSquad` is set, the soldier attempts to merge into the
+target squad:
+
+1. Walk toward the target squad's `mSquad_Join_TargetSprite`.
+2. When distance ≤ `12 + 8 × (member_index)` pixels, `Squad_Join` fires.
+3. The soldier's squad number is reassigned.
+4. Grenades and rockets transfer from the old squad to the new one.
+5. `Squad_Troops_Count` rebuilds all squad arrays.
+
+Merging is blocked if the combined count would exceed 8.
+
+### 4.8 Squad leader
+
+The squad leader (`mSquads[n][0]`) has special roles:
+
+- **Camera target** — the viewport centres on the leader.
+- **Fire rotation base** — the leader fires every other turn in squads of 3+.
+- **Accuracy bonus** — every 4th bullet from the leader has zero deviation.
+- **Walk chain head** — the leader walks directly to the click target; all
+  others follow the chain.
+
 ---
 
 ## 5. Rank & Promotion

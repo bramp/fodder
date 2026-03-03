@@ -11,8 +11,10 @@ import 'package:fodder_game/game/components/enemy_soldier.dart';
 import 'package:fodder_game/game/components/player_soldier.dart';
 import 'package:fodder_game/game/components/soldier_animations.dart';
 import 'package:fodder_game/game/map/level_map.dart';
+import 'package:fodder_game/game/models/squad.dart';
 import 'package:fodder_game/game/systems/aggression.dart';
 import 'package:fodder_game/game/systems/pathfinder.dart';
+import 'package:fodder_game/game/systems/squad_movement.dart';
 import 'package:fodder_game/game/systems/walkability_grid.dart';
 
 class FodderGame extends FlameGame
@@ -27,9 +29,27 @@ class FodderGame extends FlameGame
   final String initialMap;
 
   late LevelMap levelMap;
-  late PlayerSoldier playerSoldier;
   Pathfinder? _pathfinder;
   late DebugBarrierOverlay _debugOverlay;
+
+  /// The active player squad.
+  late Squad playerSquad;
+
+  /// Player soldiers in the active squad, ordered by index (0 = leader).
+  final List<PlayerSoldier> playerSoldiers = [];
+
+  /// The squad leader — the first alive soldier (or the first soldier if all
+  /// are dead). Used for camera positioning and pathfinding origin.
+  PlayerSoldier get leader => playerSoldiers.firstWhere(
+    (s) => s.isAlive,
+    orElse: () => playerSoldiers.first,
+  );
+
+  /// Legacy accessor for the squad leader.
+  ///
+  /// Used by [DebugBarrierOverlay] and the debug panel which reference a
+  /// single player soldier for display/debugging.
+  PlayerSoldier get playerSoldier => leader;
 
   /// Active enemy soldiers on the current map.
   final List<EnemySoldier> _enemies = [];
@@ -43,12 +63,15 @@ class FodderGame extends FlameGame
       isLoaded ? world.children.whereType<Bullet>().length : 0;
 
   /// Whether the player soldier is currently invincible.
-  bool get isPlayerInvincible => isLoaded && playerSoldier.isInvincible;
+  bool get isPlayerInvincible =>
+      isLoaded && playerSoldiers.isNotEmpty && leader.isInvincible;
 
-  /// Toggles player invincibility (cheat).
+  /// Toggles player invincibility (cheat) — applies to **all** squad members.
   set isPlayerInvincible(bool value) {
     if (!isLoaded) return;
-    playerSoldier.isInvincible = value;
+    for (final soldier in playerSoldiers) {
+      soldier.isInvincible = value;
+    }
   }
 
   /// Bullet sprites loaded from the copt atlas.
@@ -74,23 +97,15 @@ class FodderGame extends FlameGame
       _pathfinder = Pathfinder(grid);
     }
 
-    // 4. Load soldier animations and spawn the player.
+    // 4. Load soldier animations and spawn the player squad.
     final playerAnims = await SoldierAnimations.load(
       prefix: '${_spritePrefix}cf1/sprites/',
       atlasJsonFile: 'junarmy.json',
       imageFile: 'junarmy.png',
     );
 
-    playerSoldier = PlayerSoldier(soldierAnimations: playerAnims);
-
-    // Place soldier at the first player spawn point, or fall back to
-    // scanning for the first walkable tile.
-    playerSoldier.position = _playerSpawnPosition();
-
-    // Wire up the walkability grid for terrain-aware movement (water, etc.).
-    playerSoldier.walkabilityGrid = grid;
-
-    await world.add(playerSoldier);
+    playerSquad = Squad();
+    await _spawnPlayerSquad(playerAnims, grid);
 
     // 5. Load enemy animations and spawn enemies at their spawn points.
     final enemyAnims = await SoldierAnimations.load(
@@ -116,7 +131,7 @@ class FodderGame extends FlameGame
     // 7. Add the debug overlay (initially hidden).
     _debugOverlay = DebugBarrierOverlay(
       grid: grid ?? WalkabilityGrid.fromData([]),
-      player: playerSoldier,
+      player: leader,
       spawnData: levelMap.spawnData,
     );
     await world.add(_debugOverlay);
@@ -128,6 +143,7 @@ class FodderGame extends FlameGame
 
     final grid = levelMap.walkabilityGrid;
     if (grid == null || _pathfinder == null) return;
+    if (playerSoldiers.isEmpty) return;
 
     // Convert screen tap to world coordinates.
     final worldPos = camera.globalToLocal(event.devicePosition);
@@ -138,11 +154,10 @@ class FodderGame extends FlameGame
 
     if (!grid.isSubTileWalkable(subTileX, subTileY)) return;
 
-    // Current soldier position in sub-tile coordinates.
-    final soldierSubX = (playerSoldier.position.x / LevelMap.destSubTileSize)
-        .floor();
-    final soldierSubY = (playerSoldier.position.y / LevelMap.destSubTileSize)
-        .floor();
+    // Pathfind from the squad leader's position to the tap target.
+    final leaderPos = leader.position;
+    final soldierSubX = (leaderPos.x / LevelMap.destSubTileSize).floor();
+    final soldierSubY = (leaderPos.y / LevelMap.destSubTileSize).floor();
 
     final waypoints = _pathfinder!.findPath(
       start: (soldierSubX, soldierSubY),
@@ -150,7 +165,7 @@ class FodderGame extends FlameGame
     );
 
     if (waypoints.isNotEmpty) {
-      playerSoldier.followPath(waypoints);
+      _setSquadWalkTarget(waypoints);
     }
   }
 
@@ -161,32 +176,48 @@ class FodderGame extends FlameGame
     // Convert screen position to world coordinates.
     final worldPos = camera.globalToLocal(event.devicePosition);
 
-    _firePlayerBullet(worldPos);
+    _fireSquadBullet(worldPos);
   }
 
-  void _firePlayerBullet(Vector2 worldPos) {
-    final bullet = playerSoldier.fire(worldPos);
+  /// Fires a bullet from the next soldier in the fire rotation.
+  void _fireSquadBullet(Vector2 worldPos) {
+    final alive = playerSoldiers.where((s) => s.isAlive).toList();
+    if (alive.isEmpty) return;
+
+    // Get the next firer index from the squad's fire rotation.
+    final firerIndex = playerSquad.nextFirer();
+    if (firerIndex < 0 || firerIndex >= alive.length) return;
+
+    final soldier = alive[firerIndex];
+    final bullet = soldier.fire(worldPos);
     if (bullet != null) {
-      // Attach the correct sprite at display scale.
-      final spawnedBullet = Bullet(
-        position: bullet.position,
-        velocity: bullet.velocity,
-        faction: bullet.faction,
-        bulletSprite: bulletSprites.spriteFor(Faction.player),
-        size: bulletSprites.scaledSize.clone(),
-        maxRange: bullet.maxRange,
-        maxLifetime: bullet.maxLifetime,
-        walkabilityGrid: levelMap.walkabilityGrid,
-      );
-      // ignore: discarded_futures, Bullet.onLoad is synchronous; safe to fire-and-forget.
-      world.add(spawnedBullet);
+      _spawnPlayerBullet(bullet);
     }
+  }
+
+  /// Adds a player [Bullet] to the world with the correct sprite.
+  void _spawnPlayerBullet(Bullet bullet) {
+    final spawnedBullet = Bullet(
+      position: bullet.position,
+      velocity: bullet.velocity,
+      faction: bullet.faction,
+      bulletSprite: bulletSprites.spriteFor(Faction.player),
+      size: bulletSprites.scaledSize.clone(),
+      maxRange: bullet.maxRange,
+      maxLifetime: bullet.maxLifetime,
+      walkabilityGrid: levelMap.walkabilityGrid,
+    );
+    // ignore: discarded_futures, Bullet.onLoad is synchronous; safe to fire-and-forget.
+    world.add(spawnedBullet);
   }
 
   /// Loads a different map, replacing the current one.
   Future<void> loadMap(String mapFile) async {
-    // Remove soldier and enemies from old world.
-    playerSoldier.removeFromParent();
+    // Remove soldiers and enemies from old world.
+    for (final soldier in playerSoldiers) {
+      soldier.removeFromParent();
+    }
+    playerSoldiers.clear();
     for (final enemy in _enemies) {
       enemy.removeFromParent();
     }
@@ -203,13 +234,14 @@ class FodderGame extends FlameGame
       _pathfinder = Pathfinder(grid);
     }
 
-    // Reposition soldier.
-    playerSoldier.position = _playerSpawnPosition();
-    // TODO(bramp): Consider using collision instead of grid reference for
-    // terrain-aware movement.
-    playerSoldier.walkabilityGrid = grid;
-    playerSoldier.followPath([]);
-    await world.add(playerSoldier);
+    // Spawn a fresh player squad.
+    final playerAnims = await SoldierAnimations.load(
+      prefix: '${_spritePrefix}cf1/sprites/',
+      atlasJsonFile: 'junarmy.json',
+      imageFile: 'junarmy.png',
+    );
+    playerSquad = Squad();
+    await _spawnPlayerSquad(playerAnims, grid);
 
     // Spawn enemies for the new map.
     final enemyAnims = await SoldierAnimations.load(
@@ -265,10 +297,7 @@ class FodderGame extends FlameGame
 
       // Speed mode cycling: S key cycles halted → normal → running → halted.
       case LogicalKeyboardKey.keyS:
-        final squad = playerSoldier.squad;
-        if (squad != null) {
-          squad.cycleSpeedMode();
-        }
+        playerSquad.cycleSpeedMode();
         return KeyEventResult.handled;
 
       default:
@@ -303,6 +332,56 @@ class FodderGame extends FlameGame
     );
   }
 
+  /// Spawns player soldiers at each player spawn point (or a single soldier
+  /// at the fallback position) and assigns them to [playerSquad].
+  Future<void> _spawnPlayerSquad(
+    SoldierAnimations anims,
+    WalkabilityGrid? grid,
+  ) async {
+    final spawns = levelMap.spawnData.players;
+
+    // Determine spawn positions. Always spawn at least one soldier.
+    final positions = spawns.isNotEmpty
+        ? spawns.map((s) => s.position.clone()).toList()
+        : [_playerSpawnPosition()];
+
+    for (var i = 0; i < positions.length; i++) {
+      final soldier = PlayerSoldier(soldierAnimations: anims)
+        ..position = positions[i]
+        ..walkabilityGrid = grid
+        ..squad = playerSquad
+        ..predecessor = i > 0 ? playerSoldiers[i - 1] : null;
+
+      playerSoldiers.add(soldier);
+      await world.add(soldier);
+    }
+
+    playerSquad.soldierCount = playerSoldiers.length;
+  }
+
+  /// Distributes walk paths to squad members using the follow-the-leader
+  /// chain mechanic (see PLAYER.md §4.3).
+  ///
+  /// The [pathToTarget] is a pathfound route from the leader's current
+  /// position to the click destination. The leader follows it directly; each
+  /// subsequent soldier first walks through the positions of soldiers ahead
+  /// of them, then joins the pathfound route.
+  void _setSquadWalkTarget(List<Vector2> pathToTarget) {
+    final alive = playerSoldiers.where((s) => s.isAlive).toList();
+    if (alive.isEmpty) return;
+
+    final chainPaths = buildChainPaths(
+      memberCount: alive.length,
+      pathToTarget: pathToTarget,
+    );
+
+    for (var i = 0; i < alive.length; i++) {
+      alive[i]
+        ..predecessor = i > 0 ? alive[i - 1] : null
+        ..followPath(chainPaths[i]);
+    }
+  }
+
   /// Creates [EnemySoldier] components at each enemy spawn point and adds them
   /// to the world.
   ///
@@ -323,7 +402,7 @@ class FodderGame extends FlameGame
         ..aggression = agg
         ..initialFireDelay = agg > 4 ? 0 : fireDelay
         ..walkabilityGrid = grid
-        ..players = [playerSoldier]
+        ..players = playerSoldiers
         ..onFireBullet = _spawnEnemyBullet;
       enemy.onDeath = () => _enemies.remove(enemy);
 

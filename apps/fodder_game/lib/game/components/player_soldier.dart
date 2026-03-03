@@ -7,6 +7,7 @@ import 'package:fodder_game/game/config/game_config.dart' as config;
 import 'package:fodder_game/game/config/weapon_data.dart';
 import 'package:fodder_game/game/models/mission_troop.dart';
 import 'package:fodder_game/game/models/squad.dart';
+import 'package:fodder_game/game/systems/squad_movement.dart';
 import 'package:fodder_game/game/systems/walkability_grid.dart';
 
 /// Offset (pixels) from soldier centre to bullet spawn point.
@@ -41,6 +42,13 @@ class PlayerSoldier extends Soldier {
 
   /// The troop data for this soldier (rank, kills, weapon stats).
   MissionTroop? troop;
+
+  /// The soldier directly ahead of this one in the squad.
+  ///
+  /// `null` for the squad leader (index 0). When set, this soldier will
+  /// pause movement whenever it is within [squadMemberSpacing] pixels of
+  /// its predecessor, preventing soldiers from bunching up.
+  PlayerSoldier? predecessor;
 
   /// Movement speed in pixels per second.
   ///
@@ -89,6 +97,20 @@ class PlayerSoldier extends Soldier {
     if (_path.isEmpty) {
       isMoving = false;
       return;
+    }
+
+    // Runtime squad spacing: if we have a predecessor (soldier ahead in the
+    // squad), pause movement when we're too close to them. This prevents
+    // soldiers from bunching up during the walk, matching the original
+    // game's Sprite_Handle_Player_Close_To_SquadMember behaviour.
+    if (predecessor != null && predecessor!.isAlive) {
+      final gap = position.distanceTo(predecessor!.position);
+      if (gap < squadMemberSpacing) {
+        // Too close — hold position this frame.
+        isMoving = false;
+        setState(isInWater ? SoldierState.swimming : SoldierState.idle);
+        return;
+      }
     }
 
     final target = _path.first;
