@@ -9,3 +9,8 @@
 - **File Safety**: DO NOT forcefully delete files (e.g. `rm -f`, `git rm -f`). If a file is in the way or causing issues, ask the user or use safer alternatives (e.g. moving/renaming or unstaging).
 - **Pre-commit**: We use `pre-commit` to format (`dart format`), analyze (`flutter analyze`), and test (`flutter test`). Ensure nothing is broken before handing off.
 - **Test Naming**: Tests for a file `name.dart` should be named `name_test.dart` and located in the corresponding directory in `test/`.
+- **Modern Units**: While the original Amiga engine used 50 Hz interrupts and fixed-point tick-based math, this remake uses real-time `dt` (seconds) and floating-point pixels/second. Convert all original values:
+  - **Durations**: `original_ticks × 0.06 = seconds` (1 engine tick ≈ 60 ms).
+  - **Speeds**: `original_speed × 5 = pixels/second` (established conversion factor accounting for 2× render scale and vector-table scaling). [See `game_config.dart` for all converted constants.]
+  - **Probabilities**: Keep original ratios (e.g. 1/8, 1/32) but evaluate per-frame, adjusting for higher frame rates if needed.
+  - Do **not** replicate the 50 Hz interrupt loop, 16.16 fixed-point arithmetic, or 512-unit direction circle. Use standard `atan2`, `Vector2`, and frame-rate-independent `dt`.

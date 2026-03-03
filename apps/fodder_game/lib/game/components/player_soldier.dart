@@ -3,20 +3,28 @@ import 'package:flame/components.dart';
 import 'package:fodder_game/game/components/bullet.dart';
 import 'package:fodder_game/game/components/direction8.dart';
 import 'package:fodder_game/game/components/soldier.dart';
+import 'package:fodder_game/game/config/game_config.dart' as config;
+import 'package:fodder_game/game/config/weapon_data.dart';
+import 'package:fodder_game/game/models/mission_troop.dart';
+import 'package:fodder_game/game/models/squad.dart';
 
 /// Duration (seconds) the player holds the firing pose before returning
 /// to the previous state.
-const firingHoldDuration = 0.3;
+const double firingHoldDuration = config.playerFiringHoldDuration;
 
-/// Bullet speed in pixels per second for player-fired bullets.
-const playerBulletSpeed = 350.0;
+/// Default bullet speed when no troop data is available (pixels/second).
+const double playerBulletSpeed = config.defaultPlayerBulletSpeed;
 
 /// A player-controlled soldier that walks along a path of waypoints.
 ///
 /// Uses `SoldierAnimations` for 8-directional walk/idle sprite animations
 /// loaded from the army sprite atlas.
+///
+/// Movement speed is determined by the [squad]'s current [SpeedMode], or
+/// falls back to [config.playerSpeedNormal] if no squad is assigned.
+/// Weapon stats come from the [troop]'s rank, or use a default fallback.
 class PlayerSoldier extends Soldier {
-  PlayerSoldier({required super.soldierAnimations});
+  PlayerSoldier({required super.soldierAnimations, super.random});
 
   /// Player hitbox is 6×5 per the original game spec (harder to hit).
   @override
@@ -25,8 +33,21 @@ class PlayerSoldier extends Soldier {
   @override
   Faction get opposingFaction => Faction.enemy;
 
+  /// The squad this soldier belongs to (if any).
+  Squad? squad;
+
+  /// The troop data for this soldier (rank, kills, weapon stats).
+  MissionTroop? troop;
+
   /// Movement speed in pixels per second.
-  double speed = 80;
+  ///
+  /// Derived from the squad's speed mode, or [config.playerSpeedNormal]
+  /// if no squad is assigned.
+  double get speed =>
+      squad?.speedMode.pixelsPerSecond ?? config.playerSpeedNormal;
+
+  /// Weapon stats for this soldier (based on rank).
+  WeaponStats get weaponStats => troop?.weaponStats ?? fallbackWeaponStats(0);
 
   /// Waypoints to follow (pixel coordinates). The soldier walks toward
   /// `_path.first` and removes it when reached.
@@ -52,10 +73,14 @@ class PlayerSoldier extends Soldier {
     super.update(dt);
 
     // Skip movement when dead.
-    if (!isAlive) return;
+    if (!isAlive) {
+      isMoving = false;
+      return;
+    }
 
     // Handle firing hold countdown.
     if (_isFiring) {
+      isMoving = false;
       _firingTimer -= dt;
       if (_firingTimer <= 0) {
         _isFiring = false;
@@ -65,7 +90,10 @@ class PlayerSoldier extends Soldier {
       return; // Don't move while firing.
     }
 
-    if (_path.isEmpty) return;
+    if (_path.isEmpty) {
+      isMoving = false;
+      return;
+    }
 
     final target = _path.first;
     final delta = target - position;
@@ -78,12 +106,14 @@ class PlayerSoldier extends Soldier {
       _path.removeAt(0);
 
       if (_path.isEmpty) {
+        isMoving = false;
         setState(SoldierState.idle);
       }
     } else {
       // Move toward waypoint.
       final direction = delta.normalized();
       position += direction * step;
+      isMoving = true;
 
       // Update facing direction based on movement vector.
       final newFacing = Direction8.fromVector(direction.x, direction.y);
@@ -120,12 +150,15 @@ class PlayerSoldier extends Soldier {
     _firingTimer = firingHoldDuration;
     setState(SoldierState.firing);
 
-    // Create the bullet.
+    // Create the bullet using rank-based weapon stats.
+    final stats = weaponStats;
     final direction = delta.normalized();
     return Bullet(
       position: position.clone(),
-      velocity: direction * playerBulletSpeed,
+      velocity: direction * stats.bulletSpeed,
       faction: Faction.player,
+      maxRange: stats.range,
+      maxLifetime: stats.aliveTime,
     );
   }
 

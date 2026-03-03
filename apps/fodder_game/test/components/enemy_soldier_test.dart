@@ -9,6 +9,7 @@ import 'package:fodder_game/game/components/enemy_soldier.dart';
 import 'package:fodder_game/game/components/player_soldier.dart';
 import 'package:fodder_game/game/components/soldier.dart';
 import 'package:fodder_game/game/components/soldier_animations.dart';
+import 'package:fodder_game/game/config/game_config.dart' as config;
 import 'package:fodder_game/game/systems/walkability_grid.dart';
 
 /// Minimal fake [Image] for testing.
@@ -189,7 +190,7 @@ void main() {
 
       // Verify the distance is within detection but beyond bullet range.
       const dist = 180.0; // |230 - 50|
-      expect(dist, lessThan(enemyDetectionRange));
+      expect(dist, lessThan(config.detectionRange));
       expect(dist, greaterThan(enemy.effectiveBulletRange));
       expect(enemy.aiState, EnemyAiState.chasing);
 

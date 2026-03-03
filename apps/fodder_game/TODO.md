@@ -11,8 +11,8 @@ Legend: ✅ = implemented, 🔶 = partial, ❌ = not started
 ## 1. Engine Fundamentals (ENGINE.md)
 
 ### 1.1 Timing
-- [ ] Engine tick system (50 Hz interrupt, 3 interrupts per tick ≈ 16.67 ticks/sec, ~60 ms/tick)
-- [ ] Currently using real-time `dt`; spec uses fixed-tick integer logic
+- [x] Engine tick system (50 Hz interrupt, 3 interrupts per tick ≈ 16.67 ticks/sec, ~60 ms/tick)
+- [x] Currently using real-time `dt`; all spec tick values converted in `game_config.dart`
 - [ ] `mMission_EngineTicks` counter incrementing once per engine loop
 
 ### 1.2 Coordinate System
@@ -49,11 +49,11 @@ Legend: ✅ = implemented, 🔶 = partial, ❌ = not started
 
 ### 1.7 Animation Groups
 - [x] Walk (8 dirs), Firing (8 dirs), Throw (8 dirs), Death (8 dirs), Death2 (8 dirs)
-- [ ] Prone animation (8 dirs: player 0x10–0x17, enemy 0x52–0x59)
-- [ ] Swim animation (8 dirs: player 0x18–0x1F, enemy 0x5A–0x61)
-- [ ] Death3 animation (8 dirs: player 0x30–0x37, enemy 0x72–0x79)
-- [ ] Rocket animation (8 dirs: player 0x39–0x40, enemy 0xA8–0xAF)
-- [ ] Slide animations (`eSprite_Anim_Slide1–3`, values 0x32–0x34)
+- [x] Prone animation (8 dirs: player 0x10–0x17, enemy 0x52–0x59)
+- [x] Swim animation (8 dirs: player 0x18–0x1F, enemy 0x5A–0x61)
+- [ ] Death3 animation (8 dirs: player 0x30–0x37, enemy 0x72–0x79) — not in atlas
+- [ ] Rocket animation (8 dirs: player 0x39–0x40, enemy 0xA8–0xAF) — not in atlas
+- [ ] Slide animations (`eSprite_Anim_Slide1–3`, values 0x32–0x34) — not in atlas
 
 ---
 
@@ -61,10 +61,10 @@ Legend: ✅ = implemented, 🔶 = partial, ❌ = not started
 
 ### 2.1 Health & Survivability
 - [x] One-hit kill (no hitpoints)
-- [ ] Dodge mechanic: moving soldiers have 1/8 chance to dodge bullets
-- [ ] Dodge blocked when stationary
+- [x] Dodge mechanic: moving soldiers have 1/8 chance to dodge bullets
+- [x] Dodge blocked when stationary
 - [ ] Dodge works in water or sinking (`field_52 ≥ 5`)
-- [ ] Dodge blocked at very close range (`field_3A ≤ 4`)
+- [x] Dodge blocked at very close range (`field_3A ≤ 4` → bullet age ≤ 0.24s)
 - [ ] Invincibility flag (`field_75 & 0x02`) from bonus pickups
 
 ### 2.2 Death Animation States
@@ -75,12 +75,12 @@ Legend: ✅ = implemented, 🔶 = partial, ❌ = not started
 - [ ] Terrain sliding (`eSprite_Anim_Slide1–3`)
 
 ### 2.3 Movement Speeds
-- [x] 🔶 Player moves at constant 80 px/s; spec has 3 speed modes:
-- [ ] Halted/slow: 8 (mode 0) — `word_3BED5[squad] == 0`
-- [ ] Normal walk: 16 (mode 1)
-- [ ] Running (default): 24 (mode 2)
-- [ ] In water/sinking: forced to 6
-- [ ] Speed modes switchable per squad (starts at mode 2 = running)
+- [x] Player speed determined by squad's SpeedMode (halted/normal/running)
+- [x] Halted/slow: 8 (mode 0) → 40 px/s
+- [x] Normal walk: 16 (mode 1) → 80 px/s
+- [x] Running (default): 24 (mode 2) → 120 px/s
+- [ ] In water/sinking: forced to 6 → 30 px/s (constant defined, not wired)
+- [x] Speed modes switchable per squad (starts at mode 2 = running)
 
 ### 2.4 Controls
 - [x] Left-click → set walk target (waypoint)
@@ -96,46 +96,46 @@ Legend: ✅ = implemented, 🔶 = partial, ❌ = not started
 - [ ] 1/32 ignore chance per tick (prevents constant firing)
 
 ### 2.6 Squads
-- [ ] Max 3 squads (indices 0–2)
-- [ ] Max 8 soldiers per squad
-- [ ] Max 9 soldiers per mission (total across all squads)
-- [ ] 30 waypoints per squad walk queue
+- [x] Max 3 squads (indices 0–2) — `Squad` model created
+- [x] Max 8 soldiers per squad
+- [x] Max 9 soldiers per mission (total across all squads)
+- [x] 30 waypoints per squad walk queue (constant defined)
 - [ ] Squad split and merge (merge blocked if combined > 8)
 - [ ] Multiple player soldiers moving as a group
 
 ### 2.7 Fire Rotation
-- [ ] Squad members take turns firing (rotation pattern arrays)
-- [ ] Squad leader (index 0) fires every other turn in squads of 3+
-- [ ] `-1` sentinel marks end, pattern loops
-- [ ] Fire cooldown between rotations: `mSprite_Weapon_Data.mCooldown` ticks (3–7 by rank)
+- [x] Squad members take turns firing (rotation pattern arrays)
+- [x] Squad leader (index 0) fires every other turn in squads of 3+
+- [x] `-1` sentinel marks end, pattern loops
+- [x] Fire cooldown between rotations: `mSprite_Weapon_Data.mCooldown` ticks (3–7 by rank)
 
 ### 2.8 Ammo Pools
-- [ ] Shared per squad (not per soldier)
-- [ ] Grenades: soldiers × 2 (available after mission 4 CF1, mission 3 CF2)
-- [ ] Rockets: soldiers × 1 (available after mission 5 CF1, mission 4 CF2)
+- [x] Shared per squad (not per soldier)
+- [x] Grenades: soldiers × 2 (available after mission 4 CF1, mission 3 CF2)
+- [x] Rockets: soldiers × 1 (available after mission 5 CF1, mission 4 CF2)
 - [ ] Campaign override for ammo values
 - [ ] Grenade box pickup: +4 grenades (sprite type 37)
 - [ ] Rocket box pickup: +4 rockets (sprite type 38)
 
 ### 2.9 Rank & Promotion
 - [ ] Reverse engineer the rank names PLAYER.md 5.2 Rank range - This might be easier found online?
-- [ ] `sMission_Troop` struct: recruitID, rank (0–15), phaseCount, sprite, kills
-- [ ] Up to 9 soldiers allocated per mission
+- [x] `sMission_Troop` struct: recruitID, rank (0–15), phaseCount, sprite, kills
+- [x] Up to 9 soldiers allocated per mission
 - [ ] Rank icons from `RANKFONT` sprite sheet (frame index = rank)
-- [ ] Promotion formula: `new_rank = min(current_rank + phases_survived, 15)`
-- [ ] Promotion is phase-survival-based, NOT kill-based
-- [ ] `phaseCount` increments each phase survived, resets each mission
+- [x] Promotion formula: `new_rank = min(current_rank + phases_survived, 15)`
+- [x] Promotion is phase-survival-based, NOT kill-based
+- [x] `phaseCount` increments each phase survived, resets each mission
 
 
 
 ### 2.10 Rank Effects on Weapon Stats
-- [ ] `mSprite_Bullet_UnitData[26]` table indexed by `min(rank + 8, 15)`
-- [ ] Ranks 0–7 have unique weapon stats (table indices 8–15)
-- [ ] Ranks 8–15 clamp to index 15 (same as rank 7, cosmetic prestige)
-- [ ] Bullet speed: 105 → 120 (rank 0 → 7)
-- [ ] Alive time (range): 7 → 8 ticks
-- [ ] Cooldown: 5 → 4 ticks
-- [ ] Deviation (accuracy): 15 → 7
+- [x] `mSprite_Bullet_UnitData[26]` table indexed by `min(rank + 8, 15)`
+- [x] Ranks 0–7 have unique weapon stats (table indices 8–15)
+- [x] Ranks 8–15 clamp to index 15 (same as rank 7, cosmetic prestige)
+- [x] Bullet speed: 105 → 120 (rank 0 → 7)
+- [x] Alive time (range): 7 → 8 ticks
+- [x] Cooldown: 5 → 4 ticks
+- [x] Deviation (accuracy): 15 → 7
 
 ### 2.11 Squad Leader Accuracy Bonus
 - [ ] Every 4th bullet from squad leader has zero deviation (perfectly accurate)
@@ -224,7 +224,7 @@ Legend: ✅ = implemented, 🔶 = partial, ❌ = not started
 ### 3.7 Enemy Movement
 - [x] Speed: `(12 + aggression)`, capped at 26 (× 5 = px/s)
 - [ ] Smooth direction turning (not instant snap)
-- [ ] Post-fire pause: 15 ticks for bullets, 12 ticks for grenades (currently 0.25s flat)
+- [x] Post-fire pause: 15 ticks (0.9s) for bullets, 12 ticks for grenades
 - [ ] Collision avoidance: nudge direction on bump with squad member
 - [x] No patrol behaviour (confirmed correct: idle when no target)
 
@@ -428,6 +428,8 @@ Legend: ✅ = implemented, 🔶 = partial, ❌ = not started
 - [ ] Clicking unwalkable area should path to nearest walkable cell
 - [ ] Z-order: sprites should sort by Y position (south on top)
 - [ ] Right-click does not work in web build (browser context menu)
+- [ ] When a solider dies, their corpse should remain
+- [ ] The bullets coming from the enemeires start at the wrong position relative to the enermy sprite
 
 ## 7. Other
 

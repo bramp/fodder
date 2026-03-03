@@ -46,6 +46,18 @@ const death2PrefixPlayer = 'player_death2';
 /// Death-2 animation name prefix for enemy soldiers.
 const death2PrefixEnemy = 'enemy_death2';
 
+/// Prone animation name prefix for player soldiers.
+const pronePrefixPlayer = 'player_prone';
+
+/// Prone animation name prefix for enemy soldiers.
+const pronePrefixEnemy = 'enemy_prone';
+
+/// Swimming animation name prefix for player soldiers.
+const swimPrefixPlayer = 'player_swim';
+
+/// Swimming animation name prefix for enemy soldiers.
+const swimPrefixEnemy = 'enemy_swim';
+
 /// Standing-with-gun animation name prefix for player soldiers.
 const firingPrefixPlayer = 'player_firing';
 
@@ -64,6 +76,8 @@ class SoldierAnimations {
     required this.idleAnimations,
     required this.firingAnimations,
     required this.throwAnimations,
+    required this.proneAnimations,
+    required this.swimAnimations,
     required this.deathAnimations,
     required this.death2Animations,
   });
@@ -79,6 +93,8 @@ class SoldierAnimations {
     required this.idleAnimations,
     this.firingAnimations = const {},
     this.throwAnimations = const {},
+    this.proneAnimations = const {},
+    this.swimAnimations = const {},
     this.deathAnimations = const {},
     this.death2Animations = const {},
   });
@@ -96,6 +112,12 @@ class SoldierAnimations {
 
   /// Throw animations keyed by direction (3 frames each).
   final Map<Direction8, SpriteAnimation> throwAnimations;
+
+  /// Prone (lying down) animations keyed by direction.
+  final Map<Direction8, SpriteAnimation> proneAnimations;
+
+  /// Swimming animations keyed by direction.
+  final Map<Direction8, SpriteAnimation> swimAnimations;
 
   /// Death animations keyed by direction (1–2 frames, non-looping).
   final Map<Direction8, SpriteAnimation> deathAnimations;
@@ -133,6 +155,8 @@ class SoldierAnimations {
     String walkPrefix = walkPrefixPlayer,
     String firingPrefix = firingPrefixPlayer,
     String throwPrefix = throwPrefixPlayer,
+    String pronePrefix = pronePrefixPlayer,
+    String swimPrefix = swimPrefixPlayer,
     String deathPrefix = deathPrefixPlayer,
     String death2Prefix = death2PrefixPlayer,
   }) async {
@@ -151,6 +175,8 @@ class SoldierAnimations {
     final idleAnims = <Direction8, SpriteAnimation>{};
     final firingAnims = <Direction8, SpriteAnimation>{};
     final throwAnims = <Direction8, SpriteAnimation>{};
+    final proneAnims = <Direction8, SpriteAnimation>{};
+    final swimAnims = <Direction8, SpriteAnimation>{};
     final deathAnims = <Direction8, SpriteAnimation>{};
     final death2Anims = <Direction8, SpriteAnimation>{};
 
@@ -196,6 +222,28 @@ class SoldierAnimations {
         );
       }
 
+      // --- Prone ---
+      final proneFrames = _loadFrames(
+        framesMap,
+        image,
+        '${pronePrefix}_$dirSuffix',
+        _idleStepTime, // single frame held
+      );
+      if (proneFrames.isNotEmpty) {
+        proneAnims[dir] = SpriteAnimation(proneFrames, loop: false);
+      }
+
+      // --- Swim ---
+      final swimFrames = _loadFrames(
+        framesMap,
+        image,
+        '${swimPrefix}_$dirSuffix',
+        _walkStepTime,
+      );
+      if (swimFrames.isNotEmpty) {
+        swimAnims[dir] = SpriteAnimation(swimFrames);
+      }
+
       // --- Death ---
       final deathFrames = _loadFrames(
         framesMap,
@@ -224,6 +272,8 @@ class SoldierAnimations {
       idleAnimations: idleAnims,
       firingAnimations: firingAnims,
       throwAnimations: throwAnims,
+      proneAnimations: proneAnims,
+      swimAnimations: swimAnims,
       deathAnimations: deathAnims,
       death2Animations: death2Anims,
     );

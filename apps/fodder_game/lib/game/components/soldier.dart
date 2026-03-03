@@ -6,6 +6,7 @@ import 'package:flame/components.dart';
 import 'package:fodder_game/game/components/bullet.dart';
 import 'package:fodder_game/game/components/direction8.dart';
 import 'package:fodder_game/game/components/soldier_animations.dart';
+import 'package:fodder_game/game/config/game_config.dart' as config;
 
 /// The high-level state of a soldier.
 enum SoldierState {
@@ -14,6 +15,12 @@ enum SoldierState {
 
   /// Moving along a path, showing walk animation.
   walking,
+
+  /// Swimming in water.
+  swimming,
+
+  /// Lying prone on the ground.
+  prone,
 
   /// Holding the standing-with-gun pose while firing.
   firing,
@@ -26,10 +33,10 @@ enum SoldierState {
 }
 
 /// Duration (seconds) a dying soldier is visible before fade-out starts.
-const _deathAnimDuration = 0.5;
+const double _deathAnimDuration = config.deathAnimDuration;
 
 /// Duration (seconds) for the post-death fade-out effect.
-const deathFadeDuration = 0.5;
+const double deathFadeDuration = config.deathFadeDuration;
 
 /// Total time from death until removal.
 const double _deathRemovalDelay = _deathAnimDuration + deathFadeDuration;
@@ -56,11 +63,14 @@ abstract class Soldier extends SpriteAnimationGroupComponent<SoldierState>
   /// Whether this soldier is still alive.
   bool isAlive = true;
 
+  /// Whether this soldier is currently moving (affects dodge chance).
+  bool isMoving = false;
+
   /// Counts down after death; when it reaches zero the component is removed.
   // TODO(bramp): Consider leaving a dead body forever
   double _deathTimer = 0;
 
-  /// Random number generator for death variant selection.
+  /// Random number generator for death variant selection and dodge.
   final Random _random;
 
   /// Callback invoked when this soldier dies.
@@ -101,6 +111,14 @@ abstract class Soldier extends SpriteAnimationGroupComponent<SoldierState>
 
     if (!isAlive) return;
     if (other is Bullet && other.faction == opposingFaction) {
+      // Dodge mechanic (PLAYER.md §1.2): moving soldiers have a 1/8 chance
+      // to dodge. Close-range bullets (age ≤ 0.24s) cannot be dodged.
+      if (isMoving && other.age > config.dodgeMinBulletAge) {
+        if (_random.nextInt(config.dodgeChanceOneIn) == 0) {
+          return; // Dodged! Bullet continues.
+        }
+      }
+
       other.removeFromParent();
       die();
     }
@@ -179,6 +197,10 @@ abstract class Soldier extends SpriteAnimationGroupComponent<SoldierState>
         SoldierState.firing: soldierAnimations.firingAnimations[facing]!,
       if (soldierAnimations.throwAnimations.containsKey(facing))
         SoldierState.throwing: soldierAnimations.throwAnimations[facing]!,
+      if (soldierAnimations.proneAnimations.containsKey(facing))
+        SoldierState.prone: soldierAnimations.proneAnimations[facing]!,
+      if (soldierAnimations.swimAnimations.containsKey(facing))
+        SoldierState.swimming: soldierAnimations.swimAnimations[facing]!,
       if (soldierAnimations.deathAnimations.containsKey(facing))
         SoldierState.dying: soldierAnimations.deathAnimations[facing]!,
     };

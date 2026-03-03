@@ -8,6 +8,7 @@ import 'package:fodder_game/game/components/direction8.dart';
 import 'package:fodder_game/game/components/player_soldier.dart';
 import 'package:fodder_game/game/components/soldier.dart';
 import 'package:fodder_game/game/components/soldier_animations.dart';
+import 'package:fodder_game/game/config/weapon_data.dart';
 
 /// Minimal fake [Image] for testing (1×1 pixel).
 class _FakeImage extends Fake implements Image {
@@ -84,7 +85,7 @@ void main() {
       expect(soldier.opposingFaction, Faction.enemy);
     });
 
-    test('defaults to 80 speed', () {
+    test('defaults to normal speed (80 px/s)', () {
       expect(soldier.speed, 80);
     });
 
@@ -158,16 +159,18 @@ void main() {
     test('bullet velocity points toward target', () {
       // Target to the east.
       final bullet = soldier.fire(Vector2(200, 100));
+      final expectedSpeed = fallbackWeaponStats(0).bulletSpeed;
 
-      expect(bullet!.velocity.x, closeTo(playerBulletSpeed, 0.1));
+      expect(bullet!.velocity.x, closeTo(expectedSpeed, 0.1));
       expect(bullet.velocity.y, closeTo(0, 0.1));
     });
 
     test('bullet velocity points toward target (south)', () {
       final bullet = soldier.fire(Vector2(100, 200));
+      final expectedSpeed = fallbackWeaponStats(0).bulletSpeed;
 
       expect(bullet!.velocity.x, closeTo(0, 0.1));
-      expect(bullet.velocity.y, closeTo(playerBulletSpeed, 0.1));
+      expect(bullet.velocity.y, closeTo(expectedSpeed, 0.1));
     });
 
     test('sets soldier to firing state', () {

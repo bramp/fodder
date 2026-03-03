@@ -4,6 +4,7 @@ import 'package:fodder_game/game/components/bullet.dart';
 import 'package:fodder_game/game/components/direction8.dart';
 import 'package:fodder_game/game/components/player_soldier.dart';
 import 'package:fodder_game/game/components/soldier.dart';
+import 'package:fodder_game/game/config/game_config.dart' as config;
 import 'package:fodder_game/game/systems/line_of_sight.dart';
 import 'package:fodder_game/game/systems/walkability_grid.dart';
 
@@ -19,12 +20,6 @@ enum EnemyAiState {
   firing,
 }
 
-/// Detection range (pixels) — enemies ignore players beyond this distance.
-const enemyDetectionRange = 200.0;
-
-/// Close-range threshold — enemies engage even without LOS within this range.
-const enemyCloseRange = 64.0;
-
 /// Fire delay ticks base value for aggression → seconds conversion.
 ///
 /// Per spec: delay_ticks = (20 - aggression) * random(1..3) + aggression.
@@ -32,12 +27,6 @@ const enemyCloseRange = 64.0;
 /// Low aggression ~1.1 s, high aggression ~0.4 s.
 const _baseFireDelayFactor = 0.05;
 const _minFireDelay = 0.3;
-
-/// Post-fire movement pause in seconds (spec: 15 ticks ≈ 0.25 s).
-const enemyPostFirePause = 0.25;
-
-/// Speed cap in pixels/second (spec: 26 ticks × 5 = 130).
-const _maxEnemySpeed = 130.0;
 
 /// An AI-controlled enemy soldier.
 ///
@@ -90,8 +79,8 @@ class EnemySoldier extends Soldier {
 
   /// Movement speed derived from aggression: `(12 + aggression) * 5`, capped.
   double get _speed {
-    final raw = (12 + aggression) * 5.0;
-    return raw.clamp(0, _maxEnemySpeed);
+    final raw = (config.enemySpeedBase + aggression) * config.speedScale;
+    return raw.clamp(0, config.enemySpeedMax);
   }
 
   /// Fire delay derived from aggression.
@@ -153,7 +142,7 @@ class EnemySoldier extends Soldier {
     final dist = toTarget.length;
 
     // Lost target — too far away.
-    if (dist > enemyDetectionRange) {
+    if (dist > config.detectionRange) {
       _target = null;
       _transitionTo(EnemyAiState.idle);
       return;
@@ -189,7 +178,7 @@ class EnemySoldier extends Soldier {
       }
 
       // Apply post-fire pause and return to chasing.
-      _pauseTimer = enemyPostFirePause;
+      _pauseTimer = config.enemyPostFirePauseBullet;
       _fireTimer = _fireDelay;
       _transitionTo(EnemyAiState.chasing);
     }
@@ -228,7 +217,7 @@ class EnemySoldier extends Soldier {
       if (!player.isAlive) continue;
 
       final dist = position.distanceTo(player.position);
-      if (dist > enemyDetectionRange) continue;
+      if (dist > config.detectionRange) continue;
       if (dist < bestDist) {
         best = player;
         bestDist = dist;
@@ -238,7 +227,7 @@ class EnemySoldier extends Soldier {
     if (best == null) return null;
 
     // Close range — always engage.
-    if (bestDist <= enemyCloseRange) return best;
+    if (bestDist <= config.closeRange) return best;
 
     // Check line of sight.
     if (walkabilityGrid != null &&
@@ -275,7 +264,7 @@ class EnemySoldier extends Soldier {
     if (_target == null || !_target!.isAlive) return false;
 
     // Close range — always fire.
-    if (distance <= enemyCloseRange) return true;
+    if (distance <= config.closeRange) return true;
 
     // Beyond effective bullet range — need to walk closer first.
     if (distance > effectiveBulletRange) return false;

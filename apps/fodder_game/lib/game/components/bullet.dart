@@ -54,8 +54,8 @@ class Bullet extends PositionComponent with CollisionCallbacks {
   /// Total distance the bullet has travelled since creation.
   double distanceTravelled = 0;
 
-  /// Time elapsed since creation.
-  double _elapsed = 0;
+  /// Time elapsed since creation (seconds).
+  double age = 0;
 
   static const _fallbackColor = Color(0xFFFFFF00);
 
@@ -84,9 +84,9 @@ class Bullet extends PositionComponent with CollisionCallbacks {
     final step = velocity * dt;
     position += step;
     distanceTravelled += step.length;
-    _elapsed += dt;
+    age += dt;
 
-    if (distanceTravelled >= maxRange || _elapsed >= maxLifetime) {
+    if (distanceTravelled >= maxRange || age >= maxLifetime) {
       removeFromParent();
     }
   }
