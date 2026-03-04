@@ -1,3 +1,4 @@
+import 'package:fodder_game/game/systems/bresenham_line.dart';
 import 'package:fodder_game/game/systems/walkability_grid.dart';
 
 /// Checks line-of-sight between two world positions using the sub-tile
@@ -18,32 +19,13 @@ bool hasLineOfSight({
   double subTileSize = 4.0,
 }) {
   // Convert world positions to sub-tile coordinates.
-  var x0 = (startX / subTileSize).floor();
-  var y0 = (startY / subTileSize).floor();
+  final x0 = (startX / subTileSize).floor();
+  final y0 = (startY / subTileSize).floor();
   final x1 = (endX / subTileSize).floor();
   final y1 = (endY / subTileSize).floor();
 
-  // Bresenham's line algorithm.
-  final dx = (x1 - x0).abs();
-  final dy = -(y1 - y0).abs();
-  final sx = x0 < x1 ? 1 : -1;
-  final sy = y0 < y1 ? 1 : -1;
-  var error = dx + dy;
-
-  for (;;) {
-    if (!grid.isSubTileWalkable(x0, y0)) return false;
-
-    if (x0 == x1 && y0 == y1) break;
-
-    final e2 = 2 * error;
-    if (e2 >= dy) {
-      error += dy;
-      x0 += sx;
-    }
-    if (e2 <= dx) {
-      error += dx;
-      y0 += sy;
-    }
+  for (final (x, y) in bresenhamLine(x0, y0, x1, y1)) {
+    if (!grid.isSubTileWalkable(x, y)) return false;
   }
 
   return true;

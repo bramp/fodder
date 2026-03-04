@@ -3,6 +3,7 @@ import 'dart:collection';
 import 'package:flame/components.dart';
 
 import 'package:fodder_game/game/map/level_map.dart';
+import 'package:fodder_game/game/systems/bresenham_line.dart';
 import 'package:fodder_game/game/systems/walkability_grid.dart';
 
 /// A* pathfinder operating on a [WalkabilityGrid] at **sub-tile** resolution
@@ -207,5 +208,35 @@ class Pathfinder {
       current = cameFrom[current]!;
     }
     return path.reversed.toList();
+  }
+
+  /// Finds the nearest walkable sub-tile along the line from [target] back
+  /// toward [origin].
+  ///
+  /// Uses Bresenham line stepping from [target] toward [origin]. Returns
+  /// the first walkable sub-tile encountered, or `null` if none is found
+  /// (i.e. the entire line is unwalkable or out of bounds).
+  ///
+  /// This is used when the player clicks on an unwalkable tile — we walk
+  /// the line back toward the player and choose the closest reachable cell.
+  (int, int)? findNearestWalkableSubTile({
+    required (int, int) origin,
+    required (int, int) target,
+  }) {
+    final (ox, oy) = origin;
+    final (tx, ty) = target;
+
+    // Step from target toward origin.
+    for (final (x, y) in bresenhamLine(tx, ty, ox, oy)) {
+      if (x >= 0 &&
+          x < _grid.subTileWidth &&
+          y >= 0 &&
+          y < _grid.subTileHeight &&
+          _grid.isSubTileWalkable(x, y)) {
+        return (x, y);
+      }
+    }
+
+    return null;
   }
 }

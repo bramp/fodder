@@ -425,7 +425,7 @@ Legend: ✅ = implemented, 🔶 = partial, ❌ = not started
 
 ## 6. Bugs (Known)
 
-- [ ] In pathfinding Clicking unwalkable area should path to nearest walkable cell between the player and unwalkable area.
+- [x] In pathfinding Clicking unwalkable area should path to nearest walkable cell between the player and unwalkable area.
 - [ ] Z-order: sprites should sort by Y position (south on top)
 - [ ] When a solider dies, their corpse should remain visible.
 - [x] The bullets coming from the enemeires start at the wrong position relative to the enermy sprite
@@ -436,6 +436,7 @@ Legend: ✅ = implemented, 🔶 = partial, ❌ = not started
 - [ ] If you run away from a enemie, while they are swimming. They just stay in the water.
 - [x] Draw the colission boxes on players/enermies.
 - [ ] We seem to start swimming at the water's edge. I think we should just be walking slow.
+- [ ] The bullet colission box is really large.
 
 ## 7. Other
 

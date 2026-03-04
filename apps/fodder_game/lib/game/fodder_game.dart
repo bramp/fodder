@@ -150,10 +150,24 @@ class FodderGame extends FlameGame
     final worldPos = camera.globalToLocal(event.devicePosition);
 
     // Convert to sub-tile coordinates (8 sub-tiles per tile).
-    final subTileX = (worldPos.x / LevelMap.destSubTileSize).floor();
-    final subTileY = (worldPos.y / LevelMap.destSubTileSize).floor();
+    var subTileX = (worldPos.x / LevelMap.destSubTileSize).floor();
+    var subTileY = (worldPos.y / LevelMap.destSubTileSize).floor();
 
-    if (!grid.isSubTileWalkable(subTileX, subTileY)) return;
+    // If the clicked tile is unwalkable, trace back toward the player and
+    // find the nearest walkable sub-tile along the line.
+    if (!grid.isSubTileWalkable(subTileX, subTileY)) {
+      final leaderPos = leader.position;
+      final originX = (leaderPos.x / LevelMap.destSubTileSize).floor();
+      final originY = (leaderPos.y / LevelMap.destSubTileSize).floor();
+
+      final nearest = _pathfinder!.findNearestWalkableSubTile(
+        origin: (originX, originY),
+        target: (subTileX, subTileY),
+      );
+      if (nearest == null) return;
+      subTileX = nearest.$1;
+      subTileY = nearest.$2;
+    }
 
     // Pathfind from the squad leader's position to the tap target.
     final leaderPos = leader.position;

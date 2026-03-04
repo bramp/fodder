@@ -116,4 +116,96 @@ void main() {
       );
     });
   });
+
+  group('findNearestWalkableSubTile', () {
+    test('returns target when target is already walkable', () {
+      final grid = WalkabilityGrid.fromData(
+        List.generate(3, (_) => List.filled(3, _l)),
+      );
+      final pathfinder = Pathfinder(grid);
+
+      final result = pathfinder.findNearestWalkableSubTile(
+        origin: (0, 0),
+        target: (16, 16),
+      );
+
+      expect(result, (16, 16));
+    });
+
+    test('traces back from blocked target to near edge', () {
+      // Row of blocks in the middle (tile row 1).
+      final grid = WalkabilityGrid.fromData([
+        [_l, _l, _l],
+        [_b, _b, _b],
+        [_l, _l, _l],
+      ]);
+      final pathfinder = Pathfinder(grid);
+
+      // Origin at top-left, target inside the blocked row.
+      // Trace back should find the last walkable cell before the block.
+      final result = pathfinder.findNearestWalkableSubTile(
+        origin: (0, 0),
+        target: (10, 10), // inside block tile (1,1)
+      );
+
+      expect(result, isNotNull);
+      // The result should be walkable.
+      expect(grid.isSubTileWalkable(result!.$1, result.$2), isTrue);
+      // And it should be between origin and target (y < 8, the block start).
+      expect(result.$2, lessThan(8));
+    });
+
+    test('returns null when entire line is unwalkable', () {
+      // All blocked except a tiny corner the line doesn't cross.
+      final grid = WalkabilityGrid.fromData([
+        [_b, _b],
+        [_b, _b],
+      ]);
+      final pathfinder = Pathfinder(grid);
+
+      final result = pathfinder.findNearestWalkableSubTile(
+        origin: (0, 0),
+        target: (8, 8),
+      );
+
+      expect(result, isNull);
+    });
+
+    test('finds edge of large blocked area (forest scenario)', () {
+      // Big "forest" occupying tiles (1..3, 0..4) with walkable border.
+      final grid = WalkabilityGrid.fromData([
+        [_l, _b, _b, _b, _l],
+        [_l, _b, _b, _b, _l],
+        [_l, _b, _b, _b, _l],
+        [_l, _b, _b, _b, _l],
+        [_l, _b, _b, _b, _l],
+      ]);
+      final pathfinder = Pathfinder(grid);
+
+      // Click deep inside forest, origin on the left.
+      final result = pathfinder.findNearestWalkableSubTile(
+        origin: (2, 16), // left walkable column
+        target: (20, 16), // deep in forest
+      );
+
+      expect(result, isNotNull);
+      expect(grid.isSubTileWalkable(result!.$1, result.$2), isTrue);
+      // Should be on the near (left) edge of the forest.
+      expect(result.$1, lessThan(8)); // tile column 0 is walkable (0..7)
+    });
+
+    test('origin equals target returns target if walkable', () {
+      final grid = WalkabilityGrid.fromData(
+        List.generate(2, (_) => List.filled(2, _l)),
+      );
+      final pathfinder = Pathfinder(grid);
+
+      final result = pathfinder.findNearestWalkableSubTile(
+        origin: (5, 5),
+        target: (5, 5),
+      );
+
+      expect(result, (5, 5));
+    });
+  });
 }
