@@ -68,17 +68,17 @@ class WalkabilityGrid {
 
   /// Builds a [WalkabilityGrid] from a loaded [TiledComponent].
   ///
-  /// Reads the `"Tiles"` layer's GID data, resolves each GID to its tileset
+  /// Reads the `"Ground"` layer's GID data, resolves each GID to its tileset
   /// `Tile`, and reads the custom terrain properties:
   ///   - `terrain` (int 0–14): primary terrain type
   ///   - `terrain_secondary` (int 0–14): secondary type for mixed tiles
   ///   - `terrain_mask` (string, 16 hex chars): BHIT sub-tile bitmask
   factory WalkabilityGrid.fromTiled(TiledComponent tiled) {
     final map = tiled.tileMap.map;
-    final tilesLayer = map.layerByName('Tiles');
+    final tilesLayer = map.layerByName('Ground');
 
     if (tilesLayer is! TileLayer) {
-      throw StateError('Expected a TileLayer named "Tiles"');
+      throw StateError('Expected a TileLayer named "Ground"');
     }
 
     final tileData = tilesLayer.tileData;

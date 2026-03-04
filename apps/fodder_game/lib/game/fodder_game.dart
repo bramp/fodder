@@ -8,6 +8,7 @@ import 'package:fodder_game/game/components/bullet.dart';
 import 'package:fodder_game/game/components/bullet_sprites.dart';
 import 'package:fodder_game/game/components/debug_barrier_overlay.dart';
 import 'package:fodder_game/game/components/enemy_soldier.dart';
+import 'package:fodder_game/game/components/environment_sprite.dart';
 import 'package:fodder_game/game/components/player_soldier.dart';
 import 'package:fodder_game/game/components/soldier.dart';
 import 'package:fodder_game/game/components/soldier_animations.dart';
@@ -63,6 +64,9 @@ class FodderGame extends FlameGame
 
   /// Active enemy soldiers on the current map.
   final List<EnemySoldier> _enemies = [];
+
+  /// Static environment decorations (shrubs, tree tops, etc.).
+  final List<EnvironmentSprite> _environmentSprites = [];
 
   /// Unmodifiable view of active enemies (for debug stats).
   List<EnemySoldier> get enemies =>
@@ -138,7 +142,10 @@ class FodderGame extends FlameGame
       imageFile: 'juncopt.png',
     );
 
-    // 7. Add the debug overlay (initially hidden).
+    // 7. Spawn environment sprites (shrubs, tree tops, etc.) from map data.
+    await _spawnEnvironmentSprites();
+
+    // 8. Add the debug overlay (initially hidden).
     _debugOverlay = DebugBarrierOverlay(
       grid: grid ?? WalkabilityGrid.fromData([]),
       player: leader,
@@ -146,7 +153,7 @@ class FodderGame extends FlameGame
     )..enemies = _enemies;
     await world.add(_debugOverlay);
 
-    // 8. If requested via URL param, enable the debug overlay now.
+    // 9. If requested via URL param, enable the debug overlay now.
     if (enableDebugOverlay) {
       _debugOverlay.isVisible = true;
       _syncSoldierDebugMode();
@@ -274,6 +281,12 @@ class FodderGame extends FlameGame
     playerSquad = Squad();
     await _spawnPlayerSquad(playerAnims, grid);
 
+    // Remove old environment sprites.
+    for (final envSprite in _environmentSprites) {
+      envSprite.removeFromParent();
+    }
+    _environmentSprites.clear();
+
     // Spawn enemies for the new map.
     final enemyAnims = await SoldierAnimations.load(
       prefix: '${_spritePrefix}cf1/sprites/',
@@ -286,6 +299,9 @@ class FodderGame extends FlameGame
       death2Prefix: death2PrefixEnemy,
     );
     await _spawnEnemies(enemyAnims);
+
+    // Spawn environment sprites for the new map.
+    await _spawnEnvironmentSprites();
 
     // Update the overlay's grid and spawn data for the new map.
     _debugOverlay.grid = grid ?? WalkabilityGrid.fromData([]);
@@ -432,6 +448,42 @@ class FodderGame extends FlameGame
       alive[i]
         ..predecessor = i > 0 ? alive[i - 1] : null
         ..followPath(chainPaths[i]);
+    }
+  }
+
+  /// Creates [EnvironmentSprite] components (shrubs, tree tops, etc.) from
+  /// the map's Sprites layer and adds them to the world.
+  Future<void> _spawnEnvironmentSprites() async {
+    final envSpawns = levelMap.spawnData.environment;
+    if (envSpawns.isEmpty) return;
+
+    // TODO(bramp): Load the copt atlas (`juncopt.json` / `juncopt.png`) once
+    // during `onLoad()` and cache it on the game instance. Currently the same
+    // atlas is loaded independently by:
+    //   1. `BulletSprites.load()` (step 6 in onLoad)
+    //   2. `EnvironmentSprite.loadAtlas()` (here, step 7)
+    //   3. Again each time `loadMap()` is called
+    // A single `CoptAtlas` helper (or Flame's built-in `Images` cache) could
+    // provide the shared `Image` + `framesMap` to both BulletSprites and
+    // EnvironmentSprite, eliminating the redundant JSON parse and image decode.
+    final atlas = await EnvironmentSprite.loadAtlas(
+      prefix: '${_spritePrefix}cf1/sprites/',
+      atlasJsonFile: 'juncopt.json',
+      imageFile: 'juncopt.png',
+    );
+
+    for (final spawn in envSpawns) {
+      final envSprite = await EnvironmentSprite.fromSpawnData(
+        name: spawn.name,
+        position: spawn.position.clone(),
+        atlasImage: atlas.image,
+        framesMap: atlas.framesMap,
+      );
+
+      if (envSprite != null) {
+        _environmentSprites.add(envSprite);
+        await world.add(envSprite);
+      }
     }
   }
 

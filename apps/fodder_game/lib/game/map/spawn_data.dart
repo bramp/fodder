@@ -14,6 +14,7 @@ class SpawnPoint {
   final Vector2 position;
 
   /// The raw sprite type integer from the original engine's `eSprites` enum.
+  // TODO(bramp): Change this to a proper enum
   final int spriteType;
 
   /// Human-readable name from the Tiled object (e.g. "player", "enemy").
@@ -29,61 +30,96 @@ class SpawnData {
   const SpawnData({
     required this.players,
     required this.enemies,
+    required this.environment,
     required this.all,
   });
 
   /// Extracts spawn data from a loaded Tiled map.
   ///
-  /// Looks for an [ObjectGroup] layer named "Sprites" and reads
-  /// each object's `sprite_type` custom property (int) to classify
-  /// spawn points as player or enemy.
+  /// Looks for [ObjectGroup] layers named "Spawns" (players, enemies, etc.)
+  /// and "Raised" (trees, shrubs, building roofs, etc.) and reads
+  /// each object's `sprite_type` custom property (int) to classify entries.
   ///
   /// [destTileSize] is the destination tile size used to scale the
   /// original-coordinate positions into world space. The original .spt
   /// coordinates are in 16 px tile space; the TMX stores these directly,
   /// so we scale by `destTileSize / 16`.
   factory SpawnData.fromTiledMap(TiledMap map, {required double destTileSize}) {
-    // Find the "Sprites" object group.
-    final layer = map.layers
-        .whereType<ObjectGroup>()
-        .where((l) => l.name == 'Sprites')
-        .firstOrNull;
-
-    if (layer == null) return SpawnData.empty;
-
     final scale = destTileSize / 16;
 
     final all = <SpawnPoint>[];
     final players = <SpawnPoint>[];
     final enemies = <SpawnPoint>[];
+    final environment = <SpawnPoint>[];
 
-    for (final obj in layer.objects) {
-      final spriteType = obj.properties.getValue<int>('sprite_type');
-      if (spriteType == null) continue;
+    // Parse the "Spawns" object group (players, enemies, etc.).
+    final spawnsLayer = map.layers
+        .whereType<ObjectGroup>()
+        .where((l) => l.name == 'Spawns')
+        .firstOrNull;
 
-      final point = SpawnPoint(
-        position: Vector2(obj.x * scale, obj.y * scale),
-        spriteType: spriteType,
-        name: obj.name,
-      );
+    if (spawnsLayer != null) {
+      for (final obj in spawnsLayer.objects) {
+        final spriteType = obj.properties.getValue<int>('sprite_type');
+        if (spriteType == null) continue;
 
-      all.add(point);
+        final point = SpawnPoint(
+          position: Vector2(obj.x * scale, obj.y * scale),
+          spriteType: spriteType,
+          name: obj.name,
+        );
 
-      // Player type == 0.
-      if (spriteType == 0) {
-        players.add(point);
-      }
-      // Enemy types: 5 (basic), 36 (rocket), 106 (leader).
-      if (spriteType == 5 || spriteType == 36 || spriteType == 106) {
-        enemies.add(point);
+        all.add(point);
+
+        // Player type == 0.
+        if (spriteType == 0) {
+          players.add(point);
+        }
+        // Enemy types: 5 (basic), 36 (rocket), 106 (leader).
+        if (spriteType == 5 || spriteType == 36 || spriteType == 106) {
+          enemies.add(point);
+        }
       }
     }
 
-    return SpawnData(players: players, enemies: enemies, all: all);
+    // Parse the "Raised" object group (trees, shrubs, etc.).
+    final raisedLayer = map.layers
+        .whereType<ObjectGroup>()
+        .where((l) => l.name == 'Raised')
+        .firstOrNull;
+
+    if (raisedLayer != null) {
+      for (final obj in raisedLayer.objects) {
+        final spriteType = obj.properties.getValue<int>('sprite_type');
+        if (spriteType == null) continue;
+
+        environment.add(
+          SpawnPoint(
+            position: Vector2(obj.x * scale, obj.y * scale),
+            spriteType: spriteType,
+            name: obj.name,
+          ),
+        );
+      }
+    }
+
+    if (all.isEmpty && environment.isEmpty) return SpawnData.empty;
+
+    return SpawnData(
+      players: players,
+      enemies: enemies,
+      environment: environment,
+      all: all,
+    );
   }
 
   /// Creates an empty [SpawnData] with no spawn points.
-  static const empty = SpawnData(players: [], enemies: [], all: []);
+  static const empty = SpawnData(
+    players: [],
+    enemies: [],
+    environment: [],
+    all: [],
+  );
 
   /// Player (goodie) spawn points.
   final List<SpawnPoint> players;
@@ -92,7 +128,13 @@ class SpawnData {
   /// and enemy leaders.
   final List<SpawnPoint> enemies;
 
-  /// All spawn points in their original order.
+  /// Environment decoration points (trees, shrubs, building roofs, etc.).
+  ///
+  /// These are not true spawn points — they represent static decorations
+  /// rendered from the copt sprite atlas.
+  final List<SpawnPoint> environment;
+
+  /// All spawn points in their original order (excluding environment sprites).
   final List<SpawnPoint> all;
 
   /// Whether any spawn points were found.

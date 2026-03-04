@@ -344,16 +344,29 @@ Legend: ✅ = implemented, 🔶 = partial, ❌ = not started
 - [ ] Seal mine (type 91): seal carrying a mine
 - [ ] Spider mine (type 92): mobile mine
 
-### 4.12 Destroyable Objects
+### 4.12 Environment Decorations (copt atlas)
+- [x] Shrub overlay (type 13, atlas frame `8f_0`)
+- [x] Tree-top overlay (type 14, atlas frame `90_0`)
+- [ ] Building roof overlay (type 15, atlas frame `91_0`) — untested, no CF1 maps use it
+- [ ] Snowman decoration (type 16, atlas frame `92_0`) — untested, no CF1 maps use it
+- [ ] Shrub2 overlay (type 17, atlas frame `93_0`) — untested, no CF1 maps use it
+- [ ] Waterfall animation (type 18) — not yet implemented
+- [ ] Bird animation (type 66) — not yet implemented
+- [ ] Explodable environment sprites: explosions should destroy types 13–17
+- [ ] Y-sort environment sprites with soldiers (currently fixed priority 15)
+- [ ] Load copt atlas (`juncopt.json`/`juncopt.png`) once and share between `BulletSprites` and `EnvironmentSprite`
+- [ ] Let's ensure packages/fodder_tools/lib/sprite_names.dart lists every available sprite.
+
+### 4.13 Destroyable Objects
 - [ ] Destroyable building (type 39)
 - [ ] Computer 1 (type 108): mission objective target
 - [ ] Computer 2 (type 109): mission objective target
 - [ ] Computer 3 (type 110): mission objective target
 
-### 4.13 Switches (CF2)
+### 4.14 Switches (CF2)
 - [ ] UFO callpad (type 111): controls `mSwitchesActivated`
 
-### 4.14 Mission Objectives
+### 4.15 Mission Objectives
 - [ ] Objective system: phase ends when all objectives satisfied
 - [ ] Kill All Enemy (1): all enemy sprites dead
 - [ ] Destroy Enemy Buildings (2): all doors/computers destroyed
@@ -437,7 +450,7 @@ Legend: ✅ = implemented, 🔶 = partial, ❌ = not started
 - [x] Draw the colission boxes on players/enermies.
 - [ ] We seem to start swimming at the water's edge. I think we should just be walking slow.
 - [ ] The bullet colission box is really large.
-- [ ] Trees aren't shown correctly
+- [x] Trees aren't shown correctly (see `EnvironmentSprite`)
 - [ ] The enemy seems too aggressive compared to the original game
 - [ ] The enemies should wander around.
 
@@ -450,3 +463,4 @@ Legend: ✅ = implemented, 🔶 = partial, ❌ = not started
 - [ ] Add loading screen (and pre-loading on html page)
 - [x] URL routing with go_router (`/map/cf1/mapm1?debug=true`)
 - [ ] We need to support dropping off a cliff
+- [ ] Let's consider changing how we control. Arrow keys to move, and click/point to fire
