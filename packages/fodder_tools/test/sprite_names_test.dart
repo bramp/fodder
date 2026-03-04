@@ -98,6 +98,14 @@ void main() {
       // 0x80 has no mapping
       expect(inGameGroupNames[0x80], isNull);
     });
+
+    test('maps environment decoration groups', () {
+      expect(inGameGroupNames[0x8F], 'env_shrub');
+      expect(inGameGroupNames[0x90], 'env_tree');
+      expect(inGameGroupNames[0x91], 'env_building_roof');
+      expect(inGameGroupNames[0x92], 'env_snowman');
+      expect(inGameGroupNames[0x93], 'env_shrub2');
+    });
   });
 
   group('spriteGroupName', () {

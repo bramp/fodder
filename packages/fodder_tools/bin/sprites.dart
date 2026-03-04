@@ -175,6 +175,22 @@ void main(List<String> arguments) {
     hasFile = entryMap.containsKey;
   }
 
+  // Load sprite metadata early so copt PNG exports can use per-sprite
+  // palette correction.
+  final spriteDataPath = args['sprite-data'] as String?;
+  List<SpriteSheetType>? sheetTypes;
+  List<SpriteFrame>? coptFrames;
+
+  if (args['sprites'] as bool && spriteDataPath != null) {
+    sheetTypes = _loadSpriteSheetTypes(spriteDataPath);
+    if (sheetTypes != null) {
+      coptFrames = sheetTypes
+          .expand((st) => st.entries.expand((g) => g))
+          .where((f) => f.gfxType == GfxType.inGame2)
+          .toList();
+    }
+  }
+
   var exported = 0;
 
   // --- 4-bit sprite sheets ---
@@ -210,6 +226,7 @@ void main(List<String> arguments) {
       entry.value,
       outputDir,
       label: '4-bit copt',
+      spriteFrames: coptFrames,
     );
   }
 
@@ -255,19 +272,17 @@ void main(List<String> arguments) {
 
   // --- Individual sprite extraction ---
   if (args['sprites'] as bool) {
-    final spriteDataPath = args['sprite-data'] as String?;
     if (spriteDataPath == null) {
       print('Error: --sprite-data is required when using --sprites.');
       return;
     }
-    final systemType = FileSystemEntity.typeSync(spriteDataPath).toString();
-    if (!systemType.contains('file') && !systemType.contains('directory')) {
-      print('Error: --sprite-data path not found: $spriteDataPath');
+    if (sheetTypes == null) {
+      print('Error: failed to load sprite data from $spriteDataPath');
       return;
     }
 
     _exportSpriteAtlases(
-      spriteDataPath: spriteDataPath,
+      sheetTypes: sheetTypes,
       hasFile: hasFile,
       outputDir: outputDir,
     );
@@ -284,6 +299,7 @@ int _export4Bit(
   List<_PaletteSpec> specs,
   Directory outputDir, {
   required String label,
+  List<SpriteFrame>? spriteFrames,
 }) {
   final palette = Palette();
   for (final spec in specs) {
@@ -303,6 +319,40 @@ int _export4Bit(
   );
   const width = 320;
   final height = pixels.length ~/ width;
+
+  // Fix up sprites that use a different palette than the base.
+  // For multi-palette sheets (e.g. copt), each sprite frame stores its own
+  // paletteIndex. Re-decode regions whose paletteIndex differs from the
+  // base used for the initial full-sheet decode.
+  if (spriteFrames != null && specs.length > 1) {
+    for (final frame in spriteFrames) {
+      if (frame.paletteIndex == firstSpec.startIndex) continue;
+      if (frame.width <= 0 || frame.height <= 0) continue;
+
+      final fx = frame.pixelX();
+      final fy = frame.pixelY();
+      if (fy + frame.height > height) continue;
+
+      // Re-decode this sprite's pixels with its correct palette.
+      final bytesPerRow = frame.width ~/ 2;
+      final startRow = frame.byteOffset ~/ 160;
+      final startCol = frame.byteOffset % 160;
+
+      for (var y = 0; y < frame.height; y++) {
+        final rowOffset = (startRow + y) * 160 + startCol;
+        var dst = (fy + y) * width + fx;
+        for (var b = 0; b < bytesPerRow; b++) {
+          final byte = data[rowOffset + b];
+          pixels[dst++] = palette.resolve4Bit(
+            (byte >> 4) & 0x0F,
+            frame.paletteIndex,
+          );
+          pixels[dst++] = palette.resolve4Bit(byte & 0x0F, frame.paletteIndex);
+        }
+      }
+    }
+  }
+
   // TODO(bramp): The follow encode + save can be refactored into a function
   // since it's repeated in all export types.
   final png = encodePng(pixels: pixels, width: width, height: height);
@@ -429,6 +479,45 @@ class _GfxFileSpec {
   final List<_PaletteSpec> paletteSpecs;
 }
 
+/// Loads all [SpriteSheetType] definitions from a directory of
+/// `sprite_sheet_*.json` files.
+///
+/// Returns `null` if the path is invalid or no data is found.
+List<SpriteSheetType>? _loadSpriteSheetTypes(String spriteDataPath) {
+  if (!FileSystemEntity.isDirectorySync(spriteDataPath)) {
+    print(
+      '\nError: --sprite-data must be a directory containing '
+      'sprite_sheet_*.json files.',
+    );
+    print('Run tool/sprites/export_sprite_data.dart first.');
+    return null;
+  }
+
+  print('\nLoading sprite data from JSON files in $spriteDataPath...');
+  final sheetTypes = <SpriteSheetType>[];
+  final dir = Directory(spriteDataPath);
+  for (final file in dir.listSync().whereType<File>()) {
+    if (!p.basename(file.path).endsWith('.json')) continue;
+    if (!p.basename(file.path).startsWith('sprite_sheet_')) continue;
+
+    final nameMatch = RegExp(
+      r'sprite_sheet_(.+)\.json',
+    ).firstMatch(p.basename(file.path));
+    if (nameMatch == null) continue;
+
+    final name = nameMatch.group(1)!;
+    final json = jsonDecode(file.readAsStringSync()) as List<dynamic>;
+    sheetTypes.add(SpriteSheetType.fromJson(name, json));
+  }
+
+  if (sheetTypes.isEmpty) {
+    print('No sprite sheet metadata found in $spriteDataPath');
+    return null;
+  }
+
+  return sheetTypes;
+}
+
 /// Generates TexturePacker JSON atlas files alongside the already-exported
 /// sprite sheet PNGs.
 ///
@@ -436,43 +525,10 @@ class _GfxFileSpec {
 /// written next to the existing `.png`. Sprite names follow the convention
 /// `{SpriteSheetType}/{groupHex}_{frameIndex}`.
 void _exportSpriteAtlases({
-  required String spriteDataPath,
+  required List<SpriteSheetType> sheetTypes,
   required bool Function(String) hasFile,
   required Directory outputDir,
 }) {
-  final List<SpriteSheetType> sheetTypes;
-
-  if (FileSystemEntity.isDirectorySync(spriteDataPath)) {
-    print('\nLoading sprite data from JSON files in $spriteDataPath...');
-    sheetTypes = [];
-    final dir = Directory(spriteDataPath);
-    for (final file in dir.listSync().whereType<File>()) {
-      if (!p.basename(file.path).endsWith('.json')) continue;
-      if (!p.basename(file.path).startsWith('sprite_sheet_')) continue;
-
-      final nameMatch = RegExp(
-        r'sprite_sheet_(.+)\.json',
-      ).firstMatch(p.basename(file.path));
-      if (nameMatch == null) continue;
-
-      final name = nameMatch.group(1)!;
-      final json = jsonDecode(file.readAsStringSync()) as List<dynamic>;
-      sheetTypes.add(SpriteSheetType.fromJson(name, json));
-    }
-  } else {
-    print(
-      '\nError: --sprite-data must be a directory containing '
-      'sprite_sheet_*.json files.',
-    );
-    print('Run tool/sprites/export_sprite_data.dart first.');
-    return;
-  }
-
-  if (sheetTypes.isEmpty) {
-    print('No sprite sheet metadata found in $spriteDataPath');
-    return;
-  }
-
   print('Found ${sheetTypes.length} sprite sheet types:');
   for (final st in sheetTypes) {
     var totalFrames = 0;
@@ -564,6 +620,8 @@ void _exportSpriteAtlases({
                   y: y,
                   width: frame.width,
                   height: frame.height,
+                  anchorX: frame.modX,
+                  anchorY: frame.modY,
                 ),
               );
 

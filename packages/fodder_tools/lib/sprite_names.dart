@@ -82,6 +82,15 @@ final Map<int, String> inGameGroupNames = {
   // --- Shared / non-directional ---
   0x7F: 'bullet',
 
+  // --- Environment decorations (copt atlas, single-frame overlays) ---
+  // These correspond to eSprite_Shrub..eSprite_Shrub2 in the engine.
+  // The entity type (13–17) maps to these animation groups via field_8.
+  0x8F: 'env_shrub',
+  0x90: 'env_tree',
+  0x91: 'env_building_roof',
+  0x92: 'env_snowman',
+  0x93: 'env_shrub2',
+
   // --- Player firing (standing-with-gun) ---
   ..._directional(0xB0, 'player_firing'),
 
