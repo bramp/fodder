@@ -24,10 +24,19 @@ class FodderGame extends FlameGame
         TapCallbacks,
         SecondaryTapCallbacks,
         KeyboardEvents {
-  FodderGame({this.initialMap = 'cf1/maps/mapm1.tmx'});
+  FodderGame({
+    this.initialMap = 'cf1/maps/mapm1.tmx',
+    this.enableDebugOverlay = false,
+  });
 
   /// The relative path to the `.tmx` map file to load on start.
   final String initialMap;
+
+  /// Whether the debug overlay should be shown immediately after loading.
+  final bool enableDebugOverlay;
+
+  /// Called whenever the debug overlay visibility changes (e.g. via D key).
+  VoidCallback? onDebugToggled;
 
   late LevelMap levelMap;
   Pathfinder? _pathfinder;
@@ -136,6 +145,12 @@ class FodderGame extends FlameGame
       spawnData: levelMap.spawnData,
     )..enemies = _enemies;
     await world.add(_debugOverlay);
+
+    // 8. If requested via URL param, enable the debug overlay now.
+    if (enableDebugOverlay) {
+      _debugOverlay.isVisible = true;
+      _syncSoldierDebugMode();
+    }
   }
 
   @override
@@ -284,6 +299,7 @@ class FodderGame extends FlameGame
     if (!isLoaded) return;
     _debugOverlay.isVisible = !_debugOverlay.isVisible;
     _syncSoldierDebugMode();
+    onDebugToggled?.call();
   }
 
   /// Whether the debug overlay is currently visible.

@@ -25,6 +25,7 @@ class DebugPanel extends StatefulWidget {
     required this.onToggle,
     required this.currentMap,
     required this.onMapChanged,
+    this.onDebugOverlayToggled,
     super.key,
   });
 
@@ -42,6 +43,9 @@ class DebugPanel extends StatefulWidget {
 
   /// Called when the user selects a different map.
   final ValueChanged<String> onMapChanged;
+
+  /// Called after the debug overlay visibility is changed from the panel.
+  final VoidCallback? onDebugOverlayToggled;
 
   @override
   State<DebugPanel> createState() => _DebugPanelState();
@@ -155,6 +159,7 @@ class _DebugPanelState extends State<DebugPanel> {
                   widget.game.hideDebugOverlay();
                 }
               });
+              widget.onDebugOverlayToggled?.call();
             },
             enemiesAlive: _enemiesAlive,
             enemiesTotal: _enemiesTotal,

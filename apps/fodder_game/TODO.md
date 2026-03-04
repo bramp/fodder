@@ -437,6 +437,9 @@ Legend: ✅ = implemented, 🔶 = partial, ❌ = not started
 - [x] Draw the colission boxes on players/enermies.
 - [ ] We seem to start swimming at the water's edge. I think we should just be walking slow.
 - [ ] The bullet colission box is really large.
+- [ ] Trees aren't shown correctly
+- [ ] The enemy seems too aggressive compared to the original game
+- [ ] The enemies should wander around.
 
 ## 7. Other
 
@@ -445,3 +448,5 @@ Legend: ✅ = implemented, 🔶 = partial, ❌ = not started
 - [x] Show  enemy detection radii in debug overlay
 - [ ] Can debug overlay work like the Tiles, so its cheaper to render
 - [ ] Add loading screen (and pre-loading on html page)
+- [x] URL routing with go_router (`/map/cf1/mapm1?debug=true`)
+- [ ] We need to support dropping off a cliff
