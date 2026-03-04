@@ -71,7 +71,7 @@ void main() {
       expect(csvBlock, contains('0,0,7'));
     });
 
-    test('emits Sprites objectgroup when sprites are provided', () {
+    test('emits Spawns objectgroup when sprites are provided', () {
       final sprites = [
         const SptSprite(x: 155, y: 213, type: 0), // Player
         const SptSprite(x: 97, y: 49, type: 5), // Enemy
@@ -82,7 +82,7 @@ void main() {
         sprites: sprites,
       );
 
-      expect(tmx, contains('<objectgroup id="3" name="Sprites">'));
+      expect(tmx, contains('<objectgroup id="3" name="Spawns">'));
       expect(tmx, contains('name="player"'));
       expect(tmx, contains('x="155" y="213"'));
       expect(tmx, contains('name="enemy"'));
@@ -96,6 +96,37 @@ void main() {
         contains('<property name="sprite_type" type="int" value="5"/>'),
       );
       expect(tmx, contains('</objectgroup>'));
+      // No environment layer when there are no env sprites.
+      expect(tmx, isNot(contains('name="Raised"')));
+    });
+
+    test('emits separate Environment objectgroup for decorations', () {
+      final sprites = [
+        const SptSprite(x: 155, y: 213, type: 0), // Player
+        const SptSprite(x: 49, y: 195, type: 13), // Shrub
+        const SptSprite(x: 240, y: 197, type: 14), // Tree
+      ];
+      final tmx = generateTmx(
+        map: map,
+        tilesetTsxFilename: 'test.tsx',
+        sprites: sprites,
+      );
+
+      // Spawns layer should only have the player.
+      expect(tmx, contains('<objectgroup id="3" name="Spawns">'));
+      expect(tmx, contains('name="player"'));
+
+      // Environment layer should have shrub and tree.
+      expect(tmx, contains('<objectgroup id="4" name="Raised">'));
+      expect(tmx, contains('name="shrub"'));
+      expect(tmx, contains('name="tree"'));
+
+      // Shrub and tree should NOT be in the Spawns section.
+      final spawnsStart = tmx.indexOf('name="Spawns"');
+      final spawnsEnd = tmx.indexOf('</objectgroup>', spawnsStart);
+      final spawnsSection = tmx.substring(spawnsStart, spawnsEnd);
+      expect(spawnsSection, isNot(contains('name="shrub"')));
+      expect(spawnsSection, isNot(contains('name="tree"')));
     });
 
     test('omits objectgroup when sprites list is empty', () {
@@ -109,15 +140,15 @@ void main() {
       final sprites = [
         const SptSprite(x: 10, y: 20, type: 0),
         const SptSprite(x: 30, y: 40, type: 5),
-        const SptSprite(x: 50, y: 60, type: 13),
+        const SptSprite(x: 50, y: 60, type: 13), // Shrub → Environment
       ];
       final tmx = generateTmx(
         map: map,
         tilesetTsxFilename: 'test.tsx',
         sprites: sprites,
       );
-      // 2 tile layers + 1 objectgroup = 3, so nextlayerid = 4.
-      expect(tmx, contains('nextlayerid="4"'));
+      // 2 tile layers + Sprites + Environment = 4, so nextlayerid = 5.
+      expect(tmx, contains('nextlayerid="5"'));
       // 3 objects → nextobjectid = 4.
       expect(tmx, contains('nextobjectid="4"'));
     });

@@ -146,6 +146,15 @@ enum SpriteType {
   /// basic enemies, rocket enemies, and enemy leaders).
   bool get isEnemy =>
       this == enemy || this == enemyRocket || this == enemyLeader;
+
+  /// Returns `true` if this sprite type is a static environment decoration
+  /// (shrubs, trees, roofs, snowmen) rather than a dynamic entity.
+  bool get isEnvironment =>
+      this == shrub ||
+      this == tree ||
+      this == buildingRoof ||
+      this == snowman ||
+      this == shrub2;
 }
 
 /// Parses a `.spt` file into a list of [SptSprite] entries.

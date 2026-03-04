@@ -118,6 +118,18 @@ void main() {
       expect(SpriteType.tree.isEnemy, isFalse);
     });
 
+    test('isEnvironment returns true for decoration types', () {
+      expect(SpriteType.shrub.isEnvironment, isTrue);
+      expect(SpriteType.tree.isEnvironment, isTrue);
+      expect(SpriteType.buildingRoof.isEnvironment, isTrue);
+      expect(SpriteType.snowman.isEnvironment, isTrue);
+      expect(SpriteType.shrub2.isEnvironment, isTrue);
+      // Non-environment types.
+      expect(SpriteType.player.isEnvironment, isFalse);
+      expect(SpriteType.enemy.isEnvironment, isFalse);
+      expect(SpriteType.birdLeft.isEnvironment, isFalse);
+    });
+
     test('value property matches expected integers', () {
       expect(SpriteType.player.value, 0);
       expect(SpriteType.enemy.value, 5);

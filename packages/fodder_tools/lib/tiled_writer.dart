@@ -87,7 +87,7 @@ String generateTsx({
 /// [map] contains the parsed map data (dimensions and tile indices).
 /// [tilesetTsxFilename] is the relative path to the `.tsx` tileset file.
 /// [sprites] contains sprite entries from the `.spt` file; when
-/// non-empty, an `<objectgroup>` layer named "Sprites" is emitted
+/// non-empty, an `<objectgroup>` layer named "Spawns" is emitted
 /// with a `<object>` per sprite encoding its pixel position and type.
 ///
 /// Tiled uses **1-based** Global Tile IDs (GID). GID 0 means "empty".
@@ -98,10 +98,20 @@ String generateTmx({
   required String tilesetTsxFilename,
   List<SptSprite> sprites = const [],
 }) {
+  // Split sprites into spawn entities and environment decorations.
+  final spawnSprites = sprites
+      .where((s) => s.spriteType?.isEnvironment != true)
+      .toList();
+  final envSprites = sprites
+      .where((s) => s.spriteType?.isEnvironment == true)
+      .toList();
+
   // Compute nextlayerid / nextobjectid based on content.
-  final hasSprites = sprites.isNotEmpty;
-  final nextLayerId = hasSprites ? 4 : 3;
-  final nextObjectId = hasSprites ? sprites.length + 1 : 1;
+  // Layers: 1=Ground, 2=Track, 3=Spawns (if any), 4=Raised (if any).
+  var nextLayerId = 3;
+  if (spawnSprites.isNotEmpty) nextLayerId++;
+  if (envSprites.isNotEmpty) nextLayerId++;
+  final nextObjectId = sprites.length + 1;
 
   final buf = StringBuffer()
     ..writeln('<?xml version="1.0" encoding="UTF-8"?>')
@@ -116,7 +126,7 @@ String generateTmx({
     ..writeln(' <tileset firstgid="1" source="$tilesetTsxFilename"/>')
     // --- Tile layer ---
     ..writeln(
-      ' <layer id="1" name="Tiles" '
+      ' <layer id="1" name="Ground" '
       'width="${map.width}" height="${map.height}">',
     )
     ..writeln('  <data encoding="csv">');
@@ -167,15 +177,16 @@ String generateTmx({
     ..writeln('  </data>')
     ..writeln(' </layer>');
 
-  // --- Sprite object group ---
-  if (hasSprites) {
-    buf.writeln(' <objectgroup id="3" name="Sprites">');
-    for (var i = 0; i < sprites.length; i++) {
-      final s = sprites[i];
+  // --- Spawn object group (players, enemies, etc.) ---
+  var layerId = 3;
+  var objectId = 1;
+  if (spawnSprites.isNotEmpty) {
+    buf.writeln(' <objectgroup id="$layerId" name="Spawns">');
+    for (final s in spawnSprites) {
       final typeName = s.spriteType?.name ?? 'Type${s.type}';
       buf
         ..writeln(
-          '  <object id="${i + 1}" name="$typeName" '
+          '  <object id="$objectId" name="$typeName" '
           'x="${s.x}" y="${s.y}" width="0" height="0">',
         )
         ..writeln('   <properties>')
@@ -184,6 +195,29 @@ String generateTmx({
         )
         ..writeln('   </properties>')
         ..writeln('  </object>');
+      objectId++;
+    }
+    buf.writeln(' </objectgroup>');
+    layerId++;
+  }
+
+  // --- Raised object group (trees, shrubs, etc.) ---
+  if (envSprites.isNotEmpty) {
+    buf.writeln(' <objectgroup id="$layerId" name="Raised">');
+    for (final s in envSprites) {
+      final typeName = s.spriteType?.name ?? 'Type${s.type}';
+      buf
+        ..writeln(
+          '  <object id="$objectId" name="$typeName" '
+          'x="${s.x}" y="${s.y}" width="0" height="0">',
+        )
+        ..writeln('   <properties>')
+        ..writeln(
+          '    <property name="sprite_type" type="int" value="${s.type}"/>',
+        )
+        ..writeln('   </properties>')
+        ..writeln('  </object>');
+      objectId++;
     }
     buf.writeln(' </objectgroup>');
   }
