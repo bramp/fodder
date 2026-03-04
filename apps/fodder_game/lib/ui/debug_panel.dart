@@ -16,7 +16,7 @@ const Duration _statsRefreshInterval = Duration(milliseconds: 500);
 /// Features:
 /// - Level selector (CF1 / CF2 maps)
 /// - Invincibility toggle
-/// - Debug terrain overlay toggle
+/// - Debug overlay toggle
 /// - Live sprite/enemy stats
 class DebugPanel extends StatefulWidget {
   const DebugPanel({
@@ -258,7 +258,7 @@ class _PanelBody extends StatelessWidget {
             _sectionHeader('Tools'),
             _toggleRow(
               icon: Icons.grid_on,
-              label: 'Terrain overlay',
+              label: 'Debug overlay',
               value: isDebugOverlay,
               onChanged: onDebugOverlayChanged,
               activeColor: Colors.greenAccent,

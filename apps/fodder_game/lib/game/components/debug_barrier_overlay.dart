@@ -2,7 +2,9 @@ import 'dart:ui';
 
 import 'package:flame/components.dart';
 
+import 'package:fodder_game/game/components/enemy_soldier.dart';
 import 'package:fodder_game/game/components/player_soldier.dart';
+import 'package:fodder_game/game/config/game_config.dart' as config;
 import 'package:fodder_game/game/map/level_map.dart';
 import 'package:fodder_game/game/map/spawn_data.dart';
 import 'package:fodder_game/game/systems/walkability_grid.dart';
@@ -53,6 +55,27 @@ final Paint _spawnOutlinePaint = Paint()
   ..style = PaintingStyle.stroke
   ..strokeWidth = 1;
 
+/// Paint for enemy detection range circle (outer radius).
+final Paint _detectionRangePaint = Paint()
+  ..color =
+      const Color(0x44FF4444) // translucent red
+  ..style = PaintingStyle.stroke
+  ..strokeWidth = 0.5;
+
+/// Paint for enemy close-range circle (always-engage radius).
+final Paint _closeRangePaint = Paint()
+  ..color =
+      const Color(0x66FF8800) // translucent orange
+  ..style = PaintingStyle.stroke
+  ..strokeWidth = 0.5;
+
+/// Paint for enemy effective bullet range circle.
+final Paint _bulletRangePaint = Paint()
+  ..color =
+      const Color(0x44FFFF00) // translucent yellow
+  ..style = PaintingStyle.stroke
+  ..strokeWidth = 0.5;
+
 /// Debug overlay that draws semi-transparent coloured rectangles over
 /// non-walkable tiles and visualises the player's current A* path.
 ///
@@ -60,7 +83,7 @@ final Paint _spawnOutlinePaint = Paint()
 /// renders each of the 8×8 sub-tile cells individually, showing the exact
 /// terrain boundary within the tile.
 ///
-/// The static terrain overlay is recorded into a [Picture] once and replayed
+/// The static terrain layer is recorded into a [Picture] once and replayed
 /// each frame. Only the path dots are drawn dynamically. Call
 /// [invalidateCache] (or assign a new [grid]) to rebuild after a map change.
 ///
@@ -82,7 +105,10 @@ class DebugBarrierOverlay extends Component with HasVisibility {
   final PlayerSoldier player;
   SpawnData _spawnData;
 
-  /// Cached picture of the static terrain overlay.
+  /// Live enemy soldiers whose detection radii should be drawn.
+  List<EnemySoldier> enemies = [];
+
+  /// Cached picture of the static terrain layer.
   Picture? _cachedPicture;
 
   /// Updates the walkability grid and invalidates the cached picture.
@@ -118,7 +144,7 @@ class DebugBarrierOverlay extends Component with HasVisibility {
 
   @override
   void render(Canvas canvas) {
-    // Draw cached static terrain overlay.
+    // Draw cached static terrain layer.
     _cachedPicture ??= _buildTerrainPicture();
     canvas.drawPicture(_cachedPicture!);
 
@@ -130,6 +156,30 @@ class DebugBarrierOverlay extends Component with HasVisibility {
         dotRadius,
         _pathPaint,
       );
+    }
+
+    // Draw enemy detection radii.
+    _renderEnemyRadii(canvas);
+  }
+
+  /// Draws concentric detection/fire-range circles around each alive enemy.
+  void _renderEnemyRadii(Canvas canvas) {
+    for (final enemy in enemies) {
+      if (!enemy.isAlive) continue;
+
+      final center = Offset(enemy.position.x, enemy.position.y);
+
+      // Outer: detection range.
+      // Middle: effective bullet range (aggression-dependent).
+      // Inner: close range (always engage, ignore LOS).
+      canvas
+        ..drawCircle(center, config.detectionRange, _detectionRangePaint)
+        ..drawCircle(
+          center,
+          enemy.effectiveBulletRange,
+          _bulletRangePaint,
+        )
+        ..drawCircle(center, config.closeRange, _closeRangePaint);
     }
   }
 
@@ -163,7 +213,7 @@ class DebugBarrierOverlay extends Component with HasVisibility {
       }
     }
 
-    // Draw spawn point markers on top of the terrain overlay.
+    // Draw spawn point markers on top of the terrain layer.
     _renderSpawnMarkers(canvas);
 
     return recorder.endRecording();

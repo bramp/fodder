@@ -441,6 +441,7 @@ Legend: ✅ = implemented, 🔶 = partial, ❌ = not started
 ## 7. Other
 
 - [ ] Change path finding to consider cost of different terrain
-- [ ] Optionally show enemy detection radii in debug overlay
+- [x] How do enermies detect players? Should we use large colissions boxes? or is what we doing now appropriate? What's Flame best practice?
+- [x] Show  enemy detection radii in debug overlay
 - [ ] Can debug overlay work like the Tiles, so its cheaper to render
 - [ ] Add loading screen (and pre-loading on html page)

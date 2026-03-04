@@ -134,7 +134,7 @@ class FodderGame extends FlameGame
       grid: grid ?? WalkabilityGrid.fromData([]),
       player: leader,
       spawnData: levelMap.spawnData,
-    );
+    )..enemies = _enemies;
     await world.add(_debugOverlay);
   }
 
@@ -277,7 +277,7 @@ class FodderGame extends FlameGame
     _debugOverlay.spawnData = levelMap.spawnData;
   }
 
-  /// Toggles the debug barrier overlay on/off.
+  /// Toggles the debug overlay on/off.
   ///
   /// Also enables/disables collision hitbox rendering on all soldiers.
   void toggleDebugMode() {
@@ -286,17 +286,17 @@ class FodderGame extends FlameGame
     _syncSoldierDebugMode();
   }
 
-  /// Whether the debug terrain overlay is currently visible.
+  /// Whether the debug overlay is currently visible.
   bool get isDebugOverlayVisible => isLoaded && _debugOverlay.isVisible;
 
-  /// Shows the debug terrain overlay.
+  /// Shows the debug overlay.
   void showDebugOverlay() {
     if (!isLoaded) return;
     _debugOverlay.isVisible = true;
     _syncSoldierDebugMode();
   }
 
-  /// Hides the debug terrain overlay.
+  /// Hides the debug overlay.
   void hideDebugOverlay() {
     if (!isLoaded) return;
     _debugOverlay.isVisible = false;
