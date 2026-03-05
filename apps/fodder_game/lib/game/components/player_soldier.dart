@@ -86,8 +86,19 @@ class PlayerSoldier extends Soldier {
       return;
     }
 
-    // Check terrain under the soldier for water effects.
+    // Check terrain under the soldier for water and drop effects.
     _updateTerrainState();
+
+    // If currently falling (Drop) or stumbling (Drop2), process and skip
+    // normal movement.
+    if (isFalling) {
+      _updateFalling(dt);
+      return;
+    }
+    if (isStumbling) {
+      _updateStumbling(dt);
+      return;
+    }
 
     // Tick fire cooldown.
     if (_fireCooldownTimer > 0) {
@@ -144,18 +155,91 @@ class PlayerSoldier extends Soldier {
     }
   }
 
-  /// Updates [isInWater] based on the terrain under the soldier.
+  /// Updates [isInWater] and detects Drop / Drop2 terrain.
   void _updateTerrainState() {
     final terrain = terrainUnderFoot();
+
+    // --- Water detection ---
     final wasInWater = isInWater;
     isInWater =
         terrain == TerrainType.water ||
         terrain == TerrainType.waterEdge ||
         terrain == TerrainType.sink;
 
-    // If water state changed, rebuild animations so swimming is available.
     if (isInWater != wasInWater) {
       updateAnimations();
+    }
+
+    // --- Drop / cliff detection ---
+    // Drop (type 9): gravity slide downward. The soldier accelerates down
+    // and can survive if they reach non-drop terrain before the timer
+    // expires (matching the original `field_12 < 12` check).
+    if (!isFalling && !isStumbling && terrain == TerrainType.drop) {
+      fallTimer = config.dropFallDuration;
+      fallSpeed = 0;
+      setState(SoldierState.falling);
+    }
+
+    // Drop2 (type 10): stumble in place. Visual height accumulates
+    // rapidly (~5 original frames ≈ 0.3 s) and is always lethal.
+    if (!isFalling && !isStumbling && terrain == TerrainType.drop2) {
+      stumbleTimer = config.dropStumbleDuration;
+      setState(SoldierState.stumbling);
+    }
+  }
+
+  /// Processes one frame of the falling state.
+  ///
+  /// The soldier accelerates downward. After displacement, the terrain at
+  /// the new position is checked:
+  /// - Still on Drop/Drop2 → continue falling.
+  /// - Non-drop terrain AND timer not expired → **survive** (reset).
+  /// - Timer expired → **die**.
+  ///
+  /// This matches the original game's `loc_1E9EC` check: `field_12 < 12`
+  /// means survive, `field_12 ≥ 12` means death.
+  void _updateFalling(double dt) {
+    // Accelerate downward.
+    fallSpeed += config.dropFallAcceleration * dt;
+    position.y += fallSpeed * dt;
+
+    // Count down toward death.
+    fallTimer -= dt;
+
+    // Check terrain at the new position.
+    final terrain = terrainUnderFoot();
+
+    // The soldier survives only if they've landed on walkable, non-drop
+    // ground before the timer expires. Out-of-bounds returns `block`,
+    // which correctly prevents survival (matching the original game's
+    // `if (Y >= mapHeight) → force death` check).
+    final isDeadlyGround =
+        terrain == TerrainType.drop ||
+        terrain == TerrainType.drop2 ||
+        terrain.blocksWalking;
+
+    if (!isDeadlyGround && fallTimer > 0) {
+      // Landed on solid ground before the timer expired — survive.
+      resetFallState();
+      setState(SoldierState.idle);
+      return;
+    }
+
+    if (fallTimer <= 0) {
+      die();
+    }
+  }
+
+  /// Processes one frame of the Drop2 stumble.
+  ///
+  /// The soldier stays in place (no Y displacement) while the stumble
+  /// timer counts down. When the timer expires the soldier dies.
+  /// This is effectively always lethal — matching the original game where
+  /// visual height accumulates to ≥ 14 in ~5 frames.
+  void _updateStumbling(double dt) {
+    stumbleTimer -= dt;
+    if (stumbleTimer <= 0) {
+      die();
     }
   }
 

@@ -188,7 +188,7 @@ class FodderGame extends FlameGame
 
     // If the clicked tile is unwalkable, trace back toward the player and
     // find the nearest walkable sub-tile along the line.
-    if (!grid.isSubTileWalkable(subTileX, subTileY)) {
+    if (!grid.isSubTilePathfindable(subTileX, subTileY)) {
       final leaderPos = leader.position;
       final originX = (leaderPos.x / LevelMap.destSubTileSize).floor();
       final originY = (leaderPos.y / LevelMap.destSubTileSize).floor();

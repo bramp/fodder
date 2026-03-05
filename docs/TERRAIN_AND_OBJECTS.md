@@ -46,7 +46,62 @@ Terrain is sampled at each sprite's position (offset Y=−3, X=+8) and stored in
   [VEHICLES.md §2.2](VEHICLES.md)).
 - **Vehicles** entering water trigger sinking animations and sounds.
 
-### 1.3 Height from terrain
+### 1.3 Drop / cliff mechanics
+
+Drop tiles (types 9 and 10) model cliff edges and steep slopes. Behaviour
+differs by entity type:
+
+#### Player soldiers
+
+| Terrain | Per-frame effect | Death condition |
+| ------- | ---------------- | --------------- |
+| `Drop` (9) | Increments `field_56`. Soldier **slides downward** with accelerating gravity (`Y += field_12`; `field_12` counts 1, 2, 3 …). Walk targets are adjusted so the squad path follows. | `field_12 ≥ 12` (~0.72 s). **Survivable** — if the soldier reaches non-drop terrain before frame 12 the counter resets. |
+| `Drop2` (10) | Immediately sets `field_38 = eSprite_Anim_Hit3` (stumble). **Visual height** (`field_52`) accumulates by `field_12` each frame (1+2+3+4+5 = 15). Soldier **stays in place** — no Y displacement. | `field_52 ≥ 14` (~0.3 s / ~5 frames). **Always lethal** in practice because there is no displacement to carry the soldier off the tile. |
+
+Once `field_12 > 5`, a visual dust/debris effect is spawned under the
+soldier (original: `sub_223B2`) — Drop only.
+
+If terrain at the new position is still `Drop` (type 9), the fall continues
+(return to per-frame loop). `Drop2` (type 10) at the new position triggers
+the stumble path instead.
+
+#### Enemies and natives
+
+Enemies and natives **never fall or stumble**. When they step onto a Drop or
+Drop2 tile they are **bounced back**: their position is restored to the
+previous frame's value, their direction is reversed, and their "reached
+target" flag is set (so the AI picks a new goal). This effectively makes
+cliff edges impassable for AI soldiers.
+
+#### Vehicles
+
+Vehicles **accelerate** downward on Drop tiles. Each frame on a Drop tile:
+`fallSpeed += 4`, then `Y += fallSpeed`. This gives a gravity-like effect
+rather than the gradual slide that soldiers experience.
+
+#### Helicopters
+
+Drop/Drop2 tiles set a minimum flight altitude of `0x0E` (14 units).
+Helicopters fly over cliffs without falling.
+
+#### Grenades / projectiles
+
+If a grenade is near ground level (`height ≤ 1`) and over a Drop/Drop2 tile,
+it continues falling (`field_12 = 1`). Airborne grenades pass over unaffected.
+
+#### Remake conversion notes
+
+| Original field | Remake equivalent | Notes |
+| -------------- | ----------------- | ----- |
+| `field_56` | (implicit) | Non-zero triggers fall; in the remake the fall starts immediately via `fallTimer` |
+| `field_12` (displacement/counter) | `fallTimer` (Drop), `_stumbleTimer` (Drop2) | Drop: counts down from 0.72 s; death at ≤ 0. Drop2: counts down from 0.3 s; death at ≤ 0 |
+| `field_52` (visual height) | — | Drop2 only; in the remake the stumble timer replaces the height accumulation |
+| `field_38 = 0x02` (Hit2) | `SoldierState.falling` | Gravity slide from Drop terrain |
+| `field_38 = 0x03` (Hit3) | `SoldierState.stumbling` | Stumble from Drop2 terrain |
+| `field_38 = 0x06` (Die2) | `SoldierState.dying` | Death from either drop type |
+| `field_45 = 1` | `die()` | Trigger death sequence |
+
+### 1.4 Height from terrain
 
 Rocky terrain elevates soldiers, creating a pseudo-3D effect:
 
@@ -54,7 +109,6 @@ Rocky terrain elevates soldiers, creating a pseudo-3D effect:
 | ------- | ---------------- |
 | Rocky | Height toggles between 0, 1, 2 |
 | Rocky2 | Height increases up to 6 |
-| Drop/Drop2 | Enemies/natives get bounced back; players stumble |
 
 ---
 

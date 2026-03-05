@@ -440,4 +440,142 @@ void main() {
       expect(enemy.isInWater, isFalse);
     });
   });
+
+  group('EnemySoldier drop/cliff bounce-back', () {
+    /// Grid with drop terrain at tile (2, 0) and land elsewhere.
+    WalkabilityGrid dropGrid() {
+      return WalkabilityGrid.fromData([
+        [
+          TerrainType.land,
+          TerrainType.land,
+          TerrainType.drop,
+          TerrainType.land,
+        ],
+        [
+          TerrainType.land,
+          TerrainType.land,
+          TerrainType.land,
+          TerrainType.land,
+        ],
+        [
+          TerrainType.land,
+          TerrainType.land,
+          TerrainType.land,
+          TerrainType.land,
+        ],
+        [
+          TerrainType.land,
+          TerrainType.land,
+          TerrainType.land,
+          TerrainType.land,
+        ],
+      ]);
+    }
+
+    /// Grid with drop2 terrain at tile (2, 0) and land elsewhere.
+    WalkabilityGrid drop2Grid() {
+      return WalkabilityGrid.fromData([
+        [
+          TerrainType.land,
+          TerrainType.land,
+          TerrainType.drop2,
+          TerrainType.land,
+        ],
+        [
+          TerrainType.land,
+          TerrainType.land,
+          TerrainType.land,
+          TerrainType.land,
+        ],
+        [
+          TerrainType.land,
+          TerrainType.land,
+          TerrainType.land,
+          TerrainType.land,
+        ],
+        [
+          TerrainType.land,
+          TerrainType.land,
+          TerrainType.land,
+          TerrainType.land,
+        ],
+      ]);
+    }
+
+    test('enemy bounces back from Drop terrain', () {
+      final player = _makePlayer()..position = Vector2(100, 16);
+      final enemy =
+          EnemySoldier(
+              soldierAnimations: _buildFakeAnims(includeCombatAnims: true),
+            )
+            ..position =
+                Vector2(48, 16) // tile (1, 0) = land, right next to drop
+            ..players = [player]
+            ..walkabilityGrid = dropGrid()
+            ..updateAnimations()
+            ..current = SoldierState.idle
+            ..update(0.01); // enters chasing
+
+      expect(enemy.aiState, EnemyAiState.chasing);
+
+      // Force position onto the drop tile.
+      enemy
+        ..position =
+            Vector2(80, 16) // tile (2, 0) = drop
+        ..update(0.01);
+
+      // Enemy should have bounced back to idle and restored position.
+      expect(enemy.aiState, EnemyAiState.idle);
+      expect(enemy.isAlive, isTrue);
+    });
+
+    test('enemy bounces back from Drop2 terrain', () {
+      final player = _makePlayer()..position = Vector2(100, 16);
+      final enemy =
+          EnemySoldier(
+              soldierAnimations: _buildFakeAnims(includeCombatAnims: true),
+            )
+            ..position = Vector2(48, 16)
+            ..players = [player]
+            ..walkabilityGrid = drop2Grid()
+            ..updateAnimations()
+            ..current = SoldierState.idle
+            ..update(0.01)
+            // Force position onto drop2 tile.
+            ..position = Vector2(80, 16)
+            ..update(0.01);
+
+      expect(enemy.aiState, EnemyAiState.idle);
+      expect(enemy.isAlive, isTrue);
+    });
+
+    test('enemy never dies from Drop terrain', () {
+      final player = _makePlayer()..position = Vector2(100, 16);
+
+      // Grid: all drop tiles.
+      final allDrop = WalkabilityGrid.fromData(
+        List.generate(
+          10,
+          (_) => List.filled(10, TerrainType.drop),
+        ),
+      );
+
+      final enemy =
+          EnemySoldier(
+              soldierAnimations: _buildFakeAnims(includeCombatAnims: true),
+            )
+            ..position = Vector2(48, 16)
+            ..players = [player]
+            ..walkabilityGrid = allDrop
+            ..updateAnimations()
+            ..current = SoldierState.idle;
+
+      // Tick many frames — enemy should never die.
+      for (var i = 0; i < 100; i++) {
+        enemy.update(0.05);
+      }
+
+      expect(enemy.isAlive, isTrue);
+    });
+  });
 }

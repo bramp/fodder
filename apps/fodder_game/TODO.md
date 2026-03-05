@@ -268,8 +268,8 @@ Legend: ✅ = implemented, 🔶 = partial, ❌ = not started
 - [x] `water` (type 6): in-water flag, speed → 6, natives immune
 - [ ] `snow` (type 7): reduce unit speed
 - [ ] `quickSandEdge` (type 8): 1/64 chance per tick of slide animation
-- [ ] `drop` (type 9): increment fall counter
-- [ ] `drop2` (type 10): stumble animation
+- [x] `drop` (type 9): fall counter, gravity slide, death at ≥ 12 ticks
+- [x] `drop2` (type 10): stumble animation (same as drop in remake)
 - [ ] `sink` (type 11): human sinking
 
 ### 4.2 Water Mechanics
@@ -287,7 +287,7 @@ Legend: ✅ = implemented, 🔶 = partial, ❌ = not started
 
 ### 4.4 Height from Terrain
 - [ ] Rocky terrain elevates soldiers (pseudo-3D)
-- [ ] Drop/Drop2: enemies/natives bounced back, players stumble
+- [x] Drop/Drop2: enemies/natives bounced back, players fall (survive short drops)
 
 ### 4.5 Civilians
 - [ ] Basic civilian (type 61): speed 6, wanders near doors
@@ -456,13 +456,14 @@ Legend: ✅ = implemented, 🔶 = partial, ❌ = not started
 
 ## 7. Other
 
-- [ ] Change path finding to consider cost of different terrain
+- [ ] Change path finding to consider cost of different terrain (drop/drop2 blocked)
 - [x] How do enermies detect players? Should we use large colissions boxes? or is what we doing now appropriate? What's Flame best practice?
 - [x] Show  enemy detection radii in debug overlay
 - [ ] Can debug overlay work like the Tiles, so its cheaper to render
 - [ ] Add loading screen (and pre-loading on html page)
 - [x] URL routing with go_router (`/map/cf1/mapm1?debug=true`)
-- [ ] We need to support dropping off a cliff
+- [x] We need to support dropping off a cliff
+- [x] Change path finding to avoid drop/drop2 tiles
 - [ ] Let's consider changing how we control.
    - [ ] Arrow keys to move, and click/point to fire
    - [ ] Press and do - press on a enemy and they will be fired at. Press on a land tile, it will be walked to.

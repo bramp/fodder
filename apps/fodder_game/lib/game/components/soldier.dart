@@ -2,7 +2,7 @@ import 'dart:math';
 
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
-
+import 'package:flutter/foundation.dart' show protected;
 import 'package:fodder_game/game/components/bullet.dart';
 import 'package:fodder_game/game/components/direction8.dart';
 import 'package:fodder_game/game/components/soldier_animations.dart';
@@ -29,6 +29,12 @@ enum SoldierState {
 
   /// Playing a throw animation (grenade / rocket).
   throwing,
+
+  /// Falling off a cliff edge (Drop terrain — gravity slide downward).
+  falling,
+
+  /// Stumbling forward off a steep ledge (Drop2 terrain — in-place tumble).
+  stumbling,
 
   /// Playing death animation before removal.
   dying,
@@ -111,6 +117,45 @@ abstract class Soldier extends SpriteAnimationGroupComponent<SoldierState>
   ///
   /// Updated each frame by subclasses calling [terrainUnderFoot].
   bool isInWater = false;
+
+  // ---------------------------------------------------------------------------
+  // Drop / cliff state
+  // ---------------------------------------------------------------------------
+
+  /// Whether this soldier is currently falling or stumbling off a cliff.
+  bool get isFalling => fallTimer > 0;
+
+  /// Whether this soldier is in a Drop2 stumble (as opposed to a Drop slide).
+  bool get isStumbling => stumbleTimer > 0;
+
+  /// Countdown timer for the Drop gravity-slide (seconds).
+  ///
+  /// Set to [config.dropFallDuration] when the soldier steps on a Drop tile.
+  /// Counts down each frame. If the soldier slides onto non-drop terrain
+  /// before the timer expires they survive (matching the original game's
+  /// `field_12 < 12` check). If the timer reaches zero, the soldier dies.
+  @protected
+  double fallTimer = 0;
+
+  /// Downward velocity accumulated during a Drop fall (pixels/second).
+  @protected
+  double fallSpeed = 0;
+
+  /// Countdown timer for the Drop2 stumble (seconds).
+  ///
+  /// In the original game, visual height (`field_52`) accumulates rapidly
+  /// (1+2+3+4+5 = 15 in ~5 frames). Death occurs when `field_52 ≥ 14`
+  /// (~0.3 s). The soldier stays in place — no Y displacement.
+  @protected
+  double stumbleTimer = 0;
+
+  /// Resets all fall / stumble state.
+  @protected
+  void resetFallState() {
+    fallTimer = 0;
+    fallSpeed = 0;
+    stumbleTimer = 0;
+  }
 
   /// Returns the [TerrainType] under this soldier's current position.
   ///
@@ -268,6 +313,8 @@ abstract class Soldier extends SpriteAnimationGroupComponent<SoldierState>
     final fallback = switch (state) {
       SoldierState.swimming => SoldierState.walking,
       SoldierState.prone => SoldierState.idle,
+      SoldierState.falling => SoldierState.walking,
+      SoldierState.stumbling => SoldierState.dying,
       _ => null,
     };
     if (fallback != null && (animations?.containsKey(fallback) ?? false)) {

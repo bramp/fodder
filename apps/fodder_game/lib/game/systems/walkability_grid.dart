@@ -17,7 +17,21 @@ enum TerrainType {
   water(6, 'Water'),
   snow(7, 'Snow'),
   quickSandEdge(8, 'Quick Sand Edge'),
+
+  /// Cliff edge — soldier slides downward with accelerating gravity.
+  ///
+  /// Each frame the fall displacement grows (`field_12++`). The slide
+  /// continues until the soldier reaches non-drop terrain (survives if
+  /// `field_12 < 12`) or the timer expires (dies at `field_12 ≥ 12`).
+  /// In the original C++ this increments `field_56` per tick.
   drop(9, 'Drop'),
+
+  /// Steep ledge — triggers a stumble / pitch-forward animation.
+  ///
+  /// In the original C++ this sets `field_38 = eSprite_Anim_Hit3`
+  /// (stumble). Visual height (`field_52`) accumulates rapidly; death
+  /// occurs when `field_52 ≥ 14`. In the remake we treat this the same
+  /// as [drop] (gravity slide + timer) for simplicity.
   drop2(10, 'Drop2'),
   sink(11, 'Sink'),
   terrainC(12, 'C'),
@@ -33,8 +47,20 @@ enum TerrainType {
   /// Human-readable name for debug display.
   final String label;
 
-  /// Whether this terrain type blocks walking.
+  /// Whether this terrain type blocks walking (walls / impassable).
+  ///
+  /// Only `block` tiles prevent all foot movement. Drop tiles are
+  /// *traversable* (soldiers can physically walk onto them and fall) but
+  /// are excluded from pathfinding — see [blocksPathfinding].
   bool get blocksWalking => this == block;
+
+  /// Whether the pathfinder should treat this terrain as impassable.
+  ///
+  /// Includes all tiles that block walking **and** cliff edges (drop /
+  /// drop2). The pathfinder avoids routing through these tiles so
+  /// soldiers don't accidentally walk off cliffs. Players can still be
+  /// moved onto drop tiles intentionally via direct-line commands.
+  bool get blocksPathfinding => this == block || this == drop || this == drop2;
 
   /// Look up a [TerrainType] by its integer [value].
   ///
@@ -255,6 +281,12 @@ class WalkabilityGrid {
   /// Returns `true` if the sub-tile at global coordinates is walkable.
   bool isSubTileWalkable(int globalSubX, int globalSubY) {
     return !subTileTerrainAtGlobal(globalSubX, globalSubY).blocksWalking;
+  }
+
+  /// Returns `true` if the sub-tile at global coordinates is safe for
+  /// pathfinding (excludes walls *and* cliff edges).
+  bool isSubTilePathfindable(int globalSubX, int globalSubY) {
+    return !subTileTerrainAtGlobal(globalSubX, globalSubY).blocksPathfinding;
   }
 
   /// Returns `true` if the tile at [tileX], [tileY] has sub-tile data

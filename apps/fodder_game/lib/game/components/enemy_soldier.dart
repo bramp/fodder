@@ -78,6 +78,9 @@ class EnemySoldier extends Soldier {
   /// Whether the initial fire delay has been consumed.
   bool _initialDelayConsumed = false;
 
+  /// Last known safe (non-drop) position, used to restore on bounce-back.
+  final Vector2 _safePosition = Vector2.zero();
+
   /// Callback for spawning a bullet into the world.
   ///
   /// Set by `FodderGame` during enemy spawning. The enemy creates a [Bullet]
@@ -107,8 +110,17 @@ class EnemySoldier extends Soldier {
 
     if (!isAlive) return;
 
-    // Update water state from terrain.
-    _updateTerrainState();
+    // Record the current position as safe if we're on valid terrain.
+    // This is checked *before* movement so that if the AI walks onto a
+    // cliff edge we can restore to the last known safe spot.
+    final terrain = terrainUnderFoot();
+    if (terrain != TerrainType.drop && terrain != TerrainType.drop2) {
+      _safePosition.setFrom(position);
+    }
+
+    // Update water state BEFORE the AI so speed and animation queries
+    // see the correct isInWater flag.
+    _updateWaterState();
 
     // Consume initial fire delay.
     if (!_initialDelayConsumed) {
@@ -117,7 +129,7 @@ class EnemySoldier extends Soldier {
       _initialDelayConsumed = true;
     }
 
-    // AI state machine.
+    // AI state machine (may move position).
     switch (aiState) {
       case EnemyAiState.idle:
         _updateIdle(dt);
@@ -126,6 +138,9 @@ class EnemySoldier extends Soldier {
       case EnemyAiState.firing:
         _updateFiring(dt);
     }
+
+    // After movement, check for cliff edges and bounce back.
+    _checkDropBounceBack();
   }
 
   void _updateIdle(double dt) {
@@ -312,15 +327,35 @@ class EnemySoldier extends Soldier {
     }
   }
 
-  /// Updates [isInWater] based on the terrain under the soldier.
-  void _updateTerrainState() {
+  /// Updates [isInWater] from the terrain under the soldier.
+  ///
+  /// Called before the AI state machine so speed / animation queries see
+  /// the correct flag.
+  void _updateWaterState() {
     final terrain = terrainUnderFoot();
     final wasInWater = isInWater;
     isInWater = _waterTerrains.contains(terrain);
 
-    // If water state changed, rebuild animations so swimming is available.
     if (isInWater != wasInWater) {
       updateAnimations();
     }
+  }
+
+  /// Checks whether the enemy ended up on a cliff edge after movement and,
+  /// if so, restores it to the last safe position.
+  void _checkDropBounceBack() {
+    final terrain = terrainUnderFoot();
+    if (terrain == TerrainType.drop || terrain == TerrainType.drop2) {
+      _bounceBack();
+    }
+  }
+
+  /// Restores the enemy to its previous position and abandons the current
+  /// target, mimicking the original game's `loc_20251` bounce-back for
+  /// enemies on Drop/Drop2 tiles.
+  void _bounceBack() {
+    position.setFrom(_safePosition);
+    _target = null;
+    _transitionTo(EnemyAiState.idle);
   }
 }

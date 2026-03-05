@@ -187,3 +187,27 @@ const int maxEnemiesOnMap = 10;
 
 /// Chance per frame to skip auto-fire (1 in N).
 const int autoFireIgnoreChanceOneIn = 32;
+
+// ---------------------------------------------------------------------------
+// Drop / cliff terrain
+// ---------------------------------------------------------------------------
+
+/// Duration (seconds) of the Drop gravity-slide before the soldier dies.
+///
+/// Original: `field_12` counted up by 1 per frame; death at ≥ 12 frames.
+/// At ~16.67 fps that is ≈ 0.72 s.
+const double dropFallDuration = 12 * tickDuration; // 0.72 s
+
+/// Duration (seconds) of the Drop2 stumble before the soldier dies.
+///
+/// Original: visual height (`field_52`) accumulates 1+2+3+4+5 = 15 in
+/// 5 frames. Death at `field_52 ≥ 14` → frame 5. At 60 ms/frame this is
+/// 0.3 s. Effectively always lethal (soldier stays in place).
+const double dropStumbleDuration = 5 * tickDuration; // 0.3 s
+
+/// Downward gravitational acceleration during a Drop cliff fall (px/s²).
+///
+/// Gives a smooth accelerating drop. At 0.72 s the soldier will have
+/// fallen ≈ ½ × 300 × 0.72² ≈ 78 px (about 2.4 tiles), matching the
+/// original `1+2+…+12 = 78` pixel displacement.
+const double dropFallAcceleration = 300;

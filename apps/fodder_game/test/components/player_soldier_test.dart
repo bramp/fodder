@@ -412,4 +412,269 @@ void main() {
       expect(soldier.current, SoldierState.swimming);
     });
   });
+
+  group('PlayerSoldier drop/cliff mechanics', () {
+    late PlayerSoldier soldier;
+
+    /// Builds a 4×4 grid with drop terrain on tile (1, 0) and land elsewhere.
+    WalkabilityGrid dropGrid() {
+      return WalkabilityGrid.fromData([
+        [
+          TerrainType.land,
+          TerrainType.drop,
+          TerrainType.land,
+          TerrainType.land,
+        ],
+        [
+          TerrainType.land,
+          TerrainType.land,
+          TerrainType.land,
+          TerrainType.land,
+        ],
+        [
+          TerrainType.land,
+          TerrainType.land,
+          TerrainType.land,
+          TerrainType.land,
+        ],
+        [
+          TerrainType.land,
+          TerrainType.land,
+          TerrainType.land,
+          TerrainType.land,
+        ],
+      ]);
+    }
+
+    /// Builds a 4×4 grid with drop2 terrain on tile (1, 0) and land
+    /// elsewhere.
+    WalkabilityGrid drop2Grid() {
+      return WalkabilityGrid.fromData([
+        [
+          TerrainType.land,
+          TerrainType.drop2,
+          TerrainType.land,
+          TerrainType.land,
+        ],
+        [
+          TerrainType.land,
+          TerrainType.land,
+          TerrainType.land,
+          TerrainType.land,
+        ],
+        [
+          TerrainType.land,
+          TerrainType.land,
+          TerrainType.land,
+          TerrainType.land,
+        ],
+        [
+          TerrainType.land,
+          TerrainType.land,
+          TerrainType.land,
+          TerrainType.land,
+        ],
+      ]);
+    }
+
+    /// Builds a grid that is all drop terrain to force death.
+    WalkabilityGrid allDropGrid() {
+      return WalkabilityGrid.fromData(
+        List.generate(
+          10,
+          (_) => List.filled(10, TerrainType.drop),
+        ),
+      );
+    }
+
+    setUp(() {
+      soldier =
+          PlayerSoldier(
+              soldierAnimations: _buildFakeAnims(
+                includeCombatAnims: true,
+                includeSwimAnims: true,
+              ),
+            )
+            ..position =
+                Vector2(16, 16) // tile (0, 0) = land
+            ..updateAnimations()
+            ..current = SoldierState.idle;
+    });
+
+    test('stepping on Drop terrain starts falling', () {
+      soldier
+        ..walkabilityGrid = dropGrid()
+        ..position =
+            Vector2(48, 16) // tile (1, 0) = drop
+        ..followPath([Vector2(60, 16)])
+        ..update(0.01);
+
+      expect(soldier.isFalling, isTrue);
+      expect(soldier.isStumbling, isFalse);
+    });
+
+    test('stepping on Drop2 terrain starts stumbling', () {
+      soldier
+        ..walkabilityGrid = drop2Grid()
+        ..position =
+            Vector2(48, 16) // tile (1, 0) = drop2
+        ..followPath([Vector2(60, 16)])
+        ..update(0.01);
+
+      expect(soldier.isStumbling, isTrue);
+      expect(soldier.isFalling, isFalse);
+    });
+
+    test('falling soldier slides downward (Drop)', () {
+      soldier
+        ..walkabilityGrid = allDropGrid()
+        ..position = Vector2(48, 16)
+        ..followPath([Vector2(60, 16)])
+        ..update(0.01); // enters falling
+
+      final yAfterFirstFrame = soldier.position.y;
+
+      // Second update should continue falling and move further down.
+      soldier.update(0.1);
+
+      expect(soldier.position.y, greaterThan(yAfterFirstFrame));
+    });
+
+    test('stumbling soldier stays in place (Drop2)', () {
+      soldier
+        ..walkabilityGrid = drop2Grid()
+        ..position =
+            Vector2(48, 16) // tile (1, 0) = drop2
+        ..followPath([Vector2(60, 16)])
+        ..update(0.01); // enters stumbling
+
+      final yAfterFirstFrame = soldier.position.y;
+
+      // Stumble does NOT move the soldier downward.
+      soldier.update(0.05);
+
+      expect(soldier.position.y, yAfterFirstFrame);
+    });
+
+    test('soldier dies after sustained fall on Drop terrain', () {
+      soldier
+        ..walkabilityGrid = allDropGrid()
+        ..position = Vector2(48, 16)
+        ..followPath([Vector2(60, 16)]);
+
+      // Tick frames — all-drop grid means no escape; soldier must die.
+      for (var i = 0; i < 100; i++) {
+        soldier.update(0.05);
+        if (!soldier.isAlive) break;
+      }
+
+      expect(soldier.isAlive, isFalse);
+    });
+
+    test('soldier dies quickly from Drop2 stumble', () {
+      soldier
+        ..walkabilityGrid = drop2Grid()
+        ..position =
+            Vector2(48, 16) // tile (1, 0) = drop2
+        ..followPath([Vector2(60, 16)]);
+
+      // Drop2 kills in ~0.3 s. Tick small steps.
+      for (var i = 0; i < 20; i++) {
+        soldier.update(0.05);
+        if (!soldier.isAlive) break;
+      }
+
+      expect(soldier.isAlive, isFalse);
+    });
+
+    test('soldier survives short fall onto land (Drop)', () {
+      // dropGrid(): tile (1, 0) = drop, tile (0, 0) = land.
+      // Soldier starts on drop, begins falling, but the downward slide
+      // moves them into land territory before the timer expires.
+      soldier
+        ..walkabilityGrid = dropGrid()
+        ..position =
+            Vector2(48, 16) // tile (1, 0) = drop
+        ..followPath([Vector2(60, 16)])
+        ..update(0.01); // enters falling
+
+      expect(soldier.isFalling, isTrue);
+
+      // Relocate to land tile before the timer expires.
+      soldier
+        ..position =
+            Vector2(16, 48) // tile (0, 1) = land
+        ..update(0.01);
+
+      // Should have survived — landed on solid ground in time.
+      expect(soldier.isAlive, isTrue);
+      expect(soldier.isFalling, isFalse);
+    });
+
+    test('falling soldier dies when sliding off the map edge', () {
+      // Small 2×2 grid with drop at tile (0, 1). The soldier starts
+      // falling and slides downward past the grid boundary. Out-of-bounds
+      // returns block terrain, which must NOT count as a safe landing.
+      final edgeGrid = WalkabilityGrid.fromData([
+        [TerrainType.land, TerrainType.land],
+        [TerrainType.drop, TerrainType.drop],
+      ]);
+
+      soldier
+        ..walkabilityGrid = edgeGrid
+        ..position =
+            Vector2(16, 48) // tile (0, 1) = drop
+        ..followPath([Vector2(20, 48)]);
+
+      // Tick until dead — the fall should carry them past Y = 64 (map
+      // bottom), and they should die rather than getting stuck.
+      for (var i = 0; i < 100; i++) {
+        soldier.update(0.05);
+        if (!soldier.isAlive) break;
+      }
+
+      expect(soldier.isAlive, isFalse);
+    });
+
+    test('isFalling is false on normal terrain', () {
+      soldier
+        ..walkabilityGrid = dropGrid()
+        ..position =
+            Vector2(16, 16) // tile (0, 0) = land
+        ..followPath([Vector2(20, 16)])
+        ..update(0.01);
+
+      expect(soldier.isFalling, isFalse);
+      expect(soldier.isStumbling, isFalse);
+    });
+
+    test('falling state is set during Drop fall', () {
+      soldier
+        ..walkabilityGrid = allDropGrid()
+        ..position = Vector2(48, 16)
+        ..followPath([Vector2(60, 16)])
+        ..update(0.01);
+
+      // Falling state should be set (falls back to walking if no animation).
+      expect(
+        soldier.current,
+        anyOf(SoldierState.falling, SoldierState.walking),
+      );
+    });
+
+    test('stumbling state is set during Drop2 stumble', () {
+      soldier
+        ..walkabilityGrid = drop2Grid()
+        ..position =
+            Vector2(48, 16) // tile (1, 0) = drop2
+        ..followPath([Vector2(60, 16)])
+        ..update(0.01);
+
+      // Stumbling state should be set (falls back to dying if no animation).
+      expect(
+        soldier.current,
+        anyOf(SoldierState.stumbling, SoldierState.dying),
+      );
+    });
+  });
 }

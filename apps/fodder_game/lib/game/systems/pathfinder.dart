@@ -46,8 +46,8 @@ class Pathfinder {
       return [];
     }
 
-    // If end sub-tile is not walkable, don't even try.
-    if (!_grid.isSubTileWalkable(ex, ey)) return [];
+    // If end sub-tile is impassable for pathfinding, don't even try.
+    if (!_grid.isSubTilePathfindable(ex, ey)) return [];
 
     final path = _astar(sx, sy, ex, ey);
     if (path.isEmpty) return [];
@@ -146,16 +146,17 @@ class Pathfinder {
         final nk = key(nx, ny);
         if (closed.contains(nk)) continue;
 
-        if (!_grid.isSubTileWalkable(nx, ny)) {
-          closed.add(nk); // mark unwalkable as closed so we never revisit
+        if (!_grid.isSubTilePathfindable(nx, ny)) {
+          closed.add(nk); // mark impassable as closed so we never revisit
           continue;
         }
 
         // For diagonal moves, also check that the two adjacent cardinal
-        // neighbours are walkable (prevents corner-cutting through walls).
+        // neighbours are pathfindable (prevents corner-cutting through
+        // walls and cliff edges).
         if (dx != 0 && dy != 0) {
-          if (!_grid.isSubTileWalkable(cx + dx, cy) ||
-              !_grid.isSubTileWalkable(cx, cy + dy)) {
+          if (!_grid.isSubTilePathfindable(cx + dx, cy) ||
+              !_grid.isSubTilePathfindable(cx, cy + dy)) {
             continue;
           }
         }
@@ -232,7 +233,7 @@ class Pathfinder {
           x < _grid.subTileWidth &&
           y >= 0 &&
           y < _grid.subTileHeight &&
-          _grid.isSubTileWalkable(x, y)) {
+          _grid.isSubTilePathfindable(x, y)) {
         return (x, y);
       }
     }
