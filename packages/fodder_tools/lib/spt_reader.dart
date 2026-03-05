@@ -142,9 +142,7 @@ enum SpriteType {
   /// Returns `true` if this sprite type is a player-controlled soldier.
   bool get isPlayer => this == player;
 
-  /// Returns `true` if this sprite type is an enemy combatant (incl
-  ///
-  /// ..=TODO(brampo)): Why exactlyis is nthis needed here?udes
+  /// Returns `true` if this sprite type is an enemy combatant (includes
   /// basic enemies, rocket enemies, and enemy leaders).
   bool get isEnemy =>
       this == enemy || this == enemyRocket || this == enemyLeader;

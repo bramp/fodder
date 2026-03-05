@@ -197,12 +197,13 @@ void main(List<String> arguments) {
   }
 
   // Load sprite metadata early so copt PNG exports can use per-sprite
-  // palette correction.
+  // palette correction. This must NOT be gated on --sprites; the copt
+  // sheet export always needs the frame data for correct palette fix-up.
   final spriteDataPath = args['sprite-data'] as String?;
   List<SpriteSheetType>? sheetTypes;
   List<SpriteFrame>? coptFrames;
 
-  if (args['sprites'] as bool && spriteDataPath != null) {
+  if (spriteDataPath != null) {
     sheetTypes = _loadSpriteSheetTypes(spriteDataPath);
     if (sheetTypes != null) {
       coptFrames = sheetTypes
@@ -239,16 +240,27 @@ void main(List<String> arguments) {
   }
 
   // --- Copt sheets (4-bit, dual palette) ---
-  for (final entry in _coptSheets.entries) {
-    if (!hasFile(entry.key)) continue;
-    exported += _export4Bit(
-      entry.key,
-      getFile(entry.key),
-      entry.value,
-      outputDir,
-      label: '4-bit copt',
-      spriteFrames: coptFrames,
-    );
+  if (coptFrames == null) {
+    final coptFiles = _coptSheets.keys.where(hasFile).toList();
+    if (coptFiles.isNotEmpty) {
+      print(
+        '  Skipping ${coptFiles.length} copt sheet(s) '
+        '(${coptFiles.join(", ")}): --sprite-data is required for '
+        'correct multi-palette decoding.',
+      );
+    }
+  } else {
+    for (final entry in _coptSheets.entries) {
+      if (!hasFile(entry.key)) continue;
+      exported += _export4Bit(
+        entry.key,
+        getFile(entry.key),
+        entry.value,
+        outputDir,
+        label: '4-bit copt',
+        spriteFrames: coptFrames,
+      );
+    }
   }
 
   // --- 8-bit linear images ---
@@ -356,6 +368,10 @@ int _export4Bit(
   // For multi-palette sheets (e.g. copt), each sprite frame stores its own
   // paletteIndex. Re-decode regions whose paletteIndex differs from the
   // base used for the initial full-sheet decode.
+  assert(
+    specs.length <= 1 || spriteFrames != null,
+    'Multi-palette sheets require spriteFrames for correct decoding.',
+  );
   if (spriteFrames != null && specs.length > 1) {
     for (final frame in spriteFrames) {
       if (frame.paletteIndex == firstSpec.startIndex) continue;
