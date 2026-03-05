@@ -11,6 +11,7 @@ environment:
 
 dependencies:
   flame: ^1.35.1
+  flame_audio: ^2.11.14
   flame_tiled: ^3.0.11
   flutter:
     sdk: flutter
@@ -18,6 +19,7 @@ dependencies:
     path: ../../packages/fodder_assets
   go_router: ^14.8.1
 
+  meta: any
 dev_dependencies:
   flutter_test:
     sdk: flutter
