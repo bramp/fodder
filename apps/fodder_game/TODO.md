@@ -463,4 +463,6 @@ Legend: ✅ = implemented, 🔶 = partial, ❌ = not started
 - [ ] Add loading screen (and pre-loading on html page)
 - [x] URL routing with go_router (`/map/cf1/mapm1?debug=true`)
 - [ ] We need to support dropping off a cliff
-- [ ] Let's consider changing how we control. Arrow keys to move, and click/point to fire
+- [ ] Let's consider changing how we control.
+   - [ ] Arrow keys to move, and click/point to fire
+   - [ ] Press and do - press on a enemy and they will be fired at. Press on a land tile, it will be walked to.
