@@ -28,19 +28,33 @@ The tools are now part of the `fodder_tools` package. To run them:
 To run the game, you need the original assets. You can extract them using the provided tools.
 
 #### Cannon Fodder 1
+
 ```bash
+# First Extract the Archive
+dart run packages/fodder_tools/bin/extract.dart -i original_game/Dos_CD/CF_ENG.DAT -o original_game/Dos_CD_Extracted --extract-all
+
 # Extract Sprites
-dart run packages/fodder_tools/bin/sprites.dart --dat original_game/Dos_CD/CF_ENG.DAT --output packages/fodder_assets/assets/cf1/sprites
+dart run packages/fodder_tools/bin/sprites.dart -i original_game/Dos_CD_Extracted --output packages/fodder_assets/assets/cf1/sprites
 
 # Extract Maps
-dart run packages/fodder_tools/bin/maps.dart -d original_game/Dos_CD/CF_ENG.DAT -o packages/fodder_assets/assets/cf1/maps
+dart run packages/fodder_tools/bin/maps.dart -i original_game/Dos_CD_Extracted -o packages/fodder_assets/assets/cf1/maps
+
+# Extract Audio
+dart run packages/fodder_tools/bin/audio.dart -i original_game/Dos_CD_Extracted -o packages/fodder_assets/assets/cf1/audio
 ```
 
 #### Cannon Fodder 2
+
 ```bash
+# First Extract the Archive
+dart run packages/fodder_tools/bin/extract.dart -i original_game/Dos2_CD/CF_ENG.DAT -o original_game/Dos2_CD_Extracted --extract-all
+
 # Extract Sprites
-dart run packages/fodder_tools/bin/sprites.dart --dat original_game/Dos2_CD/CF_ENG.DAT --output packages/fodder_assets/assets/cf2/sprites
+dart run packages/fodder_tools/bin/sprites.dart -i original_game/Dos2_CD_Extracted --output packages/fodder_assets/assets/cf2/sprites
 
 # Extract Maps
-dart run packages/fodder_tools/bin/maps.dart -d original_game/Dos2_CD/CF_ENG.DAT -o packages/fodder_assets/assets/cf2/maps
+dart run packages/fodder_tools/bin/maps.dart -i original_game/Dos2_CD_Extracted -o packages/fodder_assets/assets/cf2/maps
+
+# Extract Audio
+dart run packages/fodder_tools/bin/audio.dart -i original_game/Dos2_CD_Extracted -o packages/fodder_assets/assets/cf2/audio
 ```

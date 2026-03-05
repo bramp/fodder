@@ -1,6 +1,7 @@
 import 'package:flame/components.dart';
 import 'package:flame/events.dart';
 import 'package:flame/game.dart';
+import 'package:flame_audio/flame_audio.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 
@@ -105,6 +106,12 @@ class FodderGame extends FlameGame
   @override
   Future<void> onLoad() async {
     await super.onLoad();
+
+    // 0. Setup Audio
+    //FlameAudio.bgm.initialize();
+    //await FlameAudio.audioCache.loadAll([
+    //  'packages/fodder_assets/assets/cf1/audio/explosion_1.wav',
+    //]);
 
     // 1. Load the tile map.
     levelMap = LevelMap(mapFile: initialMap);
@@ -225,6 +232,12 @@ class FodderGame extends FlameGame
     final worldPos = camera.globalToLocal(event.devicePosition);
 
     _fireSquadBullet(worldPos);
+
+    if (activeBulletCount % 4 == 0) {
+      FlameAudio.play(
+        'packages/fodder_assets/assets/cf1/audio/explosion_1.wav',
+      );
+    }
   }
 
   /// Fires a bullet from the next soldier in the fire rotation.

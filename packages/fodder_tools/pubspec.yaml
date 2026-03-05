@@ -22,3 +22,4 @@ executables:
   extract: extract
   maps: maps
   sprites: sprites
+  audio: audio
