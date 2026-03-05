@@ -1,11 +1,8 @@
-import 'dart:convert';
-import 'dart:ui';
-
-import 'package:flame/cache.dart';
 import 'package:flame/components.dart';
-import 'package:flutter/services.dart';
 
 import 'package:fodder_game/game/components/direction8.dart';
+import 'package:fodder_game/game/sprites/sprite_atlas.dart';
+import 'package:fodder_game/game/sprites/sprite_frames.dart';
 
 /// Default step time for walk animation frames (seconds).
 const _walkStepTime = 0.15;
@@ -21,48 +18,6 @@ const _throwStepTime = 0.12;
 
 /// Sprite scale factor (original 16 px tiles rendered at 32 px).
 const _spriteScale = 2.0;
-
-/// Walk animation name prefix for player (human) soldiers.
-const walkPrefixPlayer = 'player_walk';
-
-/// Walk animation name prefix for enemy (AI) soldiers.
-const walkPrefixEnemy = 'enemy_walk';
-
-/// Throw animation name prefix for player soldiers.
-const throwPrefixPlayer = 'player_throw';
-
-/// Throw animation name prefix for enemy soldiers.
-const throwPrefixEnemy = 'enemy_throw';
-
-/// Death-1 animation name prefix for player soldiers.
-const deathPrefixPlayer = 'player_death';
-
-/// Death-1 animation name prefix for enemy soldiers.
-const deathPrefixEnemy = 'enemy_death';
-
-/// Death-2 animation name prefix for player soldiers.
-const death2PrefixPlayer = 'player_death2';
-
-/// Death-2 animation name prefix for enemy soldiers.
-const death2PrefixEnemy = 'enemy_death2';
-
-/// Prone animation name prefix for player soldiers.
-const pronePrefixPlayer = 'player_prone';
-
-/// Prone animation name prefix for enemy soldiers.
-const pronePrefixEnemy = 'enemy_prone';
-
-/// Swimming animation name prefix for player soldiers.
-const swimPrefixPlayer = 'player_swim';
-
-/// Swimming animation name prefix for enemy soldiers.
-const swimPrefixEnemy = 'enemy_swim';
-
-/// Standing-with-gun animation name prefix for player soldiers.
-const firingPrefixPlayer = 'player_firing';
-
-/// Standing-with-gun animation name prefix for enemy soldiers.
-const firingPrefixEnemy = 'enemy_firing';
 
 /// Loads soldier sprite animations from a TexturePacker JSON Hash atlas.
 ///
@@ -84,7 +39,8 @@ class SoldierAnimations {
 
   /// Creates a [SoldierAnimations] from pre-built animation maps.
   ///
-  /// Intended for testing; production code should use [load].
+  /// Intended for testing; production code should use
+  /// [SoldierAnimations.fromAtlas].
   /// Required maps must contain all 8 directions.
   /// Optional maps (firing, throw, etc.) must either contain all 8 directions
   /// or be empty (defaulting to null).
@@ -118,76 +74,32 @@ class SoldierAnimations {
            ? null
            : Directional.fromMap(death2Animations);
 
-  /// Walk animations keyed by direction (3 frames each, looping).
-  final Directional<SpriteAnimation> walkAnimations;
-
-  /// Idle animations keyed by direction (single frame, non-looping).
-  final Directional<SpriteAnimation> idleAnimations;
-
-  /// Standing-with-gun (firing pose) keyed by direction (single frame).
-  final Directional<SpriteAnimation>? firingAnimations;
-
-  /// Throw animations keyed by direction (3 frames each).
-  final Directional<SpriteAnimation>? throwAnimations;
-
-  /// Prone (lying down) animations keyed by direction.
-  final Directional<SpriteAnimation>? proneAnimations;
-
-  /// Swimming animations keyed by direction.
-  final Directional<SpriteAnimation>? swimAnimations;
-
-  /// Death animations keyed by direction (1–2 frames, non-looping).
-  final Directional<SpriteAnimation>? deathAnimations;
-
-  /// Death-2 variant animations keyed by direction (1–2 frames, non-looping).
-  final Directional<SpriteAnimation>? death2Animations;
-
-  /// Loads animations from the given atlas JSON and sprite sheet image.
+  /// Builds soldier animations from a pre-loaded [SpriteAtlas].
   ///
-  /// [prefix] is the asset path prefix (e.g.
-  /// `packages/fodder_assets/assets/cf1/sprites/`).
+  /// [walkGroup] is the animation group for the 8-direction walk cycle.
+  /// Defaults to [walkGroupPlayer]; use [walkGroupEnemy] for enemies.
   ///
-  /// [imageFile] is the image file name (e.g. `junarmy.png`).
+  /// [firingGroup] is the group for standing-with-gun (firing pose).
+  /// Defaults to [firingGroupPlayer].
   ///
-  /// [atlasJsonFile] is the atlas JSON file name (e.g. `junarmy.json`).
+  /// [throwGroup] is the group for throw animations.
+  /// Defaults to [throwGroupPlayer].
   ///
-  /// [walkPrefix] is the semantic name prefix for the 8-direction walk cycle.
-  /// Defaults to [walkPrefixPlayer]; use [walkPrefixEnemy] for enemies.
+  /// [deathGroup] is the group for death animations.
+  /// Defaults to [deathGroupPlayer].
   ///
-  /// [firingPrefix] is the name prefix for standing-with-gun (firing pose)
-  /// animations. Defaults to [firingPrefixPlayer].
-  ///
-  /// [throwPrefix] is the name prefix for throw animations.
-  /// Defaults to [throwPrefixPlayer].
-  ///
-  /// [deathPrefix] is the name prefix for death animations.
-  /// Defaults to [deathPrefixPlayer].
-  ///
-  /// [death2Prefix] is the name prefix for the second death variant.
-  /// Defaults to [death2PrefixPlayer].
-  static Future<SoldierAnimations> load({
-    required String prefix,
-    required String imageFile,
-    required String atlasJsonFile,
-    String walkPrefix = walkPrefixPlayer,
-    String firingPrefix = firingPrefixPlayer,
-    String throwPrefix = throwPrefixPlayer,
-    String pronePrefix = pronePrefixPlayer,
-    String swimPrefix = swimPrefixPlayer,
-    String deathPrefix = deathPrefixPlayer,
-    String death2Prefix = death2PrefixPlayer,
-  }) async {
-    // Use a custom Images instance whose prefix matches the package path.
-    final images = Images(prefix: prefix);
-    final image = await images.load(imageFile);
-
-    // Load and parse the atlas JSON.
-    final jsonString = await rootBundle.loadString(
-      '$prefix$atlasJsonFile',
-    );
-    final jsonData = json.decode(jsonString) as Map<String, dynamic>;
-    final framesMap = jsonData['frames'] as Map<String, dynamic>;
-
+  /// [death2Group] is the group for the second death variant.
+  /// Defaults to [death2GroupPlayer].
+  factory SoldierAnimations.fromAtlas(
+    SpriteAtlas atlas, {
+    String walkGroup = walkGroupPlayer,
+    String firingGroup = firingGroupPlayer,
+    String throwGroup = throwGroupPlayer,
+    String proneGroup = proneGroupPlayer,
+    String swimGroup = swimGroupPlayer,
+    String deathGroup = deathGroupPlayer,
+    String death2Group = death2GroupPlayer,
+  }) {
     final walkAnims = <Direction8, SpriteAnimation>{};
     final idleAnims = <Direction8, SpriteAnimation>{};
     final firingAnims = <Direction8, SpriteAnimation>{};
@@ -201,15 +113,13 @@ class SoldierAnimations {
       final dirSuffix = dir.suffix;
 
       // --- Walk / Idle ---
-      final walkFrames = _loadFrames(
-        framesMap,
-        image,
-        '${walkPrefix}_$dirSuffix',
+      final walkFrames = atlas.animationFrames(
+        '${walkGroup}_$dirSuffix',
         _walkStepTime,
       );
       if (walkFrames.isEmpty) {
         throw StateError(
-          'Missing walk animation for $dir ($walkPrefix)',
+          'Missing walk animation for $dir ($walkGroup)',
         );
       }
       walkAnims[dir] = SpriteAnimation(walkFrames);
@@ -218,46 +128,35 @@ class SoldierAnimations {
       );
 
       // --- Firing (standing-with-gun) ---
-      final firingFrames = _loadFrames(
-        framesMap,
-        image,
-        '${firingPrefix}_$dirSuffix',
-        _idleStepTime, // single frame held indefinitely
+      final firingFrames = atlas.animationFrames(
+        '${firingGroup}_$dirSuffix',
+        _idleStepTime,
       );
       if (firingFrames.isNotEmpty) {
         firingAnims[dir] = SpriteAnimation(firingFrames, loop: false);
       }
 
       // --- Throw ---
-      final throwFrameList = _loadFrames(
-        framesMap,
-        image,
-        '${throwPrefix}_$dirSuffix',
+      final throwFrameList = atlas.animationFrames(
+        '${throwGroup}_$dirSuffix',
         _throwStepTime,
       );
       if (throwFrameList.isNotEmpty) {
-        throwAnims[dir] = SpriteAnimation(
-          throwFrameList,
-          loop: false,
-        );
+        throwAnims[dir] = SpriteAnimation(throwFrameList, loop: false);
       }
 
       // --- Prone ---
-      final proneFrames = _loadFrames(
-        framesMap,
-        image,
-        '${pronePrefix}_$dirSuffix',
-        _idleStepTime, // single frame held
+      final proneFrames = atlas.animationFrames(
+        '${proneGroup}_$dirSuffix',
+        _idleStepTime,
       );
       if (proneFrames.isNotEmpty) {
         proneAnims[dir] = SpriteAnimation(proneFrames, loop: false);
       }
 
       // --- Swim ---
-      final swimFrames = _loadFrames(
-        framesMap,
-        image,
-        '${swimPrefix}_$dirSuffix',
+      final swimFrames = atlas.animationFrames(
+        '${swimGroup}_$dirSuffix',
         _walkStepTime,
       );
       if (swimFrames.isNotEmpty) {
@@ -265,10 +164,8 @@ class SoldierAnimations {
       }
 
       // --- Death ---
-      final deathFrames = _loadFrames(
-        framesMap,
-        image,
-        '${deathPrefix}_$dirSuffix',
+      final deathFrames = atlas.animationFrames(
+        '${deathGroup}_$dirSuffix',
         _deathStepTime,
       );
       if (deathFrames.isNotEmpty) {
@@ -276,10 +173,8 @@ class SoldierAnimations {
       }
 
       // --- Death-2 ---
-      final death2Frames = _loadFrames(
-        framesMap,
-        image,
-        '${death2Prefix}_$dirSuffix',
+      final death2Frames = atlas.animationFrames(
+        '${death2Group}_$dirSuffix',
         _deathStepTime,
       );
       if (death2Frames.isNotEmpty) {
@@ -311,40 +206,29 @@ class SoldierAnimations {
     );
   }
 
-  /// Parses atlas frames for a named sprite group.
-  ///
-  /// Looks for keys `ingame/{groupName}_{frameIndex}` in [framesMap].
-  /// Returns an empty list when no frames are found.
-  static List<SpriteAnimationFrame> _loadFrames(
-    Map<String, dynamic> framesMap,
-    Image image,
-    String groupName,
-    double stepTime,
-  ) {
-    final frames = <SpriteAnimationFrame>[];
+  /// Walk animations keyed by direction (3 frames each, looping).
+  final Directional<SpriteAnimation> walkAnimations;
 
-    for (var f = 0; ; f++) {
-      final key = 'ingame/${groupName}_$f';
-      final frameData = framesMap[key] as Map<String, dynamic>?;
-      if (frameData == null) break;
+  /// Idle animations keyed by direction (single frame, non-looping).
+  final Directional<SpriteAnimation> idleAnimations;
 
-      final frame = frameData['frame'] as Map<String, dynamic>;
-      final fx = (frame['x'] as num).toDouble();
-      final fy = (frame['y'] as num).toDouble();
-      final fw = (frame['w'] as num).toDouble();
-      final fh = (frame['h'] as num).toDouble();
+  /// Standing-with-gun (firing pose) keyed by direction (single frame).
+  final Directional<SpriteAnimation>? firingAnimations;
 
-      final sprite = Sprite(
-        image,
-        srcPosition: Vector2(fx, fy),
-        srcSize: Vector2(fw, fh),
-      );
+  /// Throw animations keyed by direction (3 frames each).
+  final Directional<SpriteAnimation>? throwAnimations;
 
-      frames.add(SpriteAnimationFrame(sprite, stepTime));
-    }
+  /// Prone (lying down) animations keyed by direction.
+  final Directional<SpriteAnimation>? proneAnimations;
 
-    return frames;
-  }
+  /// Swimming animations keyed by direction.
+  final Directional<SpriteAnimation>? swimAnimations;
+
+  /// Death animations keyed by direction (1–2 frames, non-looping).
+  final Directional<SpriteAnimation>? deathAnimations;
+
+  /// Death-2 variant animations keyed by direction (1–2 frames, non-looping).
+  final Directional<SpriteAnimation>? death2Animations;
 
   /// Returns the sprite size at 2× scale based on the first walk-south frame.
   Vector2 get scaledSize {

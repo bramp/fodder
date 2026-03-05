@@ -88,6 +88,7 @@ class Bullet extends PositionComponent with CollisionCallbacks {
       bulletSprite!.render(canvas, size: size);
     } else {
       // Fallback: small yellow dot.
+      // TODO(bramp): Do we need this fallback?
       canvas.drawRect(
         const Rect.fromLTWH(1, 1, 2, 2),
         Paint()..color = _fallbackColor,

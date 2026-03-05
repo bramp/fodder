@@ -14,6 +14,8 @@ import 'package:fodder_game/game/components/soldier.dart';
 import 'package:fodder_game/game/components/soldier_animations.dart';
 import 'package:fodder_game/game/map/level_map.dart';
 import 'package:fodder_game/game/models/squad.dart';
+import 'package:fodder_game/game/sprites/sprite_atlas.dart';
+import 'package:fodder_game/game/sprites/sprite_frames.dart';
 import 'package:fodder_game/game/systems/aggression.dart';
 import 'package:fodder_game/game/systems/pathfinder.dart';
 import 'package:fodder_game/game/systems/squad_movement.dart';
@@ -91,6 +93,12 @@ class FodderGame extends FlameGame
   /// Bullet sprites loaded from the copt atlas.
   late BulletSprites bulletSprites;
 
+  /// Shared army sprite atlas (soldiers).
+  late SpriteAtlas _armyAtlas;
+
+  /// Shared copt sprite atlas (bullets, environment decorations).
+  late SpriteAtlas _coptAtlas;
+
   /// The asset prefix for sprite files.
   static const _spritePrefix = 'packages/fodder_assets/assets/';
 
@@ -111,41 +119,44 @@ class FodderGame extends FlameGame
       _pathfinder = Pathfinder(grid);
     }
 
-    // 4. Load soldier animations and spawn the player squad.
-    final playerAnims = await SoldierAnimations.load(
-      prefix: '${_spritePrefix}cf1/sprites/',
-      atlasJsonFile: 'junarmy.json',
+    // 4. Load sprite atlases (shared across all consumers).
+    const spriteDir = '${_spritePrefix}cf1/sprites/';
+    _armyAtlas = await SpriteAtlas.load(
+      prefix: spriteDir,
+      jsonFile: 'junarmy.json',
       imageFile: 'junarmy.png',
     );
+    _coptAtlas = await SpriteAtlas.load(
+      prefix: spriteDir,
+      jsonFile: 'juncopt.json',
+      imageFile: 'juncopt.png',
+    );
+
+    // 5. Build player soldier animations and spawn the squad.
+    final playerAnims = SoldierAnimations.fromAtlas(_armyAtlas);
 
     playerSquad = Squad();
     await _spawnPlayerSquad(playerAnims, grid);
 
-    // 5. Load enemy animations and spawn enemies at their spawn points.
-    final enemyAnims = await SoldierAnimations.load(
-      prefix: '${_spritePrefix}cf1/sprites/',
-      atlasJsonFile: 'junarmy.json',
-      imageFile: 'junarmy.png',
-      walkPrefix: walkPrefixEnemy,
-      firingPrefix: firingPrefixEnemy,
-      throwPrefix: throwPrefixEnemy,
-      deathPrefix: deathPrefixEnemy,
-      death2Prefix: death2PrefixEnemy,
+    // 6. Build enemy animations and spawn enemies at their spawn points.
+    final enemyAnims = SoldierAnimations.fromAtlas(
+      _armyAtlas,
+      walkGroup: walkGroupEnemy,
+      firingGroup: firingGroupEnemy,
+      throwGroup: throwGroupEnemy,
+      deathGroup: deathGroupEnemy,
+      death2Group: death2GroupEnemy,
     );
 
     await _spawnEnemies(enemyAnims);
 
-    // 6. Load bullet sprites from the copt (helicopter) atlas.
-    bulletSprites = await BulletSprites.load(
-      prefix: '${_spritePrefix}cf1/sprites/',
-      atlasJsonFile: 'juncopt.json',
-      imageFile: 'juncopt.png',
-    );
+    // 7. Build bullet sprites from the copt atlas.
+    bulletSprites = BulletSprites.fromAtlas(_coptAtlas);
 
-    // 7. Spawn environment sprites (shrubs, tree tops, etc.) from map data.
+    // 9. Spawn environment sprites from map data.
     await _spawnEnvironmentSprites();
 
-    // 8. Add the debug overlay (initially hidden).
+    // 10. Add the debug overlay (initially hidden).
     _debugOverlay = DebugBarrierOverlay(
       grid: grid ?? WalkabilityGrid.fromData([]),
       player: leader,
@@ -153,7 +164,7 @@ class FodderGame extends FlameGame
     )..enemies = _enemies;
     await world.add(_debugOverlay);
 
-    // 9. If requested via URL param, enable the debug overlay now.
+    // 11. If requested via URL param, enable the debug overlay now.
     if (enableDebugOverlay) {
       _debugOverlay.isVisible = true;
       _syncSoldierDebugMode();
@@ -273,11 +284,7 @@ class FodderGame extends FlameGame
     }
 
     // Spawn a fresh player squad.
-    final playerAnims = await SoldierAnimations.load(
-      prefix: '${_spritePrefix}cf1/sprites/',
-      atlasJsonFile: 'junarmy.json',
-      imageFile: 'junarmy.png',
-    );
+    final playerAnims = SoldierAnimations.fromAtlas(_armyAtlas);
     playerSquad = Squad();
     await _spawnPlayerSquad(playerAnims, grid);
 
@@ -288,15 +295,13 @@ class FodderGame extends FlameGame
     _environmentSprites.clear();
 
     // Spawn enemies for the new map.
-    final enemyAnims = await SoldierAnimations.load(
-      prefix: '${_spritePrefix}cf1/sprites/',
-      atlasJsonFile: 'junarmy.json',
-      imageFile: 'junarmy.png',
-      walkPrefix: walkPrefixEnemy,
-      firingPrefix: firingPrefixEnemy,
-      throwPrefix: throwPrefixEnemy,
-      deathPrefix: deathPrefixEnemy,
-      death2Prefix: death2PrefixEnemy,
+    final enemyAnims = SoldierAnimations.fromAtlas(
+      _armyAtlas,
+      walkGroup: walkGroupEnemy,
+      firingGroup: firingGroupEnemy,
+      throwGroup: throwGroupEnemy,
+      deathGroup: deathGroupEnemy,
+      death2Group: death2GroupEnemy,
     );
     await _spawnEnemies(enemyAnims);
 
@@ -457,27 +462,11 @@ class FodderGame extends FlameGame
     final envSpawns = levelMap.spawnData.environment;
     if (envSpawns.isEmpty) return;
 
-    // TODO(bramp): Load the copt atlas (`juncopt.json` / `juncopt.png`) once
-    // during `onLoad()` and cache it on the game instance. Currently the same
-    // atlas is loaded independently by:
-    //   1. `BulletSprites.load()` (step 6 in onLoad)
-    //   2. `EnvironmentSprite.loadAtlas()` (here, step 7)
-    //   3. Again each time `loadMap()` is called
-    // A single `CoptAtlas` helper (or Flame's built-in `Images` cache) could
-    // provide the shared `Image` + `framesMap` to both BulletSprites and
-    // EnvironmentSprite, eliminating the redundant JSON parse and image decode.
-    final atlas = await EnvironmentSprite.loadAtlas(
-      prefix: '${_spritePrefix}cf1/sprites/',
-      atlasJsonFile: 'juncopt.json',
-      imageFile: 'juncopt.png',
-    );
-
     for (final spawn in envSpawns) {
-      final envSprite = await EnvironmentSprite.fromSpawnData(
+      final envSprite = EnvironmentSprite.fromSpawnData(
         name: spawn.name,
         position: spawn.position.clone(),
-        atlasImage: atlas.image,
-        framesMap: atlas.framesMap,
+        atlas: _coptAtlas,
       );
 
       if (envSprite != null) {

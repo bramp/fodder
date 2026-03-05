@@ -8,6 +8,7 @@ fodder/                          ← Melos monorepo root
 │   ├── lib/game/
 │   │   ├── components/          ← Flame components (soldier, bullet, …)
 │   │   ├── map/                 ← Level loading, spawn data
+│   │   ├── sprites/             ← Shared SpriteAtlas loader & frame constants
 │   │   ├── systems/             ← Pathfinding, walkability grid
 │   │   └── fodder_game.dart     ← Main FlameGame subclass
 │   └── test/
@@ -106,22 +107,23 @@ Soldier (abstract, SpriteAnimationGroupComponent + CollisionCallbacks)
 
 **`SoldierState`** enum: `idle`, `walking`, `firing`, `throwing`, `dying`
 
-**`SoldierAnimations`** loads animations from the junarmy atlas using semantic
-string prefixes:
+**`SoldierAnimations`** builds directional animations from a shared
+`SpriteAtlas` via `SoldierAnimations.fromAtlas(atlas)`. Group name
+constants are centralised in `sprite_frames.dart`:
 
 | Constant | Value | Used for |
 | -------- | ----- | -------- |
-| `walkPrefixPlayer` | `player_walk` | Player walk cycle (8 dirs × 4 frames) |
-| `walkPrefixEnemy` | `enemy_walk` | Enemy walk cycle |
-| `firingPrefixPlayer` | `player_firing` | Player standing-with-gun (8 dirs × 1 frame) |
-| `firingPrefixEnemy` | `enemy_firing` | Enemy standing-with-gun |
-| `throwPrefixPlayer` | `player_throw` | Player throwing (8 dirs × 3 frames) |
-| `throwPrefixEnemy` | `enemy_throw` | Enemy throwing |
-| `deathPrefixPlayer` | `player_death` | Player death (8 dirs × 1–2 frames) |
-| `deathPrefixEnemy` | `enemy_death` | Enemy death |
+| `walkGroupPlayer` | `player_walk` | Player walk cycle (8 dirs × 4 frames) |
+| `walkGroupEnemy` | `enemy_walk` | Enemy walk cycle |
+| `firingGroupPlayer` | `player_firing` | Player standing-with-gun (8 dirs × 1 frame) |
+| `firingGroupEnemy` | `enemy_firing` | Enemy standing-with-gun |
+| `throwGroupPlayer` | `player_throw` | Player throwing (8 dirs × 3 frames) |
+| `throwGroupEnemy` | `enemy_throw` | Enemy throwing |
+| `deathGroupPlayer` | `player_death` | Player death (8 dirs × 1–2 frames) |
+| `deathGroupEnemy` | `enemy_death` | Enemy death |
 
 **`Direction8`** enum with `.suffix` getter (`s`, `sw`, …, `se`) for atlas
-frame lookups. Full frame key: `ingame/{prefix}_{suffix}_{frameIndex}`.
+frame lookups. Full frame key: `ingame/{group}_{suffix}_{frameIndex}`.
 
 ### Combat Components
 
@@ -132,8 +134,19 @@ frame lookups. Full frame key: `ingame/{prefix}_{suffix}_{frameIndex}`.
   - `CircleHitbox` for collision detection
   - Auto-removes when range/lifetime exceeded or off-screen
 
-- **`BulletSprites`** — loads bullet frames from juncopt atlas using semantic
-  name `bullet`. Frame 0 = player bullet, frame 3 = enemy bullet.
+- **`BulletSprites`** — built via `BulletSprites.fromAtlas(coptAtlas)` from a
+  shared `SpriteAtlas`. Uses group name `bullet` (frame 0 = player,
+  frame 3 = enemy). Constants in `sprite_frames.dart`.
+
+### Shared Atlas Loading (`sprites/`)
+
+- **`SpriteAtlas`** — loads a TexturePacker JSON Hash atlas once and provides
+  typed sprite lookups by group name / frame index. Shared across consumers
+  (`BulletSprites`, `EnvironmentSprite`, `SoldierAnimations`) to avoid
+  redundant image + JSON loading.
+- **`sprite_frames.dart`** — centralised constants for all sprite group names
+  and frame indices. Contains `environmentFrameKey()` for deriving copt atlas
+  keys from TMX object names.
 
 ### Collision System
 
