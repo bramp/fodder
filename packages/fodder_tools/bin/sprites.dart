@@ -68,7 +68,28 @@ const _coptSheets = <String, List<_PaletteSpec>>{
 const _linear8Bit = <String, _PaletteSpec>{
   'hill.dat': _PaletteSpec(0xFA00, 0x100, 0x00),
   'morphbig.dat': _PaletteSpec(0xFA00, 0x100, 0x00),
+};
+
+/// Known planar VGA Mode X images.
+const _planarModeX = <String, _PaletteSpec>{
   'cftitle.dat': _PaletteSpec(0xFA00, 0x100, 0x00),
+  'sensprod.dat': _PaletteSpec(0xFA00, 0x100, 0x00),
+  'virgpres.dat': _PaletteSpec(0xFA00, 0x100, 0x00),
+  'won.dat': _PaletteSpec(0xFA00, 0x100, 0x00),
+  '1.dat': _PaletteSpec(0xFA00, 0xD0, 0x00),
+  '2.dat': _PaletteSpec(0xFA00, 0xD0, 0x00),
+  '3.dat': _PaletteSpec(0xFA00, 0xD0, 0x00),
+  '4.dat': _PaletteSpec(0xFA00, 0xD0, 0x00),
+  '5.dat': _PaletteSpec(0xFA00, 0xD0, 0x00),
+  '6.dat': _PaletteSpec(0xFA00, 0xD0, 0x00),
+  '7.dat': _PaletteSpec(0xFA00, 0xD0, 0x00),
+  '8.dat': _PaletteSpec(0xFA00, 0xD0, 0x00),
+  '9.dat': _PaletteSpec(0xFA00, 0xD0, 0x00),
+  'a.dat': _PaletteSpec(0xFA00, 0xD0, 0x00),
+  'b.dat': _PaletteSpec(0xFA00, 0xD0, 0x00),
+  'c.dat': _PaletteSpec(0xFA00, 0xD0, 0x00),
+  'd.dat': _PaletteSpec(0xFA00, 0xD0, 0x00),
+  'e.dat': _PaletteSpec(0xFA00, 0xD0, 0x00),
 };
 
 /// Tile base-block files (palette at 0xFA00, 128 colours).
@@ -241,6 +262,17 @@ void main(List<String> arguments) {
     );
   }
 
+  // --- Planar Mode X images ---
+  for (final entry in _planarModeX.entries) {
+    if (!hasFile(entry.key)) continue;
+    exported += _exportPlanarModeX(
+      entry.key,
+      getFile(entry.key),
+      entry.value,
+      outputDir,
+    );
+  }
+
   // --- Tile base blocks ---
   for (final filename in _tileBaseBlocks) {
     if (!hasFile(filename)) continue;
@@ -400,6 +432,38 @@ int _export8BitLinear(
   );
   File(outPath).writeAsBytesSync(png);
   print('  $outPath (${width}x$height, 8-bit linear)');
+  return 1;
+}
+
+int _exportPlanarModeX(
+  String filename,
+  Uint8List data,
+  _PaletteSpec spec,
+  Directory outputDir,
+) {
+  if (data.length < spec.offset + spec.count * 3) {
+    print(
+      '  Warning: $filename size too small. Expected at least ${spec.offset + spec.count * 3} bytes, got ${data.length}.',
+    );
+  }
+
+  final palette = Palette()
+    ..load(
+      data: data,
+      offset: spec.offset,
+      count: spec.count,
+      startIndex: spec.startIndex,
+    );
+  final pixels = decodePlanar(data: data, palette: palette);
+  const width = 320;
+  const height = 200;
+  final png = encodePng(pixels: pixels, width: width, height: height);
+  final outPath = p.join(
+    outputDir.path,
+    '${p.basenameWithoutExtension(filename)}.png',
+  );
+  File(outPath).writeAsBytesSync(png);
+  print('  $outPath (${width}x$height, planar Mode X)');
   return 1;
 }
 
