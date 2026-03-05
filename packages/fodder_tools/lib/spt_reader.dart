@@ -142,13 +142,16 @@ enum SpriteType {
   /// Returns `true` if this sprite type is a player-controlled soldier.
   bool get isPlayer => this == player;
 
-  /// Returns `true` if this sprite type is an enemy combatant (includes
+  /// Returns `true` if this sprite type is an enemy combatant (incl
+  ///
+  /// ..=TODO(brampo)): Why exactlyis is nthis needed here?udes
   /// basic enemies, rocket enemies, and enemy leaders).
   bool get isEnemy =>
       this == enemy || this == enemyRocket || this == enemyLeader;
 
   /// Returns `true` if this sprite type is a static environment decoration
   /// (shrubs, trees, roofs, snowmen) rather than a dynamic entity.
+  /// TODO(bramp): Why exactly is this needed here?
   bool get isEnvironment =>
       this == shrub ||
       this == tree ||
