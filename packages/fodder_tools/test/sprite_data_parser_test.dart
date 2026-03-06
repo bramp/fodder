@@ -56,7 +56,7 @@ const sSpriteSheet* mSpriteSheetTypes_InGame_PC[] = {
       final results = SpriteDataParser.parse(source: source);
 
       expect(results, hasLength(1));
-      expect(results[0].name, 'InGame');
+      expect(results[0].name, 'InGame_CF1');
       expect(results[0].entries, hasLength(2));
 
       // Group 0 = stru_A (3 frames).

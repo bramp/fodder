@@ -199,6 +199,8 @@ class SpriteDataParser {
       var name = shortName;
       if (fullName.contains('PC2')) {
         name = '${shortName}_CF2';
+      } else if (shortName.toLowerCase() == 'ingame') {
+        name = '${shortName}_CF1';
       }
 
       results.add(SpriteSheetType(name: name, entries: entries));

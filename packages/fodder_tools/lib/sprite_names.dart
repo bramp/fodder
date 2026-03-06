@@ -109,9 +109,12 @@ String? spriteGroupName({
   required String sheetTypeName,
   required int groupIndex,
 }) {
-  // Both InGame and InGame_CF2 share the same naming table.
-  // Normalise to lowercase and strip the _CF2 suffix.
-  final normalised = sheetTypeName.toLowerCase().replaceAll('_cf2', '');
+  // Both InGame, InGame_CF1 and InGame_CF2 share the same naming table.
+  // Normalise to lowercase and strip the _CF1/_CF2 suffix.
+  final normalised = sheetTypeName
+      .toLowerCase()
+      .replaceAll('_cf2', '')
+      .replaceAll('_cf1', '');
 
   final table = _sheetNameTables[normalised];
   return table?[groupIndex];

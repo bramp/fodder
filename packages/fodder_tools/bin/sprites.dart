@@ -609,6 +609,8 @@ void _exportSpriteAtlases({
   required bool Function(String) hasFile,
   required Directory outputDir,
 }) {
+  final isCf1 = outputDir.path.contains('cf1');
+  final isCf2 = outputDir.path.contains('cf2');
   print('Found ${sheetTypes.length} sprite sheet types:');
   for (final st in sheetTypes) {
     var totalFrames = 0;
@@ -669,6 +671,13 @@ void _exportSpriteAtlases({
   }
 
   for (final sheetType in sheetTypes) {
+    final sheetNameLower = sheetType.name.toLowerCase();
+    final isCf1Sheet = sheetNameLower.endsWith('_cf1');
+    final isCf2Sheet = sheetNameLower.endsWith('_cf2');
+
+    if (isCf1 && isCf2Sheet) continue;
+    if (isCf2 && isCf1Sheet) continue;
+
     for (var groupIdx = 0; groupIdx < sheetType.entries.length; groupIdx++) {
       final group = sheetType.entries[groupIdx];
       for (var frameIdx = 0; frameIdx < group.length; frameIdx++) {
@@ -686,7 +695,11 @@ void _exportSpriteAtlases({
                 groupIndex: groupIdx,
               ) ??
               groupIdx.toRadixString(16).padLeft(2, '0');
-          final name = '${sheetType.name}/${groupLabel}_$frameIdx';
+
+          final normalizedPrefix = sheetNameLower
+              .replaceAll('_cf1', '')
+              .replaceAll('_cf2', '');
+          final name = '$normalizedPrefix/${groupLabel}_$frameIdx';
 
           final x = frame.pixelX();
           final y = frame.pixelY();
