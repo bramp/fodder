@@ -28,6 +28,7 @@ class FodderGame extends FlameGame
         HasCollisionDetection,
         TapCallbacks,
         SecondaryTapCallbacks,
+        MouseMovementDetector,
         KeyboardEvents {
   FodderGame({
     this.initialMap = 'cf1/maps/mapm1.tmx',
@@ -100,6 +101,19 @@ class FodderGame extends FlameGame
 
   /// Shared copt sprite atlas (bullets, environment decorations).
   late SpriteAtlas _coptAtlas;
+
+  /// The current mouse position in world coordinates (cached from move events).
+  Vector2? _mousePosition;
+
+  @override
+  void onMouseMove(PointerHoverInfo info) {
+    // Correctly map the raw event position to the Flame coordinate system,
+    // accounting for the camera's viewport and zoom.
+    _mousePosition = camera.globalToLocal(info.eventPosition.global);
+  }
+
+  /// Returns the current mouse position in world coordinates, if available.
+  Vector2? get mousePosition => _mousePosition;
 
   /// The asset prefix for sprite files.
   static const _spritePrefix = 'packages/fodder_assets/assets/';

@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 
 import 'package:fodder_game/game/fodder_game.dart';
+import 'package:fodder_game/game/map/level_map.dart';
 import 'package:fodder_game/game/player_names.dart';
 import 'package:fodder_game/ui/level_selector.dart';
 
@@ -60,6 +61,7 @@ class _DebugPanelState extends State<DebugPanel> {
   int _enemiesTotal = 0;
   int _activeBullets = 0;
   List<PlayerStats> _playerStats = [];
+  String _mouseTileInfo = '';
 
   @override
   void initState() {
@@ -108,6 +110,28 @@ class _DebugPanelState extends State<DebugPanel> {
       _enemiesTotal = enemies.length;
       _enemiesAlive = enemies.where((e) => e.isAlive).length;
       _activeBullets = game.activeBulletCount;
+
+      final mousePos = game.mousePosition;
+      if (mousePos != null) {
+        final grid = game.levelMap.walkabilityGrid;
+        if (grid != null) {
+          const tileSize = LevelMap.destTileSize;
+          final tx = (mousePos.x / tileSize).floor();
+          final ty = (mousePos.y / tileSize).floor();
+          if (tx >= 0 && tx < grid.width && ty >= 0 && ty < grid.height) {
+            final terrain = grid.terrainAt(tx, ty);
+            _mouseTileInfo = '($tx, $ty) ${terrain.label}';
+          } else {
+            _mouseTileInfo =
+                'out of bounds (${mousePos.x.toInt()}, ${mousePos.y.toInt()})';
+          }
+        } else {
+          _mouseTileInfo = 'no grid';
+        }
+      } else {
+        _mouseTileInfo = 'no mouse';
+      }
+
       _playerStats = game.playerSoldiers.map((p) {
         final recruitId = p.troop?.recruitId ?? -1;
         final name = recruitId >= 0 && recruitId < playerNames.length
@@ -166,6 +190,7 @@ class _DebugPanelState extends State<DebugPanel> {
             enemiesTotal: _enemiesTotal,
             activeBullets: _activeBullets,
             playerStats: _playerStats,
+            mouseTileInfo: _mouseTileInfo,
           ),
         ),
 
@@ -252,6 +277,7 @@ class _PanelBody extends StatelessWidget {
     required this.enemiesTotal,
     required this.activeBullets,
     required this.playerStats,
+    required this.mouseTileInfo,
   });
 
   final String currentMap;
@@ -265,6 +291,7 @@ class _PanelBody extends StatelessWidget {
   final int enemiesTotal;
   final int activeBullets;
   final List<PlayerStats> playerStats;
+  final String mouseTileInfo;
 
   @override
   Widget build(BuildContext context) {
@@ -315,6 +342,7 @@ class _PanelBody extends StatelessWidget {
             _sectionHeader('Stats'),
             _statRow('Enemies', '$_enemiesAlive / $_enemiesTotal'),
             _statRow('Bullets', '$activeBullets'),
+            _statRow('Tile', mouseTileInfo),
 
             const SizedBox(height: 16),
 
