@@ -5,6 +5,7 @@ import 'package:fodder_game/game/components/direction8.dart';
 import 'package:fodder_game/game/components/soldier.dart';
 import 'package:fodder_game/game/config/game_config.dart' as config;
 import 'package:fodder_game/game/config/weapon_data.dart';
+import 'package:fodder_game/game/fodder_game.dart';
 import 'package:fodder_game/game/models/mission_troop.dart';
 import 'package:fodder_game/game/models/squad.dart';
 import 'package:fodder_game/game/systems/squad_movement.dart';
@@ -27,7 +28,7 @@ const double playerBulletSpeed = config.defaultPlayerBulletSpeed;
 /// Movement speed is determined by the [squad]'s current [SpeedMode], or
 /// falls back to [config.playerSpeedNormal] if no squad is assigned.
 /// Weapon stats come from the [troop]'s rank, or use a default fallback.
-class PlayerSoldier extends Soldier {
+class PlayerSoldier extends Soldier with HasGameReference<FodderGame> {
   PlayerSoldier({required super.soldierAnimations, super.random});
 
   /// Player hitbox is 6×5 per the original game spec (harder to hit).
@@ -105,6 +106,15 @@ class PlayerSoldier extends Soldier {
       _fireCooldownTimer -= dt;
     }
 
+    // Update facing direction based on mouse position (PLAYER.md §1.3).
+    // In the remake, player soldiers always look toward the cursor.
+    if (isMounted) {
+      final mousePos = game.mousePosition;
+      if (mousePos != null) {
+        updateDirection(mousePos);
+      }
+    }
+
     if (_path.isEmpty) {
       isMoving = false;
       return;
@@ -143,13 +153,6 @@ class PlayerSoldier extends Soldier {
       final direction = delta.normalized();
       position += direction * step;
       isMoving = true;
-
-      // Update facing direction based on movement vector.
-      final newFacing = Direction8.fromVector(direction.x, direction.y);
-      if (newFacing != facing) {
-        facing = newFacing;
-        updateAnimations();
-      }
 
       setState(isInWater ? SoldierState.swimming : SoldierState.walking);
     }
@@ -284,6 +287,18 @@ class PlayerSoldier extends Soldier {
 
     if (_path.isNotEmpty) {
       setState(SoldierState.walking);
+    }
+  }
+
+  /// Updates the soldier's facing direction to look toward [targetWorld].
+  void updateDirection(Vector2 targetWorld) {
+    final toTarget = targetWorld - position;
+    if (toTarget.isZero()) return;
+
+    final newFacing = Direction8.fromVector(toTarget.x, toTarget.y);
+    if (newFacing != facing) {
+      facing = newFacing;
+      updateAnimations();
     }
   }
 }

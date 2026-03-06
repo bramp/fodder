@@ -1,6 +1,9 @@
+import 'dart:async';
 import 'dart:ui';
 
 import 'package:flame/components.dart';
+import 'package:flame/game.dart';
+import 'package:flame_test/flame_test.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'package:fodder_game/game/components/bullet.dart';
@@ -10,6 +13,7 @@ import 'package:fodder_game/game/components/soldier.dart';
 import 'package:fodder_game/game/components/soldier_animations.dart';
 import 'package:fodder_game/game/config/game_config.dart' as config;
 import 'package:fodder_game/game/config/weapon_data.dart';
+import 'package:fodder_game/game/fodder_game.dart';
 import 'package:fodder_game/game/systems/walkability_grid.dart';
 
 /// Minimal fake [Image] for testing (1×1 pixel).
@@ -76,6 +80,20 @@ SoldierAnimations _buildFakeAnims({
     deathAnimations: deathAnims,
     swimAnimations: swimAnims,
   );
+}
+
+/// Minimal stub [FodderGame] for testing.
+class _FodderGameStub extends FlameGame
+    with HasCollisionDetection
+    implements FodderGame {
+  @override
+  Vector2? mousePosition;
+
+  @override
+  Future<void> onLoad() async {}
+
+  @override
+  dynamic noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
 }
 
 void main() {
@@ -673,5 +691,93 @@ void main() {
         anyOf(SoldierState.stumbling, SoldierState.dying),
       );
     });
+  });
+
+  group('PlayerSoldier mouse facing', () {
+    final soldierAnims = _buildFakeAnims(includeCombatAnims: true);
+
+    unawaited(
+      testWithGame<_FodderGameStub>(
+        'faces north when mouse is above',
+        _FodderGameStub.new,
+        (game) async {
+          final soldier = PlayerSoldier(soldierAnimations: soldierAnims)
+            ..position = Vector2(100, 100)
+            ..updateAnimations()
+            ..current = SoldierState.idle;
+          await game.add(soldier);
+          await game.ready();
+
+          game
+            ..mousePosition = Vector2(100, 50)
+            ..update(0.1);
+          expect(soldier.facing, Direction8.north);
+        },
+      ),
+    );
+
+    unawaited(
+      testWithGame<_FodderGameStub>(
+        'faces east when mouse is to the right',
+        _FodderGameStub.new,
+        (game) async {
+          final soldier = PlayerSoldier(soldierAnimations: soldierAnims)
+            ..position = Vector2(100, 100)
+            ..updateAnimations()
+            ..current = SoldierState.idle;
+          await game.add(soldier);
+          await game.ready();
+
+          game
+            ..mousePosition = Vector2(150, 100)
+            ..update(0.1);
+          expect(soldier.facing, Direction8.east);
+        },
+      ),
+    );
+
+    unawaited(
+      testWithGame<_FodderGameStub>(
+        'faces movement direction if mouse is null',
+        _FodderGameStub.new,
+        (game) async {
+          final soldier = PlayerSoldier(soldierAnimations: soldierAnims)
+            ..position = Vector2(100, 100)
+            ..updateAnimations()
+            ..current = SoldierState.idle;
+          await game.add(soldier);
+          await game.ready();
+
+          soldier.facing = Direction8.south;
+          game
+            ..mousePosition = null
+            ..update(0.1);
+          expect(soldier.facing, Direction8.south);
+        },
+      ),
+    );
+
+    unawaited(
+      testWithGame<_FodderGameStub>(
+        'mouse facing overrides movement direction',
+        _FodderGameStub.new,
+        (game) async {
+          final soldier = PlayerSoldier(soldierAnimations: soldierAnims)
+            ..position = Vector2(100, 100)
+            ..updateAnimations()
+            ..current = SoldierState.idle;
+          await game.add(soldier);
+          await game.ready();
+
+          game.mousePosition = Vector2(100, 50);
+          soldier.followPath([Vector2(100, 200)]);
+
+          game.update(0.1);
+
+          expect(soldier.facing, Direction8.north);
+          expect(soldier.isMoving, isTrue);
+        },
+      ),
+    );
   });
 }
