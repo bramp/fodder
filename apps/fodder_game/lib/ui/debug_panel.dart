@@ -148,6 +148,9 @@ class _DebugPanelState extends State<DebugPanel> {
                 widget.game.isPlayerInvincible = value;
               });
             },
+            onRestart: () {
+              unawaited(widget.game.restartLevel());
+            },
             isDebugOverlay: widget.game.isDebugOverlayVisible,
             onDebugOverlayChanged: (value) {
               setState(() {
@@ -242,6 +245,7 @@ class _PanelBody extends StatelessWidget {
     required this.onMapChanged,
     required this.isInvincible,
     required this.onInvincibleChanged,
+    required this.onRestart,
     required this.isDebugOverlay,
     required this.onDebugOverlayChanged,
     required this.enemiesAlive,
@@ -254,6 +258,7 @@ class _PanelBody extends StatelessWidget {
   final ValueChanged<String> onMapChanged;
   final bool isInvincible;
   final ValueChanged<bool> onInvincibleChanged;
+  final VoidCallback onRestart;
   final bool isDebugOverlay;
   final ValueChanged<bool> onDebugOverlayChanged;
   final int enemiesAlive;
@@ -290,6 +295,12 @@ class _PanelBody extends StatelessWidget {
               value: isDebugOverlay,
               onChanged: onDebugOverlayChanged,
               activeColor: Colors.greenAccent,
+            ),
+            _actionRow(
+              icon: Icons.refresh,
+              label: 'Restart level',
+              onPressed: onRestart,
+              activeColor: Colors.blueAccent,
             ),
 
             const SizedBox(height: 16),
@@ -384,6 +395,49 @@ class _PanelBody extends StatelessWidget {
               onChanged: onChanged,
               activeThumbColor: activeColor,
               materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  static Widget _actionRow({
+    required IconData icon,
+    required String label,
+    required VoidCallback onPressed,
+    required Color activeColor,
+  }) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 2),
+      child: Row(
+        children: [
+          Icon(
+            icon,
+            size: 16,
+            color: Colors.white54,
+          ),
+          const SizedBox(width: 8),
+          Expanded(
+            child: Text(
+              label,
+              style: const TextStyle(
+                color: Colors.white,
+                fontSize: 13,
+              ),
+            ),
+          ),
+          SizedBox(
+            height: 32,
+            child: TextButton(
+              onPressed: onPressed,
+              style: TextButton.styleFrom(
+                foregroundColor: activeColor,
+                padding: const EdgeInsets.symmetric(horizontal: 8),
+                minimumSize: Size.zero,
+                tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+              ),
+              child: const Text('RESTART', style: TextStyle(fontSize: 10)),
             ),
           ),
         ],

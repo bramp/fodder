@@ -294,10 +294,13 @@ class FodderGame extends FlameGame
     playerSquad = Squad();
     await _spawnPlayerSquad(playerAnims, grid);
 
-    // Remove old environment sprites.
     for (final envSprite in _environmentSprites) {
       envSprite.removeFromParent();
     }
+    _environmentSprites.clear();
+
+    // Spawn new environment sprites.
+    await _spawnEnvironmentSprites();
     _environmentSprites.clear();
 
     // Spawn enemies for the new map.
@@ -317,6 +320,12 @@ class FodderGame extends FlameGame
     // Update the overlay's grid and spawn data for the new map.
     _debugOverlay.grid = grid ?? WalkabilityGrid.fromData([]);
     _debugOverlay.spawnData = levelMap.spawnData;
+  }
+
+  /// Reloads the current map to its initial state.
+  Future<void> restartLevel() async {
+    if (!isLoaded) return;
+    await loadMap(levelMap.mapFile);
   }
 
   /// Toggles the debug overlay on/off.
