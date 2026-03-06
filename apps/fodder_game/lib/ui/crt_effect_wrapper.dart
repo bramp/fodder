@@ -5,6 +5,15 @@ import 'package:flutter/material.dart';
 
 /// A wrapper widget that applies a CRT shader effect to its child.
 ///
+/// The shader has:
+/// * Scanlines: Horizontal lines that mimic the low-resolution feel of CRT
+///   monitors.
+/// * Aperture Grille Mask: Subpixel vertical strips (Red, Green, Blue) for that
+///   authentic Trinitron look.
+/// * Curved Vignette: Subtle darkening of the corners to simulate a rounded
+///   glass screen.
+/// * Phosphor Noise: Subtle film grain static.
+///
 /// Uses [FutureBuilder] for clean loading and [AnimatedBuilder] to ensure
 /// only the shader is updated every frame, leaving the [child] untouched.
 class CrtEffectWrapper extends StatefulWidget {
