@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 
 import 'package:fodder_game/game/fodder_game.dart';
+import 'package:fodder_game/game/player_names.dart';
 import 'package:fodder_game/ui/level_selector.dart';
 
 /// Width of the debug side panel in logical pixels.
@@ -58,9 +59,7 @@ class _DebugPanelState extends State<DebugPanel> {
   int _enemiesAlive = 0;
   int _enemiesTotal = 0;
   int _activeBullets = 0;
-  String _playerState = '';
-  String _playerPosition = '';
-  bool _playerInWater = false;
+  List<PlayerStats> _playerStats = [];
 
   @override
   void initState() {
@@ -104,17 +103,27 @@ class _DebugPanelState extends State<DebugPanel> {
     if (!game.isLoaded) return;
 
     final enemies = game.enemies;
-    final player = game.playerSoldier;
 
     setState(() {
       _enemiesTotal = enemies.length;
       _enemiesAlive = enemies.where((e) => e.isAlive).length;
       _activeBullets = game.activeBulletCount;
-      _playerState = player.current?.name ?? 'unknown';
-      _playerPosition =
-          '(${player.position.x.toStringAsFixed(0)}, '
-          '${player.position.y.toStringAsFixed(0)})';
-      _playerInWater = player.isInWater;
+      _playerStats = game.playerSoldiers.map((p) {
+        final recruitId = p.troop?.recruitId ?? -1;
+        final name = recruitId >= 0 && recruitId < playerNames.length
+            ? playerNames[recruitId]
+            : 'RECRUIT';
+
+        return PlayerStats(
+          name: name,
+          state: p.current?.name ?? 'unknown',
+          position:
+              '(${p.position.x.toStringAsFixed(0)}, '
+              '${p.position.y.toStringAsFixed(0)})',
+          inWater: p.isInWater,
+          isAlive: p.isAlive,
+        );
+      }).toList();
     });
   }
 
@@ -122,17 +131,6 @@ class _DebugPanelState extends State<DebugPanel> {
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        // The debug icon button (always visible).
-        Positioned(
-          top: 8,
-          right: 8,
-          child: _DebugToggleButton(
-            isOpen: widget.isOpen,
-            isInvincible: widget.game.isPlayerInvincible,
-            onPressed: widget.onToggle,
-          ),
-        ),
-
         // The sliding panel.
         AnimatedPositioned(
           duration: const Duration(milliseconds: 200),
@@ -164,14 +162,40 @@ class _DebugPanelState extends State<DebugPanel> {
             enemiesAlive: _enemiesAlive,
             enemiesTotal: _enemiesTotal,
             activeBullets: _activeBullets,
-            playerState: _playerState,
-            playerPosition: _playerPosition,
-            playerInWater: _playerInWater,
+            playerStats: _playerStats,
+          ),
+        ),
+
+        // The debug icon button (always visible).
+        Positioned(
+          top: 0,
+          right: 0,
+          child: _DebugToggleButton(
+            isOpen: widget.isOpen,
+            isInvincible: widget.game.isPlayerInvincible,
+            onPressed: widget.onToggle,
           ),
         ),
       ],
     );
   }
+}
+
+/// Data container for a single player's stats to be displayed in the panel.
+class PlayerStats {
+  const PlayerStats({
+    required this.name,
+    required this.state,
+    required this.position,
+    required this.inWater,
+    required this.isAlive,
+  });
+
+  final String name;
+  final String state;
+  final String position;
+  final bool inWater;
+  final bool isAlive;
 }
 
 /// The bug icon button that toggles the debug panel open/closed.
@@ -188,21 +212,24 @@ class _DebugToggleButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: isInvincible
-            ? Colors.amber.withValues(alpha: 0.8)
-            : Colors.black54,
-        borderRadius: BorderRadius.circular(8),
-      ),
-      child: IconButton(
-        icon: Icon(
-          Icons.bug_report,
-          color: isOpen ? Colors.greenAccent : Colors.white,
-          size: 20,
+    return SafeArea(
+      child: Container(
+        margin: const EdgeInsets.only(top: 8, right: 8),
+        decoration: BoxDecoration(
+          color: isInvincible
+              ? Colors.amber.withValues(alpha: 0.8)
+              : Colors.black54,
+          borderRadius: BorderRadius.circular(8),
         ),
-        tooltip: isOpen ? 'Close debug panel' : 'Open debug panel',
-        onPressed: onPressed,
+        child: IconButton(
+          icon: Icon(
+            isOpen ? Icons.close : Icons.bug_report,
+            color: isOpen ? Colors.greenAccent : Colors.white,
+            size: 20,
+          ),
+          tooltip: isOpen ? 'Close debug panel' : 'Open debug panel',
+          onPressed: onPressed,
+        ),
       ),
     );
   }
@@ -220,9 +247,7 @@ class _PanelBody extends StatelessWidget {
     required this.enemiesAlive,
     required this.enemiesTotal,
     required this.activeBullets,
-    required this.playerState,
-    required this.playerPosition,
-    required this.playerInWater,
+    required this.playerStats,
   });
 
   final String currentMap;
@@ -234,9 +259,7 @@ class _PanelBody extends StatelessWidget {
   final int enemiesAlive;
   final int enemiesTotal;
   final int activeBullets;
-  final String playerState;
-  final String playerPosition;
-  final bool playerInWater;
+  final List<PlayerStats> playerStats;
 
   @override
   Widget build(BuildContext context) {
@@ -273,10 +296,7 @@ class _PanelBody extends StatelessWidget {
 
             // --- Level Section ---
             _sectionHeader('Level'),
-            LevelSelector(
-              currentMap: currentMap,
-              onChanged: onMapChanged,
-            ),
+            LevelSelector(currentMap: currentMap, onChanged: onMapChanged),
 
             const SizedBox(height: 16),
 
@@ -284,9 +304,32 @@ class _PanelBody extends StatelessWidget {
             _sectionHeader('Stats'),
             _statRow('Enemies', '$_enemiesAlive / $_enemiesTotal'),
             _statRow('Bullets', '$activeBullets'),
-            _statRow('Player state', playerState),
-            _statRow('Position', playerPosition),
-            if (playerInWater) _statRow('Terrain', 'Water'),
+
+            const SizedBox(height: 16),
+
+            // --- Players Section ---
+            _sectionHeader('Squad'),
+            if (playerStats.isEmpty)
+              const Text(
+                'No players active.',
+                style: TextStyle(color: Colors.white54, fontSize: 11),
+              ),
+            for (final p in playerStats) ...[
+              Padding(
+                padding: const EdgeInsets.only(top: 8, bottom: 4),
+                child: Text(
+                  p.name,
+                  style: TextStyle(
+                    color: p.isAlive ? Colors.greenAccent : Colors.redAccent,
+                    fontSize: 12,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+              _statRow('State', p.state),
+              _statRow('Position', p.position),
+              if (p.inWater) _statRow('Terrain', 'Water'),
+            ],
           ],
         ),
       ),
@@ -323,11 +366,7 @@ class _PanelBody extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: 2),
       child: Row(
         children: [
-          Icon(
-            icon,
-            size: 16,
-            color: value ? activeColor : Colors.white54,
-          ),
+          Icon(icon, size: 16, color: value ? activeColor : Colors.white54),
           const SizedBox(width: 8),
           Expanded(
             child: Text(
