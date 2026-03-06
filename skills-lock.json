@@ -1,0 +1,10 @@
+{
+  "version": 1,
+  "skills": {
+    "flutter": {
+      "source": "alinaqi/claude-bootstrap",
+      "sourceType": "github",
+      "computedHash": "84802e762e18ce9381e3953b15329c66518de448056a7f62e214356249b1b321"
+    }
+  }
+}

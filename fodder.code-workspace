@@ -1,0 +1,23 @@
+{
+	"folders": [
+		{
+			"path": "."
+		}
+	],
+	"settings": {
+		"chat.tools.terminal.autoApprove": {
+			"flutter": true,
+			"dart": true,
+			"pre-commit": true,
+			"mkdir": true,
+			"touch": true,
+			"hexdump": true,
+			"clang++": true,
+			"./trace_decomp": true,
+			"diff": true,
+			"mv": true,
+			"printf": true,
+			"awk": true
+		}
+	}
+}
