@@ -4,6 +4,7 @@ import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fodder_game/game/fodder_game.dart';
+import 'package:fodder_game/ui/crt_effect_wrapper.dart';
 import 'package:fodder_game/ui/debug_panel.dart';
 import 'package:go_router/go_router.dart';
 
@@ -154,7 +155,9 @@ class _GameScreenState extends State<GameScreen> {
     return Scaffold(
       body: Stack(
         children: [
-          GameWidget(game: _game),
+          CrtEffectWrapper(
+            child: GameWidget(game: _game),
+          ),
           DebugPanel(
             game: _game,
             isOpen: _debugPanelOpen,
