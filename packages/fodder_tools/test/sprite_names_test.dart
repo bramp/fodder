@@ -50,8 +50,8 @@ void main() {
     });
 
     test('maps player firing groups', () {
-      expect(inGameGroupNames[0xB0], 'player_firing_s');
-      expect(inGameGroupNames[0xB7], 'player_firing_se');
+      expect(inGameGroupNames[0xB0], 'player_firing_alt_s');
+      expect(inGameGroupNames[0xB7], 'player_firing_alt_se');
     });
 
     test('maps enemy firing groups', () {
@@ -92,11 +92,14 @@ void main() {
       expect(inGameGroupNames[0x7A], 'salute');
     });
 
-    test('returns null for unmapped groups', () {
-      // 0x3A has no mapping
-      expect(inGameGroupNames[0x3A], isNull);
-      // 0x80 has no mapping
-      expect(inGameGroupNames[0x80], isNull);
+    test('maps rocket walk groups', () {
+      expect(inGameGroupNames[0x3A], 'soldier_rocket_walk_nw');
+      expect(inGameGroupNames[0x40], 'soldier_rocket_walk_sw');
+    });
+
+    test('maps helicopter groups', () {
+      expect(inGameGroupNames[0x80], 'helicopter_s');
+      expect(inGameGroupNames[0x8B], 'helicopter_ene');
     });
 
     test('maps environment decoration groups', () {
@@ -127,29 +130,38 @@ void main() {
       );
     });
 
-    test('returns name for InGame_CF2 groups (same table)', () {
+    test('returns name for Font sheet type', () {
       expect(
-        spriteGroupName(sheetTypeName: 'InGame_CF2', groupIndex: 0x7F),
-        'bullet',
+        spriteGroupName(sheetTypeName: 'Font', groupIndex: 0),
+        'font_main',
       );
-    });
-
-    test('returns name for lowercase ingame_cf2 groups', () {
-      expect(
-        spriteGroupName(sheetTypeName: 'ingame_cf2', groupIndex: 0x7F),
-        'bullet',
-      );
-    });
-
-    test('returns null for unknown sheet type', () {
-      expect(spriteGroupName(sheetTypeName: 'Font', groupIndex: 0), isNull);
     });
 
     test('returns null for unmapped group index', () {
       expect(
-        spriteGroupName(sheetTypeName: 'InGame', groupIndex: 0xFF),
+        spriteGroupName(sheetTypeName: 'InGame', groupIndex: 0xFFFF),
         isNull,
       );
+    });
+  });
+
+  group('fontCharacterName', () {
+    test('returns character for valid indices', () {
+      expect(fontCharacterName(0), 'A');
+      expect(fontCharacterName(26), '0');
+      expect(fontCharacterName(39), '!');
+    });
+
+    test('returns space as "space"', () {
+      expect(fontCharacterName(56), 'space');
+    });
+
+    test('returns slash as "slash"', () {
+      expect(fontCharacterName(44), 'slash');
+    });
+
+    test('returns char_\$frameIndex for out of range', () {
+      expect(fontCharacterName(1000), 'char_1000');
     });
   });
 }
