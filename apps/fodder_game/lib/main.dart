@@ -12,6 +12,9 @@ import 'package:go_router/go_router.dart';
 const _defaultGame = 'cf1';
 const _defaultMapName = 'mapm1';
 
+/// Whether to apply the CRT shader effect to the game.
+const bool _useCrtShader = false;
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
@@ -155,9 +158,12 @@ class _GameScreenState extends State<GameScreen> {
     return Scaffold(
       body: Stack(
         children: [
-          CrtEffectWrapper(
-            child: GameWidget(game: _game),
-          ),
+          if (_useCrtShader)
+            CrtEffectWrapper(
+              child: GameWidget(game: _game),
+            )
+          else
+            GameWidget(game: _game),
           DebugPanel(
             game: _game,
             isOpen: _debugPanelOpen,
