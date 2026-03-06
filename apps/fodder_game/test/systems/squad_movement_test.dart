@@ -30,10 +30,7 @@ void main() {
     });
 
     test('empty path gives empty lists for every member', () {
-      final result = buildChainPaths(
-        memberCount: 2,
-        pathToTarget: <Vector2>[],
-      );
+      final result = buildChainPaths(memberCount: 2, pathToTarget: <Vector2>[]);
 
       expect(result, hasLength(2));
       for (final memberPath in result) {
@@ -44,10 +41,7 @@ void main() {
     test('each member path is an independent clone', () {
       final target = Vector2(100, 0);
 
-      final result = buildChainPaths(
-        memberCount: 2,
-        pathToTarget: [target],
-      );
+      final result = buildChainPaths(memberCount: 2, pathToTarget: [target]);
 
       // Mutating the original target should not affect the result.
       target.setValues(999, 999);

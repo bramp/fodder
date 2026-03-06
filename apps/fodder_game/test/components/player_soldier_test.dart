@@ -36,35 +36,35 @@ SoldierAnimations _buildFakeAnims({
 
   for (final dir in Direction8.values) {
     final sprite = Sprite(image, srcSize: Vector2.all(16));
-    walkAnims[dir] = SpriteAnimation.spriteList(
-      [sprite, sprite, sprite],
-      stepTime: 0.15,
-    );
-    idleAnims[dir] = SpriteAnimation.spriteList(
-      [sprite],
-      stepTime: double.infinity,
-    );
+    walkAnims[dir] = SpriteAnimation.spriteList([
+      sprite,
+      sprite,
+      sprite,
+    ], stepTime: 0.15);
+    idleAnims[dir] = SpriteAnimation.spriteList([
+      sprite,
+    ], stepTime: double.infinity);
 
     if (includeCombatAnims) {
-      firingAnims[dir] = SpriteAnimation.spriteList(
-        [sprite],
-        stepTime: double.infinity,
-      );
-      throwAnims[dir] = SpriteAnimation.spriteList(
-        [sprite, sprite, sprite],
-        stepTime: 0.12,
-      );
-      deathAnims[dir] = SpriteAnimation.spriteList(
-        [sprite, sprite],
-        stepTime: 0.2,
-      );
+      firingAnims[dir] = SpriteAnimation.spriteList([
+        sprite,
+      ], stepTime: double.infinity);
+      throwAnims[dir] = SpriteAnimation.spriteList([
+        sprite,
+        sprite,
+        sprite,
+      ], stepTime: 0.12);
+      deathAnims[dir] = SpriteAnimation.spriteList([
+        sprite,
+        sprite,
+      ], stepTime: 0.2);
     }
 
     if (includeSwimAnims) {
-      swimAnims[dir] = SpriteAnimation.spriteList(
-        [sprite, sprite],
-        stepTime: 0.2,
-      );
+      swimAnims[dir] = SpriteAnimation.spriteList([
+        sprite,
+        sprite,
+      ], stepTime: 0.2);
     }
   }
 
@@ -480,10 +480,7 @@ void main() {
     /// Builds a grid that is all drop terrain to force death.
     WalkabilityGrid allDropGrid() {
       return WalkabilityGrid.fromData(
-        List.generate(
-          10,
-          (_) => List.filled(10, TerrainType.drop),
-        ),
+        List.generate(10, (_) => List.filled(10, TerrainType.drop)),
       );
     }
 

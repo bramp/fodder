@@ -12,5 +12,13 @@
     "mv": true,
     "printf": true,
     "awk": true
+  },
+  "dart.lineLength": 80,
+  "[dart]": {
+    "editor.formatOnSave": true,
+    "editor.defaultFormatter": "Dart-Code.dart-code",
+    "editor.rulers": [
+      80
+    ]
   }
 }

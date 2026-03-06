@@ -107,9 +107,16 @@ void main() {
       final st = SubTileTerrain(
         primary: _land,
         secondary: _water,
-        mask: Uint8List.fromList(
-          [0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF],
-        ),
+        mask: Uint8List.fromList([
+          0xFF,
+          0xFF,
+          0xFF,
+          0xFF,
+          0xFF,
+          0xFF,
+          0xFF,
+          0xFF,
+        ]),
       );
       expect(st.terrainAt(0, 0), _water);
       expect(st.terrainAt(7, 7), _water);
@@ -135,9 +142,16 @@ void main() {
       final st = SubTileTerrain(
         primary: _land,
         secondary: _block,
-        mask: Uint8List.fromList(
-          [0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF],
-        ),
+        mask: Uint8List.fromList([
+          0xFF,
+          0xFF,
+          0xFF,
+          0xFF,
+          0xFF,
+          0xFF,
+          0xFF,
+          0xFF,
+        ]),
       );
       expect(st.terrainAt(-1, 0), _land);
       expect(st.terrainAt(8, 0), _land);

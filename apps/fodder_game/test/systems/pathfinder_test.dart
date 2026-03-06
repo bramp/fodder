@@ -17,10 +17,7 @@ void main() {
       final pathfinder = Pathfinder(grid);
 
       // Sub-tile coords: tile (0,0) → (0,0), tile (4,4) → (32,32).
-      final path = pathfinder.findPath(
-        start: (0, 0),
-        end: (32, 32),
-      );
+      final path = pathfinder.findPath(start: (0, 0), end: (32, 32));
 
       expect(path, isNotEmpty);
       // First waypoint should be near start, last near end.
@@ -34,10 +31,7 @@ void main() {
       );
       final pathfinder = Pathfinder(grid);
 
-      final path = pathfinder.findPath(
-        start: (8, 8),
-        end: (8, 8),
-      );
+      final path = pathfinder.findPath(start: (8, 8), end: (8, 8));
 
       expect(path, isEmpty);
     });
@@ -51,10 +45,7 @@ void main() {
       final pathfinder = Pathfinder(grid);
 
       // Tile (1,1) is block → sub-tiles (8..15, 8..15) are all blocked.
-      final path = pathfinder.findPath(
-        start: (0, 0),
-        end: (8, 8),
-      );
+      final path = pathfinder.findPath(start: (0, 0), end: (8, 8));
 
       expect(path, isEmpty);
     });
@@ -71,10 +62,7 @@ void main() {
       final pathfinder = Pathfinder(grid);
 
       // Tile (2,0) → sub-tile (16,0), tile (2,4) → sub-tile (16,32).
-      final path = pathfinder.findPath(
-        start: (16, 0),
-        end: (16, 32),
-      );
+      final path = pathfinder.findPath(start: (16, 0), end: (16, 32));
 
       // Should find a path around the wall.
       expect(path, isNotEmpty);
@@ -92,10 +80,7 @@ void main() {
       final pathfinder = Pathfinder(grid);
 
       // Tile (2,2) → sub-tile (16,16), which is walkable but unreachable.
-      final path = pathfinder.findPath(
-        start: (0, 0),
-        end: (16, 16),
-      );
+      final path = pathfinder.findPath(start: (0, 0), end: (16, 16));
 
       expect(path, isEmpty);
     });
@@ -106,14 +91,8 @@ void main() {
       );
       final pathfinder = Pathfinder(grid);
 
-      expect(
-        pathfinder.findPath(start: (-1, 0), end: (16, 16)),
-        isEmpty,
-      );
-      expect(
-        pathfinder.findPath(start: (0, 0), end: (80, 80)),
-        isEmpty,
-      );
+      expect(pathfinder.findPath(start: (-1, 0), end: (16, 16)), isEmpty);
+      expect(pathfinder.findPath(start: (0, 0), end: (80, 80)), isEmpty);
     });
   });
 

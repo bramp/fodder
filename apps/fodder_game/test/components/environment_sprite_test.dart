@@ -12,10 +12,7 @@ void main() {
     });
 
     test('converts camelCase names to snake_case', () {
-      expect(
-        environmentFrameKey('buildingRoof'),
-        'ingame/env_building_roof_0',
-      );
+      expect(environmentFrameKey('buildingRoof'), 'ingame/env_building_roof_0');
     });
   });
 }

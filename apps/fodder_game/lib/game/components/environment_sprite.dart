@@ -22,10 +22,7 @@ class EnvironmentSprite extends SpriteComponent {
     required super.sprite,
     required super.position,
     required super.size,
-  }) : super(
-         anchor: Anchor.bottomLeft,
-         priority: 15,
-       );
+  }) : super(anchor: Anchor.bottomLeft, priority: 15);
 
   /// Creates an [EnvironmentSprite] for the given spawn [name] from the
   /// copt [atlas].

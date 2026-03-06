@@ -37,10 +37,7 @@ class LevelSelector extends StatelessWidget {
             enabled: false,
             child: Text(
               'Cannon Fodder 1',
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                color: Colors.grey,
-              ),
+              style: TextStyle(fontWeight: FontWeight.bold, color: Colors.grey),
             ),
           ),
           for (var i = 1; i <= _cf1Maps; i++)
@@ -55,10 +52,7 @@ class LevelSelector extends StatelessWidget {
             enabled: false,
             child: Text(
               'Cannon Fodder 2',
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                color: Colors.grey,
-              ),
+              style: TextStyle(fontWeight: FontWeight.bold, color: Colors.grey),
             ),
           ),
           for (var i = 1; i <= _cf2Maps; i++)

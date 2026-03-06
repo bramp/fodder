@@ -118,14 +118,12 @@ class SoldierAnimations {
         _walkStepTime,
       );
       if (walkFrames.isEmpty) {
-        throw StateError(
-          'Missing walk animation for $dir ($walkGroup)',
-        );
+        throw StateError('Missing walk animation for $dir ($walkGroup)');
       }
       walkAnims[dir] = SpriteAnimation(walkFrames);
-      idleAnims[dir] = SpriteAnimation(
-        [SpriteAnimationFrame(walkFrames.first.sprite, _idleStepTime)],
-      );
+      idleAnims[dir] = SpriteAnimation([
+        SpriteAnimationFrame(walkFrames.first.sprite, _idleStepTime),
+      ]);
 
       // --- Firing (standing-with-gun) ---
       final firingFrames = atlas.animationFrames(

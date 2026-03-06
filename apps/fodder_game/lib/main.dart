@@ -60,10 +60,7 @@ final GoRouter _router = GoRouter(
         final game = state.pathParameters['game']!;
         final mapName = state.pathParameters['mapName']!;
         final debug = state.uri.queryParameters['debug'] == 'true';
-        return GameScreen(
-          mapPath: _toMapPath(game, mapName),
-          debug: debug,
-        );
+        return GameScreen(mapPath: _toMapPath(game, mapName), debug: debug);
       },
     ),
   ],
@@ -95,11 +92,7 @@ class MainApp extends StatelessWidget {
 /// When the URL changes (e.g. browser back/forward), `didUpdateWidget` picks
 /// up the new map and calls `loadMap`.
 class GameScreen extends StatefulWidget {
-  const GameScreen({
-    required this.mapPath,
-    this.debug = false,
-    super.key,
-  });
+  const GameScreen({required this.mapPath, this.debug = false, super.key});
 
   /// Internal map file path (e.g. `cf1/maps/mapm5.tmx`).
   final String mapPath;

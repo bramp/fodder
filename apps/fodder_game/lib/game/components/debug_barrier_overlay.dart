@@ -151,11 +151,7 @@ class DebugBarrierOverlay extends Component with HasVisibility {
     // Draw the player's current path as small dots.
     const dotRadius = 1.5;
     for (final waypoint in player.currentPath) {
-      canvas.drawCircle(
-        Offset(waypoint.x, waypoint.y),
-        dotRadius,
-        _pathPaint,
-      );
+      canvas.drawCircle(Offset(waypoint.x, waypoint.y), dotRadius, _pathPaint);
     }
 
     // Draw enemy detection radii.
@@ -174,11 +170,7 @@ class DebugBarrierOverlay extends Component with HasVisibility {
       // Inner: close range (always engage, ignore LOS).
       canvas
         ..drawCircle(center, config.detectionRange, _detectionRangePaint)
-        ..drawCircle(
-          center,
-          enemy.effectiveBulletRange,
-          _bulletRangePaint,
-        )
+        ..drawCircle(center, enemy.effectiveBulletRange, _bulletRangePaint)
         ..drawCircle(center, config.closeRange, _closeRangePaint);
     }
   }

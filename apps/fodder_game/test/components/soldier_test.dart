@@ -41,36 +41,33 @@ SoldierAnimations _buildFakeAnims({
 
   for (final dir in Direction8.values) {
     final sprite = Sprite(image, srcSize: Vector2.all(16));
-    walkAnims[dir] = SpriteAnimation.spriteList(
-      [sprite, sprite, sprite],
-      stepTime: 0.15,
-    );
-    idleAnims[dir] = SpriteAnimation.spriteList(
-      [sprite],
-      stepTime: double.infinity,
-    );
+    walkAnims[dir] = SpriteAnimation.spriteList([
+      sprite,
+      sprite,
+      sprite,
+    ], stepTime: 0.15);
+    idleAnims[dir] = SpriteAnimation.spriteList([
+      sprite,
+    ], stepTime: double.infinity);
 
     if (includeCombatAnims) {
-      firingAnims[dir] = SpriteAnimation.spriteList(
-        [sprite],
-        stepTime: double.infinity,
-      );
-      throwAnims[dir] = SpriteAnimation.spriteList(
-        [sprite, sprite, sprite],
-        stepTime: 0.12,
-      );
-      deathAnims[dir] = SpriteAnimation.spriteList(
-        [sprite, sprite],
-        stepTime: 0.2,
-      );
+      firingAnims[dir] = SpriteAnimation.spriteList([
+        sprite,
+      ], stepTime: double.infinity);
+      throwAnims[dir] = SpriteAnimation.spriteList([
+        sprite,
+        sprite,
+        sprite,
+      ], stepTime: 0.12);
+      deathAnims[dir] = SpriteAnimation.spriteList([
+        sprite,
+        sprite,
+      ], stepTime: 0.2);
     }
 
     if (includeDeath2) {
       // Use a distinct single-frame animation so tests can distinguish it.
-      death2Anims[dir] = SpriteAnimation.spriteList(
-        [sprite],
-        stepTime: 0.3,
-      );
+      death2Anims[dir] = SpriteAnimation.spriteList([sprite], stepTime: 0.3);
     }
   }
 
@@ -203,10 +200,7 @@ void main() {
       soldier.updateAnimations();
 
       expect(soldier.animations!.containsKey(SoldierState.firing), isFalse);
-      expect(
-        soldier.animations!.containsKey(SoldierState.throwing),
-        isFalse,
-      );
+      expect(soldier.animations!.containsKey(SoldierState.throwing), isFalse);
       expect(soldier.animations!.containsKey(SoldierState.dying), isFalse);
     });
   });
@@ -229,10 +223,7 @@ void main() {
     test('updateAnimations includes throwing state', () {
       soldier.updateAnimations();
 
-      expect(
-        soldier.animations!.containsKey(SoldierState.throwing),
-        isTrue,
-      );
+      expect(soldier.animations!.containsKey(SoldierState.throwing), isTrue);
     });
 
     test('updateAnimations includes dying state', () {
@@ -278,10 +269,7 @@ void main() {
 
       expect(soldier.current, SoldierState.dying);
       // The animation should have been replaced with either variant.
-      expect(
-        soldier.animations!.containsKey(SoldierState.dying),
-        isTrue,
-      );
+      expect(soldier.animations!.containsKey(SoldierState.dying), isTrue);
     });
 
     test('can select death2 variant', () {
@@ -297,10 +285,7 @@ void main() {
         includeDeath2: true,
       );
       final soldier =
-          _TestSoldier(
-              soldierAnimations: anims,
-              random: Random(seed),
-            )
+          _TestSoldier(soldierAnimations: anims, random: Random(seed))
             ..updateAnimations()
             ..current = SoldierState.idle
             ..die();
@@ -411,9 +396,7 @@ void main() {
     });
 
     test('isCorpse is false for living soldier', () {
-      final soldier = _TestSoldier(
-        soldierAnimations: _buildFakeAnims(),
-      );
+      final soldier = _TestSoldier(soldierAnimations: _buildFakeAnims());
 
       expect(soldier.isCorpse, isFalse);
     });
@@ -451,9 +434,7 @@ void main() {
     test('invokes callback when soldier dies', () {
       var callbackInvoked = false;
 
-      _TestSoldier(
-          soldierAnimations: _buildFakeAnims(includeCombatAnims: true),
-        )
+      _TestSoldier(soldierAnimations: _buildFakeAnims(includeCombatAnims: true))
         ..updateAnimations()
         ..current = SoldierState.idle
         ..onDeath = () {

@@ -23,10 +23,7 @@ class Pathfinder {
   /// Sub-tile coordinates are global grid indices where each tile has
   /// 8×8 sub-cells. Returns an empty list if no path exists or
   /// start == end.
-  List<Vector2> findPath({
-    required (int, int) start,
-    required (int, int) end,
-  }) {
+  List<Vector2> findPath({required (int, int) start, required (int, int) end}) {
     if (start == end) return [];
 
     final (sx, sy) = start;

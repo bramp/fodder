@@ -28,11 +28,8 @@ enum SpeedMode {
 ///
 /// Manages shared ammo pools, fire rotation, and speed mode.
 class Squad {
-  Squad({
-    this.grenades = 0,
-    this.rockets = 0,
-    SpeedMode? speedMode,
-  }) : speedMode = speedMode ?? SpeedMode.running;
+  Squad({this.grenades = 0, this.rockets = 0, SpeedMode? speedMode})
+    : speedMode = speedMode ?? SpeedMode.running;
 
   /// Number of soldiers currently in this squad.
   int soldierCount = 0;

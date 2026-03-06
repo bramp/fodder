@@ -69,13 +69,7 @@ void main() {
       ]);
 
       expect(
-        hasLineOfSight(
-          grid: grid,
-          startX: 2,
-          startY: 2,
-          endX: 2,
-          endY: 2,
-        ),
+        hasLineOfSight(grid: grid, startX: 2, startY: 2, endX: 2, endY: 2),
         isTrue,
       );
     });
@@ -86,13 +80,7 @@ void main() {
       ]);
 
       expect(
-        hasLineOfSight(
-          grid: grid,
-          startX: 4,
-          startY: 2,
-          endX: 36,
-          endY: 2,
-        ),
+        hasLineOfSight(grid: grid, startX: 4, startY: 2, endX: 36, endY: 2),
         isTrue,
       );
     });
@@ -107,13 +95,7 @@ void main() {
 
       // Diagonal from (0,0) to (2,2) passes through (1,1).
       expect(
-        hasLineOfSight(
-          grid: grid,
-          startX: 4,
-          startY: 4,
-          endX: 68,
-          endY: 68,
-        ),
+        hasLineOfSight(grid: grid, startX: 4, startY: 4, endX: 68, endY: 68),
         isFalse,
       );
     });
@@ -128,13 +110,7 @@ void main() {
 
       // From (0,0) to (1,1) — doesn't touch (2,2).
       expect(
-        hasLineOfSight(
-          grid: grid,
-          startX: 4,
-          startY: 4,
-          endX: 36,
-          endY: 36,
-        ),
+        hasLineOfSight(grid: grid, startX: 4, startY: 4, endX: 36, endY: 36),
         isTrue,
       );
     });
@@ -182,13 +158,7 @@ void main() {
 
       // End point is far off the grid.
       expect(
-        hasLineOfSight(
-          grid: grid,
-          startX: 4,
-          startY: 2,
-          endX: 200,
-          endY: 2,
-        ),
+        hasLineOfSight(grid: grid, startX: 4, startY: 2, endX: 200, endY: 2),
         isFalse,
       );
     });
@@ -201,13 +171,7 @@ void main() {
       ]);
 
       expect(
-        hasLineOfSight(
-          grid: grid,
-          startX: 4,
-          startY: 4,
-          endX: 4,
-          endY: 68,
-        ),
+        hasLineOfSight(grid: grid, startX: 4, startY: 4, endX: 4, endY: 68),
         isTrue,
       );
     });
@@ -220,13 +184,7 @@ void main() {
       ]);
 
       expect(
-        hasLineOfSight(
-          grid: grid,
-          startX: 4,
-          startY: 4,
-          endX: 4,
-          endY: 68,
-        ),
+        hasLineOfSight(grid: grid, startX: 4, startY: 4, endX: 4, endY: 68),
         isFalse,
       );
     });
