@@ -11,17 +11,20 @@ Legend: ✅ = implemented, 🔶 = partial, ❌ = not started
 ## 1. Engine Fundamentals (ENGINE.md)
 
 ### 1.1 Timing
+
 - [x] Engine tick system (50 Hz interrupt, 3 interrupts per tick ≈ 16.67 ticks/sec, ~60 ms/tick)
 - [x] Currently using real-time `dt`; all spec tick values converted in `game_config.dart`
 - [ ] `mMission_EngineTicks` counter incrementing once per engine loop
 
 ### 1.2 Coordinate System
+
 - [x] Map tiles are 16×16 px (rendered at 2× = 32×32)
 - [x] Sub-tile walkability uses 8×8 grid per tile
 - [ ] 🔶 World positions use pixel floats; spec uses 16.16 fixed-point
 - [ ] Height system: `field_1E_Big` (32-bit fixed-point height), `field_20` (pixel height above ground)
 
 ### 1.3 Direction System
+
 - [x] 8-direction enum (`Direction8`) for animation selection
 - [ ] 512-unit direction circle (0x000–0x1FE, even values only, 256 effective)
 - [ ] Direction vector table (`mDirectionVectorTable[256]`) — sine lookup for movement deltas
@@ -30,6 +33,7 @@ Legend: ✅ = implemented, 🔶 = partial, ❌ = not started
 - [ ] Speed-direction modifier when firing while moving (24/20/14/10/8/10/14/20)
 
 ### 1.4 Sprite Limits
+
 - [ ] Max 45 sprites total (`mSpritesMax`)
 - [ ] General allocation range indices 0–42
 - [ ] Bullet/low-priority range indices 0–29
@@ -38,16 +42,19 @@ Legend: ✅ = implemented, 🔶 = partial, ❌ = not started
 - [x] Max 10 enemies on map (spawn cap — referenced in enemy spawning)
 
 ### 1.5 Person Types
+
 - [x] 🔶 Faction enum exists (`player`/`enemy`); spec has 3 types: Human(0), AI(1), Native(2)
 - [ ] Native person type for civilians/hostages
 
 ### 1.6 Sprite Struct Fields
+
 - [ ] Most `sSprite` fields not modelled (`field_0` through `field_75`)
 - [ ] `field_46` union (mission troop pointer / sprite pointer / raw int32)
 - [ ] In-vehicle flag (`field_6E`), vehicle type (`field_6F`)
 - [ ] Homing flag (`field_75 & 0x01`), invincibility flag (`field_75 & 0x02`)
 
 ### 1.7 Animation Groups
+
 - [x] Walk (8 dirs), Firing (8 dirs), Throw (8 dirs), Death (8 dirs), Death2 (8 dirs)
 - [x] Prone animation (8 dirs: player 0x10–0x17, enemy 0x52–0x59)
 - [x] Swim animation (8 dirs: player 0x18–0x1F, enemy 0x5A–0x61)
@@ -60,6 +67,7 @@ Legend: ✅ = implemented, 🔶 = partial, ❌ = not started
 ## 2. Player Soldiers (PLAYER.md)
 
 ### 2.1 Health & Survivability
+
 - [x] One-hit kill (no hitpoints)
 - [x] Dodge mechanic: moving soldiers have 1/8 chance to dodge bullets
 - [x] Dodge blocked when stationary
@@ -68,6 +76,7 @@ Legend: ✅ = implemented, 🔶 = partial, ❌ = not started
 - [ ] Invincibility flag (`field_75 & 0x02`) from bonus pickups
 
 ### 2.2 Death Animation States
+
 - [x] Standard bullet death — random death/death2 variant
 - [ ] Run-over / explosion death (`eSprite_Anim_Die1`)
 - [ ] Drowning death (`eSprite_Anim_Die3`)
@@ -75,6 +84,7 @@ Legend: ✅ = implemented, 🔶 = partial, ❌ = not started
 - [ ] Terrain sliding (`eSprite_Anim_Slide1–3`)
 
 ### 2.3 Movement Speeds
+
 - [x] Player speed determined by squad's SpeedMode (halted/normal/running)
 - [x] Halted/slow: 8 (mode 0) → 40 px/s
 - [x] Normal walk: 16 (mode 1) → 80 px/s
@@ -83,6 +93,7 @@ Legend: ✅ = implemented, 🔶 = partial, ❌ = not started
 - [x] Speed modes switchable per squad (starts at mode 2 = running)
 
 ### 2.4 Controls
+
 - [x] Left-click → set walk target (waypoint)
 - [x] Right-click → set weapon target (fire at position)
 - [ ] Left+Right simultaneously → fire special weapon (grenade or rocket)
@@ -90,12 +101,14 @@ Legend: ✅ = implemented, 🔶 = partial, ❌ = not started
 - [ ] Squad switching (Tab / number keys)
 
 ### 2.5 Auto-fire (Non-Selected Squads)
+
 - [ ] Detection range: 210 px
 - [ ] Always-engage range: 40 px
 - [ ] Line-of-sight required between 40–210 px
 - [ ] 1/32 ignore chance per tick (prevents constant firing)
 
 ### 2.6 Squads
+
 - [x] Max 3 squads (indices 0–2) — `Squad` model created
 - [x] Max 8 soldiers per squad
 - [x] Max 9 soldiers per mission (total across all squads)
@@ -104,12 +117,14 @@ Legend: ✅ = implemented, 🔶 = partial, ❌ = not started
 - [ ] Multiple player soldiers moving as a group
 
 ### 2.7 Fire Rotation
+
 - [x] Squad members take turns firing (rotation pattern arrays)
 - [x] Squad leader (index 0) fires every other turn in squads of 3+
 - [x] `-1` sentinel marks end, pattern loops
 - [x] Fire cooldown between rotations: `mSprite_Weapon_Data.mCooldown` ticks (3–7 by rank)
 
 ### 2.8 Ammo Pools
+
 - [x] Shared per squad (not per soldier)
 - [x] Grenades: soldiers × 2 (available after mission 4 CF1, mission 3 CF2)
 - [x] Rockets: soldiers × 1 (available after mission 5 CF1, mission 4 CF2)
@@ -118,6 +133,7 @@ Legend: ✅ = implemented, 🔶 = partial, ❌ = not started
 - [ ] Rocket box pickup: +4 rockets (sprite type 38)
 
 ### 2.9 Rank & Promotion
+
 - [ ] Reverse engineer the rank names PLAYER.md 5.2 Rank range - This might be easier found online?
 - [x] `sMission_Troop` struct: recruitID, rank (0–15), phaseCount, sprite, kills
 - [x] Up to 9 soldiers allocated per mission
@@ -126,9 +142,8 @@ Legend: ✅ = implemented, 🔶 = partial, ❌ = not started
 - [x] Promotion is phase-survival-based, NOT kill-based
 - [x] `phaseCount` increments each phase survived, resets each mission
 
-
-
 ### 2.10 Rank Effects on Weapon Stats
+
 - [x] `mSprite_Bullet_UnitData[26]` table indexed by `min(rank + 8, 15)`
 - [x] Ranks 0–7 have unique weapon stats (table indices 8–15)
 - [x] Ranks 8–15 clamp to index 15 (same as rank 7, cosmetic prestige)
@@ -138,9 +153,11 @@ Legend: ✅ = implemented, 🔶 = partial, ❌ = not started
 - [x] Deviation (accuracy): 15 → 7
 
 ### 2.11 Squad Leader Accuracy Bonus
+
 - [ ] Every 4th bullet from squad leader has zero deviation (perfectly accurate)
 
 ### 2.12 Bonus Pickups
+
 - [ ] Rank to General (sprite 93): leader rank → 15
 - [ ] Bonus Rockets (sprite 94): +50 rockets + homing flag
 - [ ] Armour (sprite 95): invincibility
@@ -148,6 +165,7 @@ Legend: ✅ = implemented, 🔶 = partial, ❌ = not started
 - [ ] Homing+Invincibility squad (sprite 110): all members rank 15 + homing + invincibility
 
 ### 2.13 Death & Graveyard
+
 - [x] Death triggers removal
 - [ ] Rank resets to 0 on death
 - [ ] Heroes graveyard: `{recruitID, rank, kills}`, sorted by kills desc then rank desc
@@ -155,11 +173,13 @@ Legend: ✅ = implemented, 🔶 = partial, ❌ = not started
 - [ ] 360 total recruits — game over when all killed
 
 ### 2.14 Hit Detection
+
 - [x] Player bullet → Enemy hitbox: 16×16
 - [x] Enemy bullet → Player hitbox: 6×5
 - [ ] Height check: sprites at height ≥ 11 px immune to ground-level projectiles
 
 ### 2.15 Death Sequence (Full)
+
 - [x] 🔶 Random death anim + fade — spec has multi-step physics:
 - [ ] Shadow sprite created on impact
 - [ ] Random death sound
@@ -178,17 +198,20 @@ Legend: ✅ = implemented, 🔶 = partial, ❌ = not started
 ## 3. Enemy AI (ENEMY_AI.md)
 
 ### 3.1 Enemy Types
+
 - [x] Basic soldier (type 5) — walks, shoots
 - [ ] Rocket soldier (type 36) — rockets only, no bullets/grenades, min range 24 px
 - [ ] Enemy leader (type 106) — hostage behaviour, flashing light child sprite
 - [ ] Separate animation group for rocket soldiers (standing-with-rocket idle)
 
 ### 3.2 Static Spawning
+
 - [x] Enemies placed from `.spt` data (Tiled "Sprites" layer)
 - [x] Staggered initial fire timers (+0.5s per enemy ≈ +0x0A ticks)
 - [x] High aggression (>4) enemies fire immediately (delay = 0)
 
 ### 3.3 Dynamic Spawning (Buildings)
+
 - [ ] Building door sprites (types 20, 25, 88, 100)
 - [ ] Gate check: no spawn if `mTroops_Enemy_Count >= mSpawnEnemyMax` (10)
 - [ ] Door open/close animation cycle
@@ -200,6 +223,7 @@ Legend: ✅ = implemented, 🔶 = partial, ❌ = not started
 - [ ] `Sprite_Create_Enemy()` details: position offset, random direction, movement delay, target delay
 
 ### 3.4 AI Loop
+
 - [x] Per-frame `update()` loop for each enemy
 - [x] Skip AI when dying
 - [x] 🔶 Three-state machine (idle/chasing/firing); spec has implicit states from targeting
@@ -207,11 +231,13 @@ Legend: ✅ = implemented, 🔶 = partial, ❌ = not started
 - [ ] Full 8-step per-frame process matching original order
 
 ### 3.5 Aggression System
+
 - [x] Ping-pong assignment: range [4, 8], start at midpoint
 - [ ] Per-mission configurable aggression range (min, max)
 - [ ] Aggression escalation from dynamic spawning
 
 ### 3.6 Detection & Targeting
+
 - [x] Max detection range: 200 px
 - [x] Close range: 64 px (engage even without LOS)
 - [x] Line-of-sight check between 64–200 px
@@ -222,6 +248,7 @@ Legend: ✅ = implemented, 🔶 = partial, ❌ = not started
 - [ ] Idle scan: 1/16 chance per tick of random nudge to weapon aim direction
 
 ### 3.7 Enemy Movement
+
 - [x] Speed: `(12 + aggression)`, capped at 26 (× 5 = px/s)
 - [ ] Smooth direction turning (not instant snap)
 - [x] Post-fire pause: 15 ticks (0.9s) for bullets, 12 ticks for grenades
@@ -229,6 +256,7 @@ Legend: ✅ = implemented, 🔶 = partial, ❌ = not started
 - [x] No patrol behaviour (confirmed correct: idle when no target)
 
 ### 3.8 Enemy Weapons (Basic Soldier)
+
 - [x] Bullet speed: `60 + aggression`
 - [x] Bullet lifetime: `((aggression >> 3) + 8)` ticks, capped 8–16
 - [ ] Bullet spread: fixed at 24 (deviation not implemented)
@@ -237,17 +265,20 @@ Legend: ✅ = implemented, 🔶 = partial, ❌ = not started
 - [ ] Grenades available only after mission 4
 
 ### 3.9 Enemy Weapons (Rocket Soldier)
+
 - [ ] Only fires rockets (bullets and grenades disabled)
 - [ ] Minimum firing range: 24 px
 - [ ] Always faces weapon target
 - [ ] Standing-with-rocket animation when idle
 
 ### 3.10 Separate Walk/Weapon Targets
+
 - [ ] Walk target: player position + spread offset
 - [ ] Weapon target: exact player position
 - [ ] Enemies fire at player while walking slightly to the side
 
 ### 3.11 Hit Detection & Death
+
 - [x] 1-hit kill
 - [x] Death animation with fade-out
 - [ ] Full death sequence (shadow, launch, gravity, bounce, twitch, 15-frame fade)
@@ -259,6 +290,7 @@ Legend: ✅ = implemented, 🔶 = partial, ❌ = not started
 ## 4. Terrain & Map Objects (TERRAIN_AND_OBJECTS.md)
 
 ### 4.1 Terrain Types
+
 - [x] 15 terrain types defined in `TerrainType` enum
 - [x] `block` (type 3) blocks walking
 - [ ] `rocky` (type 1): elevate soldier height (toggle 0→1→2)
@@ -273,6 +305,7 @@ Legend: ✅ = implemented, 🔶 = partial, ❌ = not started
 - [ ] `sink` (type 11): human sinking
 
 ### 4.2 Water Mechanics
+
 - [x] In-water flag (`field_4F = -1`)
 - [x] All units in water have speed forced to 6
 - [ ] Natives immune to drowning
@@ -281,15 +314,18 @@ Legend: ✅ = implemented, 🔶 = partial, ❌ = not started
 - [x] Swimming animation (8 dirs)
 
 ### 4.3 Terrain Vehicle Effects
+
 - [ ] Tanks cannot traverse Water or QuickSand tiles
 - [ ] Helicopters have minimum altitude over certain terrain
 - [ ] Vehicles entering water trigger sinking animation/sound
 
 ### 4.4 Height from Terrain
+
 - [ ] Rocky terrain elevates soldiers (pseudo-3D)
 - [x] Drop/Drop2: enemies/natives bounced back, players fall (survive short drops)
 
 ### 4.5 Civilians
+
 - [ ] Basic civilian (type 61): speed 6, wanders near doors
 - [ ] Faster civilian (type 62): speed 10
 - [ ] Spear native (type 70): attacks players
@@ -299,12 +335,14 @@ Legend: ✅ = implemented, 🔶 = partial, ❌ = not started
 - [ ] Civilian door interaction (open/close)
 
 ### 4.6 Civilian Spawning Doors
+
 - [ ] Door_Civilian (type 74): spawns type 61
 - [ ] Door2_Civilian (type 75): spawns type 62
 - [ ] Door_Civilian_Spear (type 76): spawns type 70
 - [ ] Door_Civilian_Rescue (type 90): spawns rescue-objective civilian
 
 ### 4.7 Hostages
+
 - [ ] Hostage (type 72): speed 12
 - [ ] Rescue tent (type 73): stationary
 - [ ] Hostage walks toward tent (target X = tent.X+10, Y = tent.Y−5)
@@ -314,11 +352,13 @@ Legend: ✅ = implemented, 🔶 = partial, ❌ = not started
 - [ ] Hostage can enter stopped vehicles (distance ≤ 10, speed ≤ 2, height ≤ 3)
 
 ### 4.8 Enemy Leader
+
 - [ ] Type 106: delegates to hostage handler
 - [ ] Flashing light child sprite
 - [ ] "Kidnap Leader" mission objective
 
 ### 4.9 Building Doors (Enemy Spawner)
+
 - [ ] Standard door (type 20)
 - [ ] Door variant 2 (type 25)
 - [ ] Door variant 3 (type 88)
@@ -328,6 +368,7 @@ Legend: ✅ = implemented, 🔶 = partial, ❌ = not started
 - [ ] Max enemies: `mSpawnEnemyMax` (default 10)
 
 ### 4.10 Pickups
+
 - [ ] Grenade box (type 37): +4 grenades
 - [ ] Rocket box (type 38): +4 rockets
 - [ ] Rank to General (type 93): leader rank → 15
@@ -337,6 +378,7 @@ Legend: ✅ = implemented, 🔶 = partial, ❌ = not started
 - [ ] Homing+Invincibility squad (type 110)
 
 ### 4.11 Hazards
+
 - [ ] Proximity mine (type 54): explodes on contact
 - [ ] Mine2 (type 55)
 - [ ] Spike trap (type 56): spike death animation
@@ -345,6 +387,7 @@ Legend: ✅ = implemented, 🔶 = partial, ❌ = not started
 - [ ] Spider mine (type 92): mobile mine
 
 ### 4.12 Environment Decorations (copt atlas)
+
 - [x] Shrub overlay (type 13, atlas frame `8f_0`)
 - [x] Tree-top overlay (type 14, atlas frame `90_0`)
 - [ ] Building roof overlay (type 15, atlas frame `91_0`) — untested, no CF1 maps use it
@@ -358,15 +401,18 @@ Legend: ✅ = implemented, 🔶 = partial, ❌ = not started
 - [ ] Let's ensure packages/fodder_tools/lib/sprite_names.dart lists every available sprite.
 
 ### 4.13 Destroyable Objects
+
 - [ ] Destroyable building (type 39)
 - [ ] Computer 1 (type 108): mission objective target
 - [ ] Computer 2 (type 109): mission objective target
 - [ ] Computer 3 (type 110): mission objective target
 
 ### 4.14 Switches (CF2)
+
 - [ ] UFO callpad (type 111): controls `mSwitchesActivated`
 
 ### 4.15 Mission Objectives
+
 - [ ] Objective system: phase ends when all objectives satisfied
 - [ ] Kill All Enemy (1): all enemy sprites dead
 - [ ] Destroy Enemy Buildings (2): all doors/computers destroyed
@@ -386,6 +432,7 @@ Legend: ✅ = implemented, 🔶 = partial, ❌ = not started
 ## 5. Cross-Cutting Concerns
 
 ### 5.1 Weapons (WEAPONS.md)
+
 - [ ] Player bullets: rank-based speed/range/cooldown/deviation
 - [ ] Enemy bullets: aggression-based speed/range, fixed 24 spread
 - [ ] Bullet spread/deviation system (random angular deviation mask)
@@ -398,6 +445,7 @@ Legend: ✅ = implemented, 🔶 = partial, ❌ = not started
 - [ ] Explosions: 7 or 4 frames, faction-neutral, alternating damage, 25-position tile destruction, chain reactions
 
 ### 5.2 Vehicles (VEHICLES.md)
+
 - [ ] Helicopters: 32 px cruise altitude, max speed 48, climb/descent, 4 weapon variants
 - [ ] Enemy helicopter AI: 500 aggression threshold, 250 px detection, bullet-invulnerable
 - [ ] Helicopter call pad
@@ -408,6 +456,7 @@ Legend: ✅ = implemented, 🔶 = partial, ❌ = not started
 - [ ] Vehicle sinking, looping vehicles
 
 ### 5.3 UI & Meta
+
 - [ ] Squad selection sidebar
 - [ ] Rank icon display (`RANKFONT` sprite sheet)
 - [ ] Kill counter / score display
@@ -418,6 +467,7 @@ Legend: ✅ = implemented, 🔶 = partial, ❌ = not started
 - [ ] Campaign progression (missions → phases)
 
 ### 5.4 Audio
+
 - [ ] Death sounds (random per death)
 - [ ] Weapon sounds (bullet, grenade, rocket, explosion)
 - [ ] Vehicle sounds (helicopter, tank)
@@ -425,12 +475,14 @@ Legend: ✅ = implemented, 🔶 = partial, ❌ = not started
 - [ ] Music (`.adl` / `.rol` tracker files from original)
 
 ### 5.5 Camera & Rendering
+
 - [ ] Camera panning (follow player squad)
 - [ ] Scalable view window (4× or window-fit)
 - [ ] Z-ordering by Y position (southern sprites on top)
 - [ ] Sprite priority system matching original allocation zones
 
 ### 5.6 Input
+
 - [x] Right-click on web (context menu blocks it)
 - [x] Keyboard shortcuts (squad switching, speed modes)
 
@@ -453,6 +505,9 @@ Legend: ✅ = implemented, 🔶 = partial, ❌ = not started
 - [x] Trees aren't shown correctly (see `EnvironmentSprite`)
 - [ ] The enemy seems too aggressive compared to the original game
 - [ ] The enemies should wander around.
+- [ ] If you walk to the bottom of a cliff, the player seems to stop falling
+- [ ] When swimming and you stop moving, the swim animation continuses.
+- [x] After the solider falls (and dies) their state is still dying.
 
 ## 7. Other
 
@@ -465,5 +520,5 @@ Legend: ✅ = implemented, 🔶 = partial, ❌ = not started
 - [x] We need to support dropping off a cliff
 - [x] Change path finding to avoid drop/drop2 tiles
 - [ ] Let's consider changing how we control.
-   - [ ] Arrow keys to move, and click/point to fire
-   - [ ] Press and do - press on a enemy and they will be fired at. Press on a land tile, it will be walked to.
+  - [ ] Arrow keys to move, and click/point to fire
+  - [ ] Press and do - press on a enemy and they will be fired at. Press on a land tile, it will be walked to.

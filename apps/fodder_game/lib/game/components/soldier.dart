@@ -39,6 +39,9 @@ enum SoldierState {
 
   /// Playing death animation before removal.
   dying,
+
+  /// Completely dead and removed from gameplay.
+  dead,
 }
 
 /// Duration (seconds) a dying soldier is visible before fade-out starts.
@@ -177,12 +180,7 @@ abstract class Soldier extends SpriteAnimationGroupComponent<SoldierState>
     current = SoldierState.idle;
 
     // Add the collision hitbox, centred on the sprite.
-    add(
-      RectangleHitbox(
-        size: hitboxSize,
-        position: (size - hitboxSize) / 2,
-      ),
-    );
+    add(RectangleHitbox(size: hitboxSize, position: (size - hitboxSize) / 2));
   }
 
   @override
@@ -223,6 +221,9 @@ abstract class Soldier extends SpriteAnimationGroupComponent<SoldierState>
         // Death sequence finished — freeze the corpse in place.
         opacity = 0;
         _deathComplete = true;
+
+        // Transitions to the dead state.
+        setState(SoldierState.dead);
 
         // Remove the collision hitbox so corpses don't interact with bullets.
         children.whereType<RectangleHitbox>().forEach(remove);
@@ -274,7 +275,10 @@ abstract class Soldier extends SpriteAnimationGroupComponent<SoldierState>
       // Flame wraps animations in UnmodifiableMapView, so we must create a
       // new map with the chosen variant rather than modifying in place.
       animations = Map<SoldierState, SpriteAnimation>.of(animations!)
-        ..[SoldierState.dying] = anim;
+        ..[SoldierState.dying] = anim
+        ..[SoldierState.dead] = SpriteAnimation([
+          SpriteAnimationFrame(anim.frames.last.sprite, double.infinity),
+        ]);
     }
   }
 
@@ -291,8 +295,15 @@ abstract class Soldier extends SpriteAnimationGroupComponent<SoldierState>
         SoldierState.prone: soldierAnimations.proneAnimations![facing],
       if (soldierAnimations.swimAnimations != null)
         SoldierState.swimming: soldierAnimations.swimAnimations![facing],
-      if (soldierAnimations.deathAnimations != null)
+      if (soldierAnimations.deathAnimations != null) ...{
         SoldierState.dying: soldierAnimations.deathAnimations![facing],
+        SoldierState.dead: SpriteAnimation([
+          SpriteAnimationFrame(
+            soldierAnimations.deathAnimations![facing].frames.last.sprite,
+            double.infinity,
+          ),
+        ]),
+      },
     };
   }
 
