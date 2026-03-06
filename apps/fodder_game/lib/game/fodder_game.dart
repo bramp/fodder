@@ -1,7 +1,7 @@
+import 'dart:math';
 import 'package:flame/components.dart';
 import 'package:flame/events.dart';
 import 'package:flame/game.dart';
-import 'package:flame_audio/flame_audio.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 
@@ -18,6 +18,7 @@ import 'package:fodder_game/game/models/squad.dart';
 import 'package:fodder_game/game/sprites/sprite_atlas.dart';
 import 'package:fodder_game/game/sprites/sprite_frames.dart';
 import 'package:fodder_game/game/systems/aggression.dart';
+import 'package:fodder_game/game/systems/audio_system.dart';
 import 'package:fodder_game/game/systems/pathfinder.dart';
 import 'package:fodder_game/game/systems/squad_movement.dart';
 import 'package:fodder_game/game/systems/walkability_grid.dart';
@@ -107,11 +108,9 @@ class FodderGame extends FlameGame
   Future<void> onLoad() async {
     await super.onLoad();
 
-    // 0. Setup Audio
-    //FlameAudio.bgm.initialize();
-    //await FlameAudio.audioCache.loadAll([
-    //  'packages/fodder_assets/assets/cf1/audio/explosion_1.wav',
-    //]);
+    // 0. Setup Audio — added as a direct child of the game so all
+    //    components can find it via the HasAudioSystem mixin.
+    await add(AudioSystem(random: Random()));
 
     // 1. Load the tile map.
     levelMap = LevelMap(mapFile: initialMap);
@@ -232,12 +231,6 @@ class FodderGame extends FlameGame
     final worldPos = camera.globalToLocal(event.devicePosition);
 
     _fireSquadBullet(worldPos);
-
-    if (activeBulletCount % 4 == 0) {
-      FlameAudio.play(
-        'packages/fodder_assets/assets/cf1/audio/explosion_1.wav',
-      );
-    }
   }
 
   /// Fires a bullet from the next soldier in the fire rotation.

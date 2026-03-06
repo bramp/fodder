@@ -4,6 +4,9 @@
 - **Code Style**: Prefer modern Dart syntax, strict typing, and test-driven development.
 - **Linting**: Code MUST adhere to `very_good_analysis` rules. Fix all linter warnings before considering a file completed.
 - **Architecture**: Always prefer Flame's Component System (FCS) by subclassing `Component`, `PositionComponent`, `SpriteAnimationGroupComponent`, etc.
+  - **Systems as Components**: Game-wide systems (audio, AI managers, etc.) MUST be `Component` subclasses added to the `FlameGame` tree — never plain classes stored as fields on the game. This ensures proper lifecycle management (`onLoad`, `onRemove`) and makes systems accessible via ancestor queries.
+  - **Decoupled access via mixins**: Components that need a system should use a `Has<System>` mixin (e.g. `HasAudioSystem`) that looks up the system in the component tree, rather than coupling to a concrete game class via `HasGameReference<FodderGame>`. This keeps components testable and reusable.
+  - **Test doubles**: Each system component should provide a silent/mock subclass (e.g. `SilentAudioSystem`) that records calls for test assertions without loading real resources.
 - **Testing**: Code should be designed to be testable. Write `flutter test` compatible tests. When testing Flame components, utilize `flame_test` package if necessary (though plain unit tests map logic are preferred and run faster).
 - **Git**: Prefer `git add [file]` over `git add .` to ensure atomic and precise commits. Never run a command that wipes out uncommited work. No `git reset --hard` unless explicitly asked.
 - **File Safety**: DO NOT forcefully delete files (e.g. `rm -f`, `git rm -f`). If a file is in the way or causing issues, ask the user or use safer alternatives (e.g. moving/renaming or unstaging).

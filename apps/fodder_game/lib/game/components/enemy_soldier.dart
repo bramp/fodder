@@ -220,6 +220,8 @@ class EnemySoldier extends Soldier {
     facing = Direction8.fromVector(toTarget.x, toTarget.y);
     updateAnimations();
 
+    audioSystem.playGunshot();
+
     final direction = toTarget.normalized();
     final bulletSpeed = 60.0 + aggression;
     // Bullet lifetime in ticks → seconds.

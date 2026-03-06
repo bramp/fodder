@@ -260,6 +260,8 @@ class PlayerSoldier extends Soldier {
     // Start fire cooldown.
     _fireCooldownTimer = weaponStats.cooldown;
 
+    audioSystem.playGunshot();
+
     // Create the bullet using rank-based weapon stats, spawning slightly
     // ahead of the soldier centre so it appears from the sprite edge.
     final stats = weaponStats;

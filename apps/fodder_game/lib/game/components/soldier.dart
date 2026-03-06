@@ -8,6 +8,7 @@ import 'package:fodder_game/game/components/direction8.dart';
 import 'package:fodder_game/game/components/soldier_animations.dart';
 import 'package:fodder_game/game/config/game_config.dart' as config;
 import 'package:fodder_game/game/map/level_map.dart';
+import 'package:fodder_game/game/systems/audio_system.dart';
 import 'package:fodder_game/game/systems/walkability_grid.dart';
 
 /// The high-level state of a soldier.
@@ -54,7 +55,7 @@ const double _deathRemovalDelay = _deathAnimDuration + deathFadeDuration;
 /// Manages 8-directional walk/idle sprite animations loaded from the army
 /// sprite atlas via [SoldierAnimations].
 abstract class Soldier extends SpriteAnimationGroupComponent<SoldierState>
-    with CollisionCallbacks {
+    with CollisionCallbacks, HasAudioSystem {
   Soldier({
     required this.soldierAnimations,
     Random? random,
@@ -204,6 +205,7 @@ abstract class Soldier extends SpriteAnimationGroupComponent<SoldierState>
         }
       }
 
+      audioSystem.playImpact();
       other.removeFromParent();
       die();
     }
@@ -244,7 +246,7 @@ abstract class Soldier extends SpriteAnimationGroupComponent<SoldierState>
     isAlive = false;
     _deathTimer = _deathRemovalDelay;
 
-    // Randomly pick a death variant (death or death2).
+    audioSystem.playDeathScream();
     _pickDeathVariant();
 
     // Only switch to dying if the animation exists; otherwise keep current.

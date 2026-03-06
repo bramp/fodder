@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 
+import 'package:fodder_game/game/systems/audio_system.dart';
 import 'package:fodder_game/game/systems/walkability_grid.dart';
 
 /// Which side fired this bullet.
@@ -24,7 +25,7 @@ enum Faction {
 /// Pixel size of one walkability sub-tile cell.
 const double _subTilePixelSize = 4;
 
-class Bullet extends PositionComponent with CollisionCallbacks {
+class Bullet extends PositionComponent with CollisionCallbacks, HasAudioSystem {
   Bullet({
     required Vector2 position,
     required this.velocity,
@@ -119,6 +120,7 @@ class Bullet extends PositionComponent with CollisionCallbacks {
       final subX = (position.x / _subTilePixelSize).floor();
       final subY = (position.y / _subTilePixelSize).floor();
       if (!grid.isSubTileWalkable(subX, subY)) {
+        audioSystem.playImpact();
         _destroyed = true;
         removeFromParent();
       }
