@@ -77,6 +77,9 @@ class PlayerSoldier extends Soldier with HasGameReference<FodderGame> {
   /// Whether the soldier is currently in a fire cooldown.
   bool get isFiring => _fireCooldownTimer > 0;
 
+  /// The rank icon displayed above the leader's head.
+  SpriteComponent? _rankIcon;
+
   @override
   void update(double dt) {
     super.update(dt);
@@ -84,8 +87,11 @@ class PlayerSoldier extends Soldier with HasGameReference<FodderGame> {
     // Skip movement when dead.
     if (!isAlive) {
       isMoving = false;
+      _updateRankIcon();
       return;
     }
+
+    _updateRankIcon();
 
     // Check terrain under the soldier for water and drop effects.
     _updateTerrainState();
@@ -299,6 +305,38 @@ class PlayerSoldier extends Soldier with HasGameReference<FodderGame> {
     if (newFacing != facing) {
       facing = newFacing;
       updateAnimations();
+    }
+  }
+
+  /// Updates the visibility and position of the rank icon.
+  void _updateRankIcon() {
+    if (!isMounted) return;
+
+    // Only the squad leader shows their rank above their head.
+    final isLeader = game.leader == this;
+    final shouldShow = isLeader && isAlive;
+
+    if (shouldShow) {
+      if (_rankIcon == null) {
+        final rank = troop?.rank ?? 0;
+        _rankIcon = SpriteComponent(
+          sprite: game.pstuffAtlas.spriteByKey('pstuff/rank_$rank'),
+          // Soldier is Anchor.center. Positioning at (0, -size.y / 2) is the top edge.
+          // The rank icon is 16x20. We want its center to be above the head.
+          // soldier size is approx 16x16, so top is -8.
+          // Setting y to -18 puts the center 10px above the top edge.
+          position: Vector2(0, -18),
+          anchor: Anchor.center,
+          priority: 20,
+        );
+        // ignore: discarded_futures, Flame's add() returns a Future, but we don't need to await it in update().
+        add(_rankIcon!);
+      }
+    } else {
+      if (_rankIcon != null) {
+        _rankIcon!.removeFromParent();
+        _rankIcon = null;
+      }
     }
   }
 }

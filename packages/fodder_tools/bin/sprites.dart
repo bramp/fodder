@@ -677,7 +677,6 @@ void _exportSpriteAtlases({
 
     if (isCf1 && isCf2Sheet) continue;
     if (isCf2 && isCf1Sheet) continue;
-    print('DEBUG: processing sheetType: ${sheetType.name}');
 
     for (var groupIdx = 0; groupIdx < sheetType.entries.length; groupIdx++) {
       final group = sheetType.entries[groupIdx];
@@ -690,29 +689,11 @@ void _exportSpriteAtlases({
         if (filenames == null) continue;
 
         for (final filename in filenames) {
-          final groupLabel =
-              spriteGroupName(
-                sheetTypeName: sheetType.name,
-                groupIndex: groupIdx,
-              ) ??
-              'unknown_${groupIdx.toRadixString(16).padLeft(2, '0')}';
-          if (groupIdx == 0x95 &&
-              sheetType.name.toLowerCase().contains('ingame')) {
-            print(
-              'DEBUG: groupIdx=0x95, sheetType.name=${sheetType.name}, label=$groupLabel',
-            );
-          }
-
-          final normalizedPrefix = sheetNameLower
-              .replaceAll('_cf1', '')
-              .replaceAll('_cf2', '')
-              .replaceAll('briefing', 'pstuff');
-          var frameSuffix = frameIdx.toString();
-          if (groupLabel.toLowerCase().contains('font') ||
-              normalizedPrefix.contains('pstuff')) {
-            frameSuffix = fontCharacterName(frameIdx);
-          }
-          final name = '$normalizedPrefix/${groupLabel}_$frameSuffix';
+          final name = spriteFrameName(
+            sheetTypeName: sheetType.name,
+            groupIndex: groupIdx,
+            frameIndex: frameIdx,
+          );
 
           final x = frame.pixelX();
           final y = frame.pixelY();

@@ -60,3 +60,27 @@ dart tool/sprites/export_sprite_data.dart
 - **Output**: Use `-o, --output` for destination paths.
 - **Help**: Always provide `-h, --help`.
 - **Naming**: Prefer descriptive, lowercase flag names.
+
+---
+
+## Sprite Naming & File Routing
+
+Each sprite's atlas name has the form `{sheetType}/{groupLabel}_{frameSuffix}`.
+The **sheet type** (from the JSON metadata) determines the path prefix, but the
+**actual .dat/.png file** the sprite lives in depends on the frame's `GfxType`:
+
+| Sheet type JSON       | Atlas prefix | .dat file(s)               | GfxType              |
+|-----------------------|--------------|----------------------------|----------------------|
+| `font`                | `font/`      | font.dat                   | `font`               |
+| `briefing`            | `pstuff/`    | pstuff.dat                 | `briefing`           |
+| `hill`                | `hill/`      | hillbits.dat               | `hill`               |
+| `recruit`             | `recruit/`   | hillbits.dat               | `recruit`            |
+| `ingame_cf1/cf2`      | `ingame/`    | \*army.dat, \*copt.dat     | `inGame`, `inGame2`  |
+| `service`             | `service/`   | rankfont.dat, morphbig.dat | `rankFont`, `service` |
+
+So for example, `service/font_gameplay_caps_A` is in **rankfont.json** (not
+morphbig.json), because those frames have `GfxType.rankFont`.
+
+Group-to-name mappings are defined in
+[`lib/sprite_names.dart`](lib/sprite_names.dart). Font groups use character
+names as frame suffixes (e.g. `A`, `space`); all others use numeric indices.

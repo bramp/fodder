@@ -102,6 +102,9 @@ class FodderGame extends FlameGame
   /// Shared copt sprite atlas (bullets, environment decorations).
   late SpriteAtlas _coptAtlas;
 
+  /// Shared pstuff sprite atlas (rank icons, UI bits).
+  late SpriteAtlas _pstuffAtlas;
+
   /// The current mouse position in world coordinates (cached from move events).
   Vector2? _mousePosition;
 
@@ -114,6 +117,9 @@ class FodderGame extends FlameGame
 
   /// Returns the current mouse position in world coordinates, if available.
   Vector2? get mousePosition => _mousePosition;
+
+  /// The shared pstuff sprite atlas.
+  SpriteAtlas get pstuffAtlas => _pstuffAtlas;
 
   /// The asset prefix for sprite files.
   static const _spritePrefix = 'packages/fodder_assets/assets/';
@@ -140,6 +146,7 @@ class FodderGame extends FlameGame
     }
 
     // 4. Load sprite atlases (shared across all consumers).
+    // TODO(bramp): Allow switching between CF1 and CF2 sprites
     const spriteDir = '${_spritePrefix}cf1/sprites/';
     _armyAtlas = await SpriteAtlas.load(
       prefix: spriteDir,
@@ -150,6 +157,11 @@ class FodderGame extends FlameGame
       prefix: spriteDir,
       jsonFile: 'juncopt.json',
       imageFile: 'juncopt.png',
+    );
+    _pstuffAtlas = await SpriteAtlas.load(
+      prefix: spriteDir,
+      jsonFile: 'pstuff.json',
+      imageFile: 'pstuff.png',
     );
 
     // 5. Build player soldier animations and spawn the squad.

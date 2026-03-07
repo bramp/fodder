@@ -127,7 +127,7 @@ individual sprites are sliced using offset metadata.
 
 | File           | Palette Offset | Count | Start Index | Purpose                  |
 | -------------- | -------------- | ----- | ----------- | ------------------------ |
-| `pstuff.dat`   | `0xA000`       | 16    | `0xF0`      | HUD, sidebar, cursors    |
+| `pstuff.dat`   | `0xA000`       | 16    | `0xF0`      | HUD, sidebar, icons      |
 | `font.dat`     | `0xA000`       | 16    | `0xD0`      | In-game font             |
 | `hillbits.dat` | `0x6900`       | 16    | `0xB0`      | Recruit screen overlays  |
 | `rankfont.dat` | `0xA000`       | 128   | `0x40`      | Rank/service screen font |
@@ -168,6 +168,27 @@ Individual sprites are located within a sheet using the `sSpriteSheet` struct:
 | `mPalleteIndex` | uint8  | Base palette index to OR with nibble values                                |
 | `mModX`         | int8   | X rendering offset (anchor adjustment)                                     |
 | `mModY`         | int8   | Y rendering offset (anchor adjustment)                                     |
+
+#### HUD/Sidebar Icons (`pstuff.dat`)
+
+In addition to briefing fonts, `pstuff.dat` is used as a repository for 209 distinct icons and UI elements. These are defined by absolute pixel coordinates rather than sheet indices.
+
+A prominent set of icons are the **Rank chevrons**:
+
+- **Sidebar Ranks**: 16 icons at `(48, 0)` through `(288, 0)` with size `16 × 11`.
+- **Mini Ranks**: Multiple sets of 16 or 20 icons at various vertical offsets (e.g. Y=24, 32, 40, 48, 56, 64) with size `16 × 7`.
+
+These sidebar icons are indexed directly in the engine via the `mSpriteSheet_PStuff` array.
+
+#### Terrain-Specific Lead Soldier Ranks (`*copt.dat`)
+
+The rank icon displayed above the lead soldier in the main play area is actually stored in the terrain-specific helicopter sprite sheet (`juncopt.dat`, `descopt.dat`, etc.) as group index **0x95**.
+
+| Sheet Index | Entries | Dimensions | Name            |
+| ----------- | ------- | ---------- | --------------- |
+| `0x95`      | 16      | 16 × 10    | In-game ranks   |
+
+These icons use palette index `0xB0` (the 176+ range).
 
 ---
 

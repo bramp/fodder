@@ -508,6 +508,11 @@ Legend: ✅ = implemented, 🔶 = partial, ❌ = not started
 - [ ] If you walk to the bottom of a cliff, the player seems to stop falling
 - [ ] When swimming and you stop moving, the swim animation continuses.
 - [x] After the solider falls (and dies) their state is still dying.
+- [ ] Support jumping over ROCKY terrian
+- [ ] When dead the corpse should not fade out. It should stay there.
+- [ ] Display the rank above the head of the active solder.
+- [ ] Where the bullet lands, makes a little splash animation
+- [ ] The bullet comes from the center of the sprite
 
 ## 7. Other
 
@@ -522,3 +527,4 @@ Legend: ✅ = implemented, 🔶 = partial, ❌ = not started
 - [ ] Let's consider changing how we control.
   - [ ] Arrow keys to move, and click/point to fire
   - [ ] Press and do - press on a enemy and they will be fired at. Press on a land tile, it will be walked to.
+- [ ] Add support for SpriteFontRenderer / SpriteFont for the various fonts in the game.

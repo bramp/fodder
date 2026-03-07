@@ -14,6 +14,7 @@ import 'package:fodder_game/game/components/soldier_animations.dart';
 import 'package:fodder_game/game/config/game_config.dart' as config;
 import 'package:fodder_game/game/config/weapon_data.dart';
 import 'package:fodder_game/game/fodder_game.dart';
+import 'package:fodder_game/game/sprites/sprite_atlas.dart';
 import 'package:fodder_game/game/systems/walkability_grid.dart';
 
 /// Minimal fake [Image] for testing (1×1 pixel).
@@ -86,8 +87,28 @@ SoldierAnimations _buildFakeAnims({
 class _FodderGameStub extends FlameGame
     with HasCollisionDetection
     implements FodderGame {
+  _FodderGameStub() {
+    pstuffAtlas = SpriteAtlas.fromData(
+      image: _FakeImage(),
+      framesMap: {},
+    );
+  }
+
+  @override
+  List<PlayerSoldier> get playerSoldiers =>
+      children.whereType<PlayerSoldier>().toList();
+
+  @override
+  PlayerSoldier get leader => playerSoldiers.firstWhere(
+    (s) => s.isAlive,
+    orElse: () => playerSoldiers.first,
+  );
+
   @override
   Vector2? mousePosition;
+
+  @override
+  late SpriteAtlas pstuffAtlas;
 
   @override
   Future<void> onLoad() async {}
