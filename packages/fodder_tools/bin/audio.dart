@@ -79,19 +79,19 @@ Future<void> main(List<String> arguments) async {
       outputDir.createSync(recursive: true);
     }
 
-    print('Converting \${fileMapping.length} voice files...');
+    print('Converting ${fileMapping.length} voice files...');
     for (final entry in fileMapping.entries) {
       final inputFile = File(p.join(inputDir.path, entry.key));
       final outputFile = File(p.join(outputDir.path, entry.value));
 
       if (!inputFile.existsSync()) {
         print(
-          'Warning: Expected file \${entry.key} not found in input directory.',
+          'Warning: Expected file ${entry.key} not found in input directory.',
         );
         continue;
       }
 
-      print('Converting \${entry.key} -> \${entry.value} ...');
+      print('Converting ${entry.key} -> ${entry.value} ...');
 
       final result = await Process.run('ffmpeg', [
         '-y', // Overwrite output files without asking
