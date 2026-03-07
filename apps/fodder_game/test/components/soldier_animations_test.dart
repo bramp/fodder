@@ -12,8 +12,8 @@ void main() {
       expect(walkGroupEnemy, 'enemy_walk');
     });
 
-    test('firingGroupPlayer is player_firing', () {
-      expect(firingGroupPlayer, 'player_firing');
+    test('firingGroupPlayer is player_firing_alt', () {
+      expect(firingGroupPlayer, 'player_firing_alt');
     });
 
     test('firingGroupEnemy is enemy_firing', () {

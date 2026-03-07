@@ -180,10 +180,19 @@ class SoldierAnimations {
       }
     }
 
-    Directional<SpriteAnimation>? toDir(Map<Direction8, SpriteAnimation> map) {
+    Directional<SpriteAnimation>? toDir(
+      Map<Direction8, SpriteAnimation> map,
+      String groupName,
+    ) {
       if (map.isEmpty) return null;
       if (map.length != 8) {
-        throw StateError('Animation must have all 8 directions if any exist');
+        final missing = Direction8.values
+            .where((d) => !map.containsKey(d))
+            .map((d) => d.suffix)
+            .join(', ');
+        throw StateError(
+          '$groupName has ${map.length}/8 directions, missing: $missing',
+        );
       }
       return Directional.fromMap(map);
     }
@@ -195,12 +204,12 @@ class SoldierAnimations {
       idleAnimations: Directional(
         Direction8.values.map((d) => idleAnims[d]!).toList(),
       ),
-      firingAnimations: toDir(firingAnims),
-      throwAnimations: toDir(throwAnims),
-      proneAnimations: toDir(proneAnims),
-      swimAnimations: toDir(swimAnims),
-      deathAnimations: toDir(deathAnims),
-      death2Animations: toDir(death2Anims),
+      firingAnimations: toDir(firingAnims, firingGroup),
+      throwAnimations: toDir(throwAnims, throwGroup),
+      proneAnimations: toDir(proneAnims, proneGroup),
+      swimAnimations: toDir(swimAnims, swimGroup),
+      deathAnimations: toDir(deathAnims, deathGroup),
+      death2Animations: toDir(death2Anims, death2Group),
     );
   }
 

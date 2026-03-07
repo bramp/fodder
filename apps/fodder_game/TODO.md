@@ -528,3 +528,4 @@ Legend: ✅ = implemented, 🔶 = partial, ❌ = not started
   - [ ] Arrow keys to move, and click/point to fire
   - [ ] Press and do - press on a enemy and they will be fired at. Press on a land tile, it will be walked to.
 - [ ] Add support for SpriteFontRenderer / SpriteFont for the various fonts in the game.
+- [ ] Delete packages/fodder_tools/bin/export_sprite_data.dart (or adjust it) and delete the packages/fodder_tools/tool/sprites/data

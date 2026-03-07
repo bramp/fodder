@@ -37,7 +37,7 @@ const deathGroupPlayer = 'player_death';
 const firingGroupEnemy = 'enemy_firing';
 
 /// Standing-with-gun (firing pose) — player soldiers.
-const firingGroupPlayer = 'player_firing';
+const firingGroupPlayer = 'player_firing_alt';
 
 /// Prone (lying down) — enemy soldiers.
 const proneGroupEnemy = 'enemy_prone';
