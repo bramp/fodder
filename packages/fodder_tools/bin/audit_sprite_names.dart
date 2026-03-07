@@ -17,10 +17,31 @@ import 'package:path/path.dart' as p;
 /// Pass `--csv` to emit a CSV comparing our names with the C++ descriptions.
 /// Pass `--html <dir>` to generate a visual HTML audit page with sprite
 /// previews clipped from the atlas PNGs.
+/// Pass `--coverage` to report frame overlaps and uncovered pixel regions.
 void main(List<String> args) {
+  if (args.contains('--help') || args.contains('-h')) {
+    print('Usage: dart run bin/audit_sprite_names.dart [options]');
+    print('');
+    print('Audits sprite_names.dart against the OpenFodder C++ header.');
+    print('');
+    print('Options:');
+    print(
+      '  --csv             Emit CSV comparing Dart names with C++ descriptions',
+    );
+    print(
+      '  --html <dir>      Generate visual HTML audit page with sprite previews',
+    );
+    print(
+      '  --coverage        Report frame overlaps and uncovered pixel regions',
+    );
+    print('  -h, --help        Show this help message');
+    return;
+  }
+
   final csvMode = args.contains('--csv');
   final htmlIdx = args.indexOf('--html');
   final htmlMode = htmlIdx != -1;
+  final coverageMode = args.contains('--coverage');
   final scriptDir = File(Platform.script.toFilePath()).parent.path;
   // Go up from bin/ → fodder_tools/ → packages/ → monorepo root.
   final projectRoot = p.dirname(p.dirname(p.dirname(scriptDir)));
@@ -45,6 +66,11 @@ void main(List<String> args) {
 
   if (csvMode) {
     _exportCsv(sheets);
+    return;
+  }
+
+  if (coverageMode) {
+    _exportCoverage(sheets);
     return;
   }
 
@@ -131,6 +157,230 @@ String _csvEscape(String value) {
     return '"${value.replaceAll('"', '""')}"';
   }
   return value;
+}
+
+// ---------------------------------------------------------------------------
+// Coverage / overlap analysis
+// ---------------------------------------------------------------------------
+
+/// A pixel rectangle with metadata about which frame produced it.
+typedef _FrameRect = ({
+  int x,
+  int y,
+  int w,
+  int h,
+  String sheetName,
+  int groupIdx,
+  int frameIdx,
+  String label,
+});
+
+/// Reports frame overlaps and uncovered pixel regions per .dat file.
+void _exportCoverage(List<SpriteSheetType> sheets) {
+  // Collect all frames grouped by gfxType (= .dat file).
+  final byGfxType = <GfxType, List<_FrameRect>>{};
+  final seenSheets = <String>{};
+
+  for (final sheet in sheets) {
+    final key = normaliseSheetName(sheet.name);
+    // Skip duplicate normalised sheets (e.g. InGame_CF1 / InGame_CF2).
+    if (!seenSheets.add(key)) continue;
+    final maps = _dartMapsForSheet(sheet);
+    final combined = <int, SpriteGroup>{};
+    for (final (_, dartMap) in maps) {
+      combined.addAll(dartMap);
+    }
+
+    for (var gi = 0; gi < sheet.entries.length; gi++) {
+      final cppFrames = sheet.entries[gi];
+      for (var fi = 0; fi < cppFrames.length; fi++) {
+        final f = cppFrames[fi];
+        if (f.width <= 0 || f.height <= 0) continue;
+
+        final dartGroup = combined[gi];
+        final dartName = dartGroup?.name ?? '?';
+        final label = '$key[$gi:$fi] $dartName';
+
+        byGfxType.putIfAbsent(f.gfxType, () => []).add((
+          x: f.pixelX(),
+          y: f.pixelY(),
+          w: f.width,
+          h: f.height,
+          sheetName: key,
+          groupIdx: gi,
+          frameIdx: fi,
+          label: label,
+        ));
+      }
+    }
+  }
+
+  for (final gfx
+      in byGfxType.keys.toList()..sort((a, b) => a.name.compareTo(b.name))) {
+    final rects = byGfxType[gfx]!;
+    print('=== ${gfx.name} (${rects.length} frames) ===\n');
+
+    _reportOverlaps(rects);
+    _reportGaps(gfx, rects);
+    print('');
+  }
+}
+
+/// Reports groups of frames that share the exact same pixel rectangle.
+void _reportOverlaps(List<_FrameRect> rects) {
+  // Group by (x, y, w, h) to find exact duplicates.
+  final byRect = <(int, int, int, int), List<_FrameRect>>{};
+  for (final r in rects) {
+    byRect.putIfAbsent((r.x, r.y, r.w, r.h), () => []).add(r);
+  }
+
+  // Also find partial overlaps (intersecting but not identical).
+  final exactDups = <(int, int, int, int), List<_FrameRect>>{};
+  for (final entry in byRect.entries) {
+    if (entry.value.length > 1) {
+      exactDups[entry.key] = entry.value;
+    }
+  }
+
+  if (exactDups.isEmpty) {
+    print('  No duplicate frames.\n');
+  } else {
+    print('  Duplicate frames (identical pixel rectangle):');
+    for (final entry in exactDups.entries) {
+      final (x, y, w, h) = entry.key;
+      print('    rect ($x,$y ${w}x$h):');
+      for (final r in entry.value) {
+        print('      ${r.label}');
+      }
+    }
+    print('');
+  }
+
+  // Find partial overlaps (different rect but intersecting pixels).
+  final uniqueRects = byRect.entries.toList();
+  final partialOverlaps = <String>[];
+  for (var i = 0; i < uniqueRects.length; i++) {
+    final (ax, ay, aw, ah) = uniqueRects[i].key;
+    for (var j = i + 1; j < uniqueRects.length; j++) {
+      final (bx, by, bw, bh) = uniqueRects[j].key;
+      // Check AABB intersection.
+      if (ax < bx + bw && ax + aw > bx && ay < by + bh && ay + ah > by) {
+        final aLabel = uniqueRects[i].value.first.label;
+        final bLabel = uniqueRects[j].value.first.label;
+        partialOverlaps.add(
+          '    ($ax,$ay ${aw}x$ah) ${aLabel} ∩ '
+          '($bx,$by ${bw}x$bh) $bLabel',
+        );
+      }
+    }
+  }
+
+  if (partialOverlaps.isNotEmpty) {
+    print('  Partial overlaps (intersecting but different rects):');
+    for (final line in partialOverlaps) {
+      print(line);
+    }
+    print('');
+  }
+}
+
+/// Reports pixel regions not covered by any frame.
+void _reportGaps(GfxType gfx, List<_FrameRect> rects) {
+  if (rects.isEmpty) return;
+
+  // Find the bounding box of all frames to determine the sheet extent.
+  var maxY = 0;
+  for (final r in rects) {
+    final bottom = r.y + r.h;
+    if (bottom > maxY) maxY = bottom;
+  }
+
+  const sheetW = 320;
+  final sheetH = maxY;
+  final totalPixels = sheetW * sheetH;
+
+  if (totalPixels <= 0) return;
+
+  // Build a coverage bitmap.
+  final covered = List.filled(totalPixels, false);
+  for (final r in rects) {
+    for (var row = r.y; row < r.y + r.h && row < sheetH; row++) {
+      for (var col = r.x; col < r.x + r.w && col < sheetW; col++) {
+        covered[row * sheetW + col] = true;
+      }
+    }
+  }
+
+  final coveredCount = covered.where((b) => b).length;
+  final pct = (coveredCount * 100.0 / totalPixels).toStringAsFixed(1);
+  print(
+    '  Coverage: $coveredCount / $totalPixels pixels '
+    '($pct%) in ${sheetW}x$sheetH sheet',
+  );
+
+  // Find uncovered horizontal runs (gaps) for a compact summary.
+  final gapRuns = <({int y, int x, int w})>[];
+  for (var row = 0; row < sheetH; row++) {
+    var col = 0;
+    while (col < sheetW) {
+      if (!covered[row * sheetW + col]) {
+        final startCol = col;
+        while (col < sheetW && !covered[row * sheetW + col]) {
+          col++;
+        }
+        gapRuns.add((y: row, x: startCol, w: col - startCol));
+      } else {
+        col++;
+      }
+    }
+  }
+
+  if (gapRuns.isEmpty) {
+    print('  No uncovered pixels.\n');
+    return;
+  }
+
+  // Merge consecutive full-width gap rows into ranges.
+  final fullWidthGaps = <({int startY, int endY})>[];
+  int? gapStart;
+  for (var row = 0; row < sheetH; row++) {
+    final isFullGap = !covered
+        .sublist(row * sheetW, (row + 1) * sheetW)
+        .any((b) => b);
+    if (isFullGap) {
+      gapStart ??= row;
+    } else {
+      if (gapStart != null) {
+        fullWidthGaps.add((startY: gapStart, endY: row - 1));
+        gapStart = null;
+      }
+    }
+  }
+  if (gapStart != null) {
+    fullWidthGaps.add((startY: gapStart, endY: sheetH - 1));
+  }
+
+  if (fullWidthGaps.isNotEmpty) {
+    print('  Uncovered full rows:');
+    for (final gap in fullWidthGaps) {
+      if (gap.startY == gap.endY) {
+        print('    row ${gap.startY}');
+      } else {
+        print('    rows ${gap.startY}–${gap.endY}');
+      }
+    }
+  }
+
+  // Count partial-row gaps (rows with some but not all pixels uncovered).
+  final partialGapRows = <int>{};
+  for (final g in gapRuns) {
+    if (g.w < sheetW) {
+      partialGapRows.add(g.y);
+    }
+  }
+  if (partialGapRows.isNotEmpty) {
+    print('  ${partialGapRows.length} rows with partial gaps');
+  }
 }
 
 // ---------------------------------------------------------------------------
