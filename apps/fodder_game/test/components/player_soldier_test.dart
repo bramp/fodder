@@ -88,7 +88,7 @@ class _FodderGameStub extends FlameGame
     with HasCollisionDetection
     implements FodderGame {
   _FodderGameStub() {
-    pstuffAtlas = SpriteAtlas.fromData(
+    coptAtlas = SpriteAtlas.fromData(
       image: _FakeImage(),
       framesMap: {},
     );
@@ -108,7 +108,7 @@ class _FodderGameStub extends FlameGame
   Vector2? mousePosition;
 
   @override
-  late SpriteAtlas pstuffAtlas;
+  late SpriteAtlas coptAtlas;
 
   @override
   Future<void> onLoad() async {}

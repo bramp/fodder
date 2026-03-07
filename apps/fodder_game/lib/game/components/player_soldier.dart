@@ -320,7 +320,7 @@ class PlayerSoldier extends Soldier with HasGameReference<FodderGame> {
       if (_rankIcon == null) {
         final rank = troop?.rank ?? 0;
         _rankIcon = SpriteComponent(
-          sprite: game.pstuffAtlas.spriteByKey('pstuff/rank_$rank'),
+          sprite: game.coptAtlas.spriteByKey('ingame/rank_$rank'),
           // Soldier is Anchor.center. Positioning at (0, -size.y / 2) is the top edge.
           // The rank icon is 16x20. We want its center to be above the head.
           // soldier size is approx 16x16, so top is -8.

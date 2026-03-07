@@ -12,7 +12,10 @@ import 'package:path/path.dart' as p;
 /// Parses `SpriteData_PC.hpp` (the ground truth) and compares every group's
 /// frame count, byte offsets, and dimensions against the hand-maintained
 /// Dart maps. Reports mismatches, missing groups, and extra groups.
-void main() {
+///
+/// Pass `--csv` to emit a CSV comparing our names with the C++ descriptions.
+void main(List<String> args) {
+  final csvMode = args.contains('--csv');
   final scriptDir = File(Platform.script.toFilePath()).parent.path;
   // Go up from bin/ → fodder_tools/ → packages/ → monorepo root.
   final projectRoot = p.dirname(p.dirname(p.dirname(scriptDir)));
@@ -35,6 +38,11 @@ void main() {
   print('Parsing sprite data from ${spriteDataFile.path}...\n');
   final sheets = SpriteDataParser.parse(file: spriteDataFile);
 
+  if (csvMode) {
+    _exportCsv(sheets);
+    return;
+  }
+
   var totalIssues = 0;
 
   for (final sheet in sheets) {
@@ -51,6 +59,62 @@ void main() {
     print('as the baseline. CF2-only entries or dimension changes are known.');
     exit(1);
   }
+}
+
+/// Emits a CSV to stdout comparing our Dart names with the C++ descriptions.
+void _exportCsv(List<SpriteSheetType> sheets) {
+  print('sheet,index,dart_name,cpp_description,frames,match');
+
+  for (final sheet in sheets) {
+    final maps = _dartMapsForSheet(sheet);
+    if (maps.isEmpty) continue;
+
+    final combined = <int, SpriteGroup>{};
+    for (final (_, dartMap) in maps) {
+      combined.addAll(dartMap);
+    }
+
+    for (var groupIdx = 0; groupIdx < sheet.entries.length; groupIdx++) {
+      final cppFrames = sheet.entries[groupIdx];
+      if (cppFrames.isEmpty) continue;
+
+      // Skip groups with no visible pixels.
+      final hasData = cppFrames.any((f) => f.width > 0 && f.height > 0);
+      if (!hasData) continue;
+
+      final dartGroup = combined[groupIdx];
+      final hexIdx = '0x${groupIdx.toRadixString(16).padLeft(2, '0')}';
+
+      // The C++ description is the same for all frames in a group.
+      final cppDesc = cppFrames.first.description ?? '';
+      final dartName = dartGroup?.name ?? '';
+      final frameCount = cppFrames.length;
+
+      // Simple heuristic: flag if names look completely different.
+      final match = dartName.isEmpty
+          ? 'MISSING'
+          : dartName.toLowerCase() == cppDesc.toLowerCase()
+          ? 'exact'
+          : '';
+
+      print(
+        '${_csvEscape(sheet.name)},'
+        '$hexIdx,'
+        '${_csvEscape(dartName)},'
+        '${_csvEscape(cppDesc)},'
+        '$frameCount,'
+        '$match',
+      );
+    }
+  }
+}
+
+/// Escapes a value for CSV (wraps in quotes if it contains commas or quotes).
+String _csvEscape(String value) {
+  if (value.contains(',') || value.contains('"') || value.contains('\n')) {
+    return '"${value.replaceAll('"', '""')}"';
+  }
+  return value;
 }
 
 /// Maps a parsed [SpriteSheetType] to the Dart name-table maps it should
