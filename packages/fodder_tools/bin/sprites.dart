@@ -141,6 +141,12 @@ void main(List<String> arguments) {
           'Path to pre-extracted directory '
           '(use instead of --dat).',
     )
+    ..addFlag(
+      'map-tiles',
+      abbr: 'm',
+      help: 'Also export raw map tile blocks (base/sub blocks).',
+      negatable: false,
+    )
     ..addFlag('help', abbr: 'h', negatable: false, help: 'Show usage.');
 
   final args = parser.parse(arguments);
@@ -247,31 +253,34 @@ void main(List<String> arguments) {
     );
   }
 
-  // --- Tile base blocks ---
-  for (final filename in _tileBaseBlocks) {
-    if (!hasFile(filename)) continue;
-    exported += _exportTile(
-      filename,
-      getFile(filename),
-      null,
-      outputDir,
-      label: 'tile base',
-    );
-  }
+  // --- Map tile blocks ---
+  if (args['map-tiles'] as bool) {
+    // --- Tile base blocks ---
+    for (final filename in _tileBaseBlocks) {
+      if (!hasFile(filename)) continue;
+      exported += _exportTile(
+        filename,
+        getFile(filename),
+        null,
+        outputDir,
+        label: 'tile base',
+      );
+    }
 
-  // --- Tile sub blocks ---
-  for (final filename in _tileSubBlocks) {
-    if (!hasFile(filename)) continue;
-    final prefix = filename.substring(0, 3);
-    final baseFilename = '${prefix}base.blk';
-    if (!hasFile(baseFilename)) continue;
-    exported += _exportTile(
-      filename,
-      getFile(filename),
-      getFile(baseFilename),
-      outputDir,
-      label: 'tile sub',
-    );
+    // --- Tile sub blocks ---
+    for (final filename in _tileSubBlocks) {
+      if (!hasFile(filename)) continue;
+      final prefix = filename.substring(0, 3);
+      final baseFilename = '${prefix}base.blk';
+      if (!hasFile(baseFilename)) continue;
+      exported += _exportTile(
+        filename,
+        getFile(filename),
+        getFile(baseFilename),
+        outputDir,
+        label: 'tile sub',
+      );
+    }
   }
 
   print('Exported $exported images to ${outputDir.path}');
