@@ -316,7 +316,7 @@ void main() {
     });
   });
 
-  group('F (SpriteFrameData)', () {
+  group('Frame', () {
     test('stores byteOffset, w, h', () {
       const f = F(0, 16, 14);
       expect(f.byteOffset, 0);
@@ -349,7 +349,7 @@ void main() {
     });
   });
 
-  group('S (SpriteGroupData)', () {
+  group('SpriteGroup', () {
     test('stores name, palette, and offsets for uniform group', () {
       final g = armyDatIngame[0x00]!;
       expect(g.name, 'player_walk_s');

@@ -30,31 +30,29 @@ To run the game, you need the original assets. You can extract them using the pr
 #### Cannon Fodder 1
 
 ```bash
-# First Extract the Archive
-dart run packages/fodder_tools/bin/extract.dart -i original_game/Dos_CD/CF_ENG.DAT -o original_game/Dos_CD_Extracted --extract-all
+SRC=original_game/Dos_CD
+OUT=packages/fodder_assets/assets/cf1
 
-# Extract Sprites
-dart run packages/fodder_tools/bin/sprites.dart -i original_game/Dos_CD_Extracted --output packages/fodder_assets/assets/cf1/sprites
+# Extract the archive
+dart run packages/fodder_tools/bin/extract.dart -i ${SRC?}/CF_ENG.DAT -o ${SRC?}_Extracted --extract-all
 
-# Extract Maps
-dart run packages/fodder_tools/bin/maps.dart -i original_game/Dos_CD_Extracted -o packages/fodder_assets/assets/cf1/maps
-
-# Extract Audio
-dart run packages/fodder_tools/bin/audio.dart -i original_game/Dos_CD_Extracted -o packages/fodder_assets/assets/cf1/audio
+# Extract sprites, maps, and audio
+dart run packages/fodder_tools/bin/sprites.dart -i ${SRC?}_Extracted -o ${OUT?}/sprites
+dart run packages/fodder_tools/bin/maps.dart    -i ${SRC?}_Extracted -o ${OUT?}/maps
+dart run packages/fodder_tools/bin/audio.dart   -i ${SRC?}_Extracted -o ${OUT?}/audio
 ```
 
 #### Cannon Fodder 2
 
 ```bash
-# First Extract the Archive
-dart run packages/fodder_tools/bin/extract.dart -i original_game/Dos2_CD/CF_ENG.DAT -o original_game/Dos2_CD_Extracted --extract-all
+SRC=original_game/Dos2_CD
+OUT=packages/fodder_assets/assets/cf2
 
-# Extract Sprites
-dart run packages/fodder_tools/bin/sprites.dart -i original_game/Dos2_CD_Extracted --output packages/fodder_assets/assets/cf2/sprites
+# Extract the archive
+dart run packages/fodder_tools/bin/extract.dart -i ${SRC?}/CF_ENG.DAT -o ${SRC?}_Extracted --extract-all
 
-# Extract Maps
-dart run packages/fodder_tools/bin/maps.dart -i original_game/Dos2_CD_Extracted -o packages/fodder_assets/assets/cf2/maps
-
-# Extract Audio
-dart run packages/fodder_tools/bin/audio.dart -i original_game/Dos2_CD_Extracted -o packages/fodder_assets/assets/cf2/audio
+# Extract sprites, maps, and audio
+dart run packages/fodder_tools/bin/sprites.dart -i ${SRC?}_Extracted -o ${OUT?}/sprites
+dart run packages/fodder_tools/bin/maps.dart    -i ${SRC?}_Extracted -o ${OUT?}/maps
+dart run packages/fodder_tools/bin/audio.dart   -i ${SRC?}_Extracted -o ${OUT?}/audio
 ```

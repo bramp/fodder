@@ -1,8 +1,9 @@
 /// Maps sprite group indices to human-readable names and frame metadata.
 ///
 /// Each map entry contains the group name, palette index, frame dimensions,
-/// and byte offsets. This is the single source of truth for sprite metadata —
-/// the JSON files in tool/sprites/data/ are now redundant.
+/// and byte offsets. This is the single source of truth for sprite metadata,
+/// used directly by `sprites.dart` for atlas generation and copt palette
+/// fix-up.
 ///
 /// ## Organisation
 ///
@@ -48,10 +49,10 @@
 ///
 /// ## Frame data
 ///
-/// For uniform-size groups (the majority), [S] stores the shared `w`×`h`
-/// and a flat `List<int>` of byte offsets — one per frame. For the few
-/// groups with mixed frame sizes or rendering offsets, [S.v] stores a
-/// `List<F>` with per-frame dimensions.
+/// For uniform-size groups (the majority), [SpriteGroup] stores the shared
+/// `w`×`h` and a flat `List<int>` of byte offsets — one per frame. For the
+/// few groups with mixed frame sizes or rendering offsets, [SpriteGroup.v]
+/// stores a `List<Frame>` with per-frame dimensions.
 ///
 /// The pixel position on the 320-wide sprite sheet can be derived from
 /// any byte offset:
@@ -72,8 +73,8 @@ library;
 /// coordinates on the 320-pixel-wide sprite sheet are:
 /// - `x = (byteOffset % 160) * 2`
 /// - `y = byteOffset ~/ 160`
-class F {
-  const F(this.byteOffset, this.w, this.h, [this.modX = 0, this.modY = 0]);
+class Frame {
+  const Frame(this.byteOffset, this.w, this.h, [this.modX = 0, this.modY = 0]);
 
   final int byteOffset;
   final int w;
@@ -86,7 +87,7 @@ class F {
 
   @override
   String toString() =>
-      'F($byteOffset, ${w}x$h'
+      'Frame($byteOffset, ${w}x$h'
       '${modX != 0 || modY != 0 ? ', mod=$modX,$modY' : ''})';
 }
 
@@ -96,13 +97,13 @@ class F {
 /// [w]×[h] dimensions with no rendering offsets → stored as a flat list of
 /// byte [offsets].
 ///
-/// **Variable groups** ([S.v]): frames differ in size or have modX/modY →
-/// stored as a `List<F>`.
-class S {
-  const S(this.name, this.palette, this.w, this.h, this.offsets)
+/// **Variable groups** ([SpriteGroup.v]): frames differ in size or have
+/// modX/modY → stored as a `List<Frame>`.
+class SpriteGroup {
+  const SpriteGroup(this.name, this.palette, this.w, this.h, this.offsets)
     : frames = const [];
 
-  const S.v(this.name, this.palette, this.frames)
+  const SpriteGroup.v(this.name, this.palette, this.frames)
     : w = 0,
       h = 0,
       offsets = const [];
@@ -112,16 +113,22 @@ class S {
   final int w;
   final int h;
   final List<int> offsets;
-  final List<F> frames;
+  final List<Frame> frames;
 
   bool get isVariable => frames.isNotEmpty;
   int get frameCount => isVariable ? frames.length : offsets.length;
 
   @override
   String toString() =>
-      'S($name, 0x${palette.toRadixString(16)}, '
+      'SpriteGroup($name, 0x${palette.toRadixString(16)}, '
       '$frameCount frames)';
 }
+
+/// Compact alias for [SpriteGroup], used in the data declarations below.
+typedef S = SpriteGroup;
+
+/// Compact alias for [Frame], used in the data declarations below.
+typedef F = Frame;
 
 // ---------------------------------------------------------------------------
 // Spread helpers

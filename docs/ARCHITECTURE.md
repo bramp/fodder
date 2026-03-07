@@ -74,7 +74,7 @@ Original game data is never parsed at runtime. Standalone Dart CLI tools in
 | `sprites.dart` | Raw sprite data + palettes | TexturePacker JSON atlases + PNGs with semantic frame names |
 | `maps.dart` | `.map`, `.spt`, `.hit` files | Tiled `.tmx` maps with walkability layers |
 | `extract.dart` | `.dat` archive files | Extracted raw files |
-| `export_sprite_data.dart` | OpenFodder C++ headers | JSON sprite metadata |
+| `audit_sprite_names.dart` | OpenFodder C++ headers | Validates `sprite_names.dart` against C++ source |
 
 Output is committed to `packages/fodder_assets/` (a git submodule) and loaded
 at runtime via Flame's standard asset system.
