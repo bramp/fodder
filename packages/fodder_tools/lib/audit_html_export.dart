@@ -195,20 +195,42 @@ function toggleAnchors() {
       buf.writeln('<div class="sprite-group-title">$groupName</div>');
 
       if (framesList.length > 1) {
-        var maxW = 0;
-        var maxH = 0;
+        var maxLeft = 0.0;
+        var maxRight = 0.0;
+        var maxTop = 0.0;
+        var maxBottom = 0.0;
+
         for (final fEntry in framesList) {
           final f = fEntry.value['frame'] as Map<String, dynamic>;
           final w = (f['w'] as num).toInt();
           final h = (f['h'] as num).toInt();
-          if (w > maxW) maxW = w;
-          if (h > maxH) maxH = h;
+          final anchor = fEntry.value['anchor'] as Map<String, dynamic>?;
+          final ax = anchor != null ? (anchor['x'] as num).toDouble() : 0.5;
+          final ay = anchor != null ? (anchor['y'] as num).toDouble() : 0.5;
+
+          final left = ax * w;
+          final right = (1 - ax) * w;
+          final top = ay * h;
+          final bottom = (1 - ay) * h;
+
+          if (left > maxLeft) maxLeft = left;
+          if (right > maxRight) maxRight = right;
+          if (top > maxTop) maxTop = top;
+          if (bottom > maxBottom) maxBottom = bottom;
         }
+
+        final maxW = (maxLeft + maxRight).ceil();
+        final maxH = (maxTop + maxBottom).ceil();
+
         if (maxW > 0 && maxH > 0) {
           final scale = (maxW < 24 && maxH < 24) ? 3 : 2;
           final dw = maxW * scale;
           final dh = maxH * scale;
           final bgW = imgW * scale;
+
+          final anchorPxX = maxLeft * scale;
+          final anchorPxY = maxTop * scale;
+
           final safeGroup = groupName.replaceAll(RegExp(r'[^a-zA-Z0-9]'), '-');
           final animName = 'anim-$safeGroup-${cssClass}';
 
@@ -220,23 +242,27 @@ function toggleAnchors() {
                 framesList[i].value['anchor'] as Map<String, dynamic>?;
             final x = (f['x'] as num).toInt() * scale;
             final y = (f['y'] as num).toInt() * scale;
-            final w = (f['w'] as num).toInt() * scale;
-            final h = (f['h'] as num).toInt() * scale;
+            final w = ((f['w'] as num).toInt() * scale).toInt();
+            final h = ((f['h'] as num).toInt() * scale).toInt();
+
             final ax = anchor != null ? (anchor['x'] as num).toDouble() : 0.5;
             final ay = anchor != null ? (anchor['y'] as num).toDouble() : 0.5;
 
-            // To align all frames to their anchors, we offset the background position.
-            // The box is size dw x dh. We want the anchor to be at dw/2, dh/2.
-            // Anchor pixel relative to frame's top-left: ax * w, ay * h
-            // Required offset: (dw/2 - ax * w), (dh/2 - ay * h)
-            final offsetX = (dw / 2.0) - (ax * w);
-            final offsetY = (dh / 2.0) - (ay * h);
+            final frameAnchorX = ax * w;
+            final frameAnchorY = ay * h;
 
-            final bx = -x + offsetX;
-            final by = -y + offsetY;
+            final offsetX = anchorPxX - frameAnchorX;
+            final offsetY = anchorPxY - frameAnchorY;
 
             final pct = (i * 100.0 / framesList.length).toStringAsFixed(2);
-            buf.writeln('  $pct% { background-position: ${bx}px ${by}px; }');
+            buf.writeln('  $pct% {');
+            buf.writeln('    background-position: -${x}px -${y}px;');
+            buf.writeln('    width: ${w}px;');
+            buf.writeln('    height: ${h}px;');
+            buf.writeln(
+              '    transform: translate(${offsetX}px, ${offsetY}px);',
+            );
+            buf.writeln('  }');
           }
           buf.writeln('}');
           buf.writeln('</style>');
@@ -246,12 +272,13 @@ function toggleAnchors() {
             '  <div class="sprite-item" style="border-color: #666; background: #222">',
           );
           buf.writeln(
-            '    <div class="sprite-box $cssClass" style="'
-            'width:${dw}px;height:${dh}px;'
+            '    <div style="position: relative; width:${dw}px; height:${dh}px; ">'
+            '      <div class="sprite-box $cssClass" style="'
+            'position:absolute; left:0; top:0;'
             'background-size:${bgW}px auto;'
             'animation: $animName ${durationMs}ms steps(1) infinite;'
-            '" title="Animated preview">'
-            '      <div class="anchor-dot" style="left:50%; top:50%;"></div>'
+            '" title="Animated preview"></div>'
+            '      <div class="anchor-dot" style="left:${anchorPxX}px; top:${anchorPxY}px;"></div>'
             '    </div>',
           );
           buf.writeln(
