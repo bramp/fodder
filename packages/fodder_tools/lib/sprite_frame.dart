@@ -106,6 +106,20 @@ enum GfxType {
   /// Unknown type.
   unknown;
 
+  /// The .dat filename this [GfxType] maps to.
+  String get datFileName => switch (this) {
+    GfxType.inGame => 'army.dat',
+    GfxType.inGame2 => 'copt.dat',
+    GfxType.font => 'font.dat',
+    GfxType.hill => 'hillbits.dat',
+    GfxType.recruit => 'hillbits.dat',
+    GfxType.briefing => 'pstuff.dat',
+    GfxType.service => 'morphbig.dat',
+    GfxType.rankFont => 'rankfont.dat',
+    GfxType.pstuff => 'pstuff.dat',
+    GfxType.unknown => '?',
+  };
+
   /// Converts a string name back to its [GfxType] enum value.
   static GfxType fromName(String name) =>
       GfxType.values.byName(name == 'unknown' ? 'unknown' : name);

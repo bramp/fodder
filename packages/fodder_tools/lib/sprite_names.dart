@@ -63,6 +63,8 @@
 /// ```
 library;
 
+import 'package:fodder_tools/sprite_frame.dart';
+
 // ---------------------------------------------------------------------------
 // Data classes
 // ---------------------------------------------------------------------------
@@ -101,12 +103,25 @@ class Frame {
 /// modX/modY → stored as a `List<Frame>`.
 class SpriteGroup {
   const SpriteGroup(this.name, this.palette, this.w, this.h, this.offsets)
-    : frames = const [];
+    : frames = const [],
+      chars = null;
 
   const SpriteGroup.v(this.name, this.palette, this.frames)
     : w = 0,
       h = 0,
-      offsets = const [];
+      offsets = const [],
+      chars = null;
+
+  /// Font group: uniform frames with a [chars] string mapping each frame
+  /// to a character. `chars.length` must equal `offsets.length`.
+  const SpriteGroup.font(
+    this.name,
+    this.palette,
+    this.w,
+    this.h,
+    this.chars,
+    this.offsets,
+  ) : frames = const [];
 
   final String name;
   final int palette;
@@ -115,7 +130,11 @@ class SpriteGroup {
   final List<int> offsets;
   final List<Frame> frames;
 
+  /// For font groups, maps each frame index to a character.
+  final String? chars;
+
   bool get isVariable => frames.isNotEmpty;
+  bool get isFont => chars != null;
   int get frameCount => isVariable ? frames.length : offsets.length;
 
   @override
@@ -126,6 +145,11 @@ class SpriteGroup {
 
 /// Compact alias for [SpriteGroup], used in the data declarations below.
 typedef S = SpriteGroup;
+
+/// Compact alias for [SpriteGroup.font], used in the data declarations below.
+// ignore: non_constant_identifier_names
+S Sf(String name, int pal, int w, int h, String chars, List<int> offsets) =>
+    SpriteGroup.font(name, pal, w, h, chars, offsets);
 
 /// Compact alias for [Frame], used in the data declarations below.
 typedef F = Frame;
@@ -1301,6 +1325,11 @@ bool isFontGroup(String groupName) => groupName.startsWith('font_');
 /// Normalises a sheet type name to a canonical lookup key.
 String normaliseSheetName(String sheetTypeName) =>
     sheetTypeName.toLowerCase().replaceAll('_cf2', '').replaceAll('_cf1', '');
+
+/// Returns the merged Dart [SpriteGroup] map for a parsed sheet, or `null`
+/// if no Dart map exists for this sheet type.
+Map<int, SpriteGroup>? dartMapForSheet(SpriteSheetType sheet) =>
+    _sheetNameTables[normaliseSheetName(sheet.name)];
 
 /// Returns the [S] for a given sheet type and group index.
 S? spriteGroup({required String sheetTypeName, required int groupIndex}) {
