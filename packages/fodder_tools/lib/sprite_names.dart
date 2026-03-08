@@ -148,8 +148,14 @@ typedef S = SpriteGroup;
 
 /// Compact alias for [SpriteGroup.font], used in the data declarations below.
 // ignore: non_constant_identifier_names
-S Sf(String name, int pal, int w, int h, String chars, List<int> offsets) =>
-    SpriteGroup.font(name, pal, w, h, chars, offsets);
+S Sf(String name, int pal, int w, int h, String chars, List<int> offsets) {
+  if (chars.length != offsets.length) {
+    throw ArgumentError(
+      'SpriteGroup.font "$name": chars.length (${chars.length}) != offsets.length (${offsets.length})',
+    );
+  }
+  return SpriteGroup.font(name, pal, w, h, chars, offsets);
+}
 
 /// Compact alias for [Frame], used in the data declarations below.
 typedef F = Frame;
@@ -174,91 +180,52 @@ Map<int, S> _dn(
 ///
 /// Contains the main game font.
 final fontDatFont = <int, S>{
-  0x00: S('font_main', 0xd0, 16, 17, [
-    0,
-    8,
+  0x00: Sf(
+    'font_main',
+    0x00,
     16,
-    24,
-    32,
-    40,
-    48,
-    56,
-    64,
-    72,
-    80,
-    88,
-    96,
-    104,
-    112,
-    120,
-    128,
-    136,
-    144,
-    152,
-    2720,
-    2728,
-    2736,
-    2744,
-    2752,
-    2760,
-    5536,
-    5544,
-    5552,
-    5560,
-    5568,
-    5576,
-    5584,
-    5592,
-    8160,
-    8168,
-    10896,
-    8192,
-    8200,
-    8208,
-    0,
-    8,
-    16,
-    24,
-    32,
-    40,
-    48,
-    56,
-    64,
-    72,
-    80,
-    88,
-    96,
-    104,
-    112,
-    120,
-    128,
-    2768,
-    2776,
-    2784,
-    2792,
-    2800,
-    2808,
-    2816,
-    2824,
-    2832,
-    2840,
-    2848,
-    2856,
-    2864,
-    2872,
-    5440,
-    5448,
-    5456,
-    5464,
-    5472,
-    5480,
-    5488,
-    5496,
-    5504,
-    5512,
-    5520,
-    5528,
+    17,
+    'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789\',.!()-?/:;"+=*&%\$#@ abcdefghijklmnopqrstuvwxyz',
+    [
+      0, 8, 16, 24, 32, 40, 48, 56, // A-H
+      64, 72, 80, 88, 96, 104, 112, 120, // I-P
+      128, 136, 144, 152, 2720, 2728, 2736, 2744, // Q-X
+      2752, 2760, 5536, 5544, 5552, 5560, 5568, 5576, // Y-Z, 0-5
+      5584, 5592, 8160, 8168, 10896, 8192, 8200, 8208, // 6-9, ', ., ,, !
+      0, 8, 16, 24, 32, 40, 48, 56, // ( ) - ? / : ; " (maps to A-H)
+      64, 72, 80, 88, 96, 104, 112, 120, // + = * & % $ # @ (maps to I-P)
+      128, 2768, 2776, 2784, 2792, 2800, 2808, 2816, // space (maps to Q), a-g
+      2824, 2832, 2840, 2848, 2856, 2864, 2872, 5440, // h-o
+      5448, 5456, 5464, 5472, 5480, 5488, 5496, 5504, // p-w
+      5512, 5520, 5528, // x-z
+    ],
+  ),
+  0x01: Sf('font_numbers', 0x01, 16, 17, '0123456789.,!()\'?', [
+    5536, 5544, 5552, 5560, 5568, 5576, 5584, 5592, // 0-7
+    8160, 8168, 8192, 8200, 8208, 10880, 10888, 10896, // 8-'
+    10904, // ?
   ]),
+  0x02: Sf(
+    'font_alt',
+    0x02,
+    16,
+    17,
+    'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789:;.,!"£\$%^&*( ) +/[]\'?ÜÖÄÅÈ',
+    [
+      19040, 19048, 19056, 19064, 19072, 19080, 19088, 19096, // A-H
+      19104, 19112, 19120, 19128, 19136, 19144, 19152, 19160, // I-P
+      19168, 19176, 19184, 19192, 21760, 21768, 21776, 21784, // Q-X
+      21792, 21800, 21808, 21816, 21824, 21832, 21840, 21848, // Y-f
+      21856, 21864, 21872, 21880, 21888, 21896, 21904, 21912, // g-n
+      24480, 24488, 24496, 24504, 24512, 24520, 24528, 24536, // o-v
+      24544, 24552, 24560, 24568, 24576, 24584, 24592, 24600, // w-3
+      24608, 24616, 24624, 24632, 27200, 27208, 27216, 27224, // 4-;
+      27232, 27240, 27248, 27256, 27264, 27272, 27280, 27288, // .-^
+      27296, 27304, 27312, 27320, 27328, 27336, 27344, 27352, // &-/
+      29920, 29928, 29936, 29944, 29960, 29968, 29976, 29984, // [-Å
+      29992, // È
+    ],
+  ),
 };
 
 /// Sprite groups stored in **pstuff.dat** (`GfxType.briefing`).
@@ -1349,14 +1316,52 @@ String spriteFrameName({
   required int groupIndex,
   required int frameIndex,
 }) {
+  final group = spriteGroup(
+    sheetTypeName: sheetTypeName,
+    groupIndex: groupIndex,
+  );
   final groupLabel =
-      spriteGroupName(sheetTypeName: sheetTypeName, groupIndex: groupIndex) ??
-      'unknown_${groupIndex.toRadixString(16).padLeft(2, '0')}';
-
+      group?.name ?? 'unknown_${groupIndex.toRadixString(16).padLeft(2, '0')}';
   final isFont = isFontGroup(groupLabel);
-  final frameSuffix = isFont
-      ? fontCharacterName(frameIndex)
-      : frameIndex.toString();
+
+  String frameSuffix;
+  if (isFont &&
+      group != null &&
+      group.chars != null &&
+      frameIndex < group.chars!.length) {
+    var c = group.chars![frameIndex];
+    frameSuffix = switch (c) {
+      ' ' => 'space',
+      '/' => 'slash',
+      '.' => 'dot',
+      ':' => 'colon',
+      ';' => 'semicolon',
+      ',' => 'comma',
+      '!' => 'exclamation',
+      '"' => 'quote',
+      "'" => 'single_quote',
+      '(' => 'lparen',
+      ')' => 'rparen',
+      '[' => 'lbracket',
+      ']' => 'rbracket',
+      '?' => 'question',
+      '-' => 'dash',
+      '+' => 'plus',
+      '=' => 'equals',
+      '£' => 'pound',
+      '\$' => 'dollar',
+      '%' => 'percent',
+      '^' => 'caret',
+      '&' => 'ampersand',
+      '*' => 'asterisk',
+      _ => c,
+    };
+  } else {
+    frameSuffix = isFont
+        ? fontCharacterName(frameIndex)
+        : frameIndex.toString();
+  }
+
   final displayLabel = isFont ? groupLabel.substring(5) : groupLabel;
 
   return '${normaliseSheetName(sheetTypeName)}/${displayLabel}_$frameSuffix';

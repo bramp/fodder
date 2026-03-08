@@ -114,7 +114,9 @@ tr:hover { background: #2a2a2a; }
 .missing { color: #f44; font-weight: bold; }
 .mismatch { background: #442; }
 td.name { white-space: nowrap; }
-td.sprites { display: flex; flex-wrap: wrap; gap: 2px; align-items: end; }
+.sprites-container { display: flex; flex-wrap: wrap; gap: 8px; align-items: flex-end; padding-bottom: 4px; }
+.frame-container { display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 2px; justify-content: flex-end; }
+.char-label { font-size: 11px; background: #222; color: #fff; border: 1px solid #555; padding: 1px 4px; border-radius: 2px; min-width: 12px; text-align: center; line-height: 1; }
 ''');
 
     for (final entry in _pngDataUris.entries) {
@@ -173,6 +175,7 @@ td.sprites { display: flex; flex-wrap: wrap; gap: 2px; align-items: end; }
         groupIdx,
         frameCount,
         atlasCandidates,
+        dartGroup,
       );
 
       final rowClass = isMissing ? ' class="mismatch"' : '';
@@ -186,7 +189,9 @@ td.sprites { display: flex; flex-wrap: wrap; gap: 2px; align-items: end; }
       buf.writeln('  <td>${_htmlEscape(cppDesc)}</td>');
       buf.writeln('  <td>$sizeStr</td>');
       buf.writeln('  <td>$frameCount</td>');
-      buf.writeln('  <td class="sprites">$spriteHtml</td>');
+      buf.writeln(
+        '  <td><div class="sprites-container">$spriteHtml</div></td>',
+      );
       buf.writeln('</tr>');
     }
 
@@ -200,6 +205,7 @@ td.sprites { display: flex; flex-wrap: wrap; gap: 2px; align-items: end; }
     int groupIdx,
     int frameCount,
     List<(String json, String png)> atlasCandidates,
+    SpriteGroup? dartGroup,
   ) {
     final resolved = <_ResolvedFrame>[];
 
@@ -224,20 +230,38 @@ td.sprites { display: flex; flex-wrap: wrap; gap: 2px; align-items: end; }
     }
 
     // Static thumbnails for every frame.
-    for (final r in resolved) {
+    for (var i = 0; i < resolved.length; i++) {
+      final r = resolved[i];
+      final charStr =
+          (dartGroup != null &&
+              dartGroup.chars != null &&
+              i < dartGroup.chars!.length)
+          ? dartGroup.chars![i]
+          : null;
+
+      if (charStr != null) {
+        parts.add('<div class="frame-container">');
+      }
+
       if (r.w <= 0) {
         parts.add('<span style="color:#666" title="${r.name}">?</span>');
-        continue;
+      } else {
+        final dw = r.w * r.scale;
+        final dh = r.h * r.scale;
+        parts.add(
+          '<div class="sprite-box ${_pngCssClass(r.pngFile)}" style="'
+          'width:${dw}px;height:${dh}px;'
+          'background-position:-${r.x * r.scale}px -${r.y * r.scale}px;'
+          'background-size:${r.bgW}px auto;'
+          '" title="${r.name} ${r.w}x${r.h}"></div>',
+        );
       }
-      final dw = r.w * r.scale;
-      final dh = r.h * r.scale;
-      parts.add(
-        '<div class="sprite-box ${_pngCssClass(r.pngFile)}" style="'
-        'width:${dw}px;height:${dh}px;'
-        'background-position:-${r.x * r.scale}px -${r.y * r.scale}px;'
-        'background-size:${r.bgW}px auto;'
-        '" title="${r.name} ${r.w}x${r.h}"></div>',
-      );
+
+      if (charStr != null) {
+        final displayChar = charStr == ' ' ? '&nbsp;' : _htmlEscape(charStr);
+        parts.add('<div class="char-label">$displayChar</div>');
+        parts.add('</div>');
+      }
     }
 
     return parts.join(' ');
