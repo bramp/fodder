@@ -401,6 +401,20 @@ const _sheetAtlasFiles = <String, List<(String json, String png)>>{
   ],
 };
 
+/// The graphics file types that sprite sheets reference.
+const _gfxFileNames = <GfxType, String>{
+  GfxType.inGame: 'army.dat',
+  GfxType.inGame2: 'copt.dat',
+  GfxType.font: 'font.dat',
+  GfxType.hill: 'hillbits.dat',
+  GfxType.recruit: 'hillbits.dat',
+  GfxType.briefing: 'pstuff.dat',
+  GfxType.service: 'morphbig.dat',
+  GfxType.rankFont: 'rankfont.dat',
+  GfxType.pstuff: 'pstuff.dat',
+  GfxType.unknown: '?',
+};
+
 /// Generates a self-contained HTML page comparing Dart names with the C++
 /// descriptions and showing sprite previews clipped from the atlas PNGs.
 void _exportHtml(List<SpriteSheetType> sheets, Directory spriteDir) {
@@ -491,7 +505,17 @@ td.sprites { display: flex; flex-wrap: wrap; gap: 2px; align-items: end; }
     // Find the atlas files for this sheet.
     final atlasCandidates = _sheetAtlasFiles[key] ?? [];
 
-    buf.writeln('<h2>${_htmlEscape(sheet.name)}</h2>');
+    // Identify which .dat files are used by this sheet.
+    final datFiles =
+        sheet.entries
+            .expand((e) => e)
+            .map((f) => _gfxFileNames[f.gfxType] ?? '?')
+            .toSet()
+            .toList()
+          ..sort();
+    final datSuffix = datFiles.isNotEmpty ? ' (${datFiles.join(', ')})' : '';
+
+    buf.writeln('<h2>${_htmlEscape(sheet.name)}$datSuffix</h2>');
     buf.writeln('<table>');
     buf.writeln(
       '<tr><th>Index</th><th>Dart Name</th>'
