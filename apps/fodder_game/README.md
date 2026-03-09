@@ -28,6 +28,14 @@ The code is organized under `lib/`, primarily adopting the Flame Component Syste
 * **`systems/`**: Gameplay mechanics and AI operations.
   * Navigation: `pathfinder.dart` and `walkability_grid.dart` for A* routing.
   * AI & Combat: `line_of_sight.dart` and `aggression.dart` for determining enemy behaviors and visibility.
+  * Analytics: `analytics_system.dart` for tracking game metrics like level completion and combat stats.
+
+## Analytics
+
+This project uses Firebase Analytics to track gameplay metrics and improve the game experience. Key metrics tracked include:
+* **Level Progress**: Start and end events for each mission phase.
+* **Combat Stats**: Bullets fired, player/enemy unit deaths.
+* **Feature Usage**: Debug features and setting toggles.
 
 ## TODOs
 

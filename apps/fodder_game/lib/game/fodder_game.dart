@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:math';
 import 'package:flame/components.dart';
 import 'package:flame/events.dart';
@@ -20,6 +21,7 @@ import 'package:fodder_game/game/models/squad.dart';
 import 'package:fodder_game/game/sprites/sprite_atlas.dart';
 import 'package:fodder_game/game/sprites/sprite_frames.dart';
 import 'package:fodder_game/game/systems/aggression.dart';
+import 'package:fodder_game/game/systems/analytics_system.dart';
 import 'package:fodder_game/game/systems/audio_system.dart';
 import 'package:fodder_game/game/systems/pathfinder.dart';
 import 'package:fodder_game/game/systems/squad_movement.dart';
@@ -90,6 +92,9 @@ class FodderGame extends FlameGame
   /// Toggles player invincibility (cheat) — applies to **all** squad members.
   set isPlayerInvincible(bool value) {
     if (!isLoaded) return;
+    unawaited(
+      _analytics.logSettingToggled(setting: 'invincibility', value: value),
+    );
     for (final soldier in playerSoldiers) {
       soldier.isInvincible = value;
     }
@@ -97,6 +102,8 @@ class FodderGame extends FlameGame
 
   /// Bullet sprites loaded from the copt atlas.
   late BulletSprites bulletSprites;
+
+  late final AnalyticsSystem _analytics;
 
   /// Shared army sprite atlas (soldiers).
   late SpriteAtlas _armyAtlas;
@@ -127,7 +134,12 @@ class FodderGame extends FlameGame
   Future<void> onLoad() async {
     await super.onLoad();
 
-    // 0. Setup Audio — added as a direct child of the game so all
+    // 0. Setup Analytics
+    _analytics = FirebaseAnalyticsSystem();
+    await add(_analytics);
+    await _analytics.logLevelStart(initialMap);
+
+    // 0.5 Setup Audio — added as a direct child of the game so all
     //    components can find it via the HasAudioSystem mixin.
     await add(AudioSystem(random: Random()));
 

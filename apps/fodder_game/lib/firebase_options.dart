@@ -42,16 +42,17 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions web = FirebaseOptions(
     apiKey: 'AIzaSyCa9_qeCHNh_UyI8wHnk_tEdH_jk0Pr99s',
-    appId: '1:900023187428:web:f91f3181479cab69f839f1',
+    appId: '1:900023187428:web:819cd014a946ff90f839f1',
     messagingSenderId: '900023187428',
     projectId: 'fodder-bramp-net',
     authDomain: 'fodder-bramp-net.firebaseapp.com',
     storageBucket: 'fodder-bramp-net.firebasestorage.app',
+    measurementId: 'G-F7WF7HFSJQ',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyAqz1ENaleYNYJgSk8SEFjwJ87hnQ1mAl0',
-    appId: '1:900023187428:android:fb215e0655ccae8bf839f1',
+    appId: '1:900023187428:android:0ad0e42cd7c612fbf839f1',
     messagingSenderId: '900023187428',
     projectId: 'fodder-bramp-net',
     storageBucket: 'fodder-bramp-net.firebasestorage.app',
@@ -59,7 +60,7 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyBFgm9uEDn0LwdKKTmFfd02lv5qKUgx1h8',
-    appId: '1:900023187428:ios:ccf128f5e9cf68eff839f1',
+    appId: '1:900023187428:ios:5113842402e8d162f839f1',
     messagingSenderId: '900023187428',
     projectId: 'fodder-bramp-net',
     storageBucket: 'fodder-bramp-net.firebasestorage.app',
@@ -68,7 +69,7 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions macos = FirebaseOptions(
     apiKey: 'AIzaSyBFgm9uEDn0LwdKKTmFfd02lv5qKUgx1h8',
-    appId: '1:900023187428:ios:ccf128f5e9cf68eff839f1',
+    appId: '1:900023187428:ios:5113842402e8d162f839f1',
     messagingSenderId: '900023187428',
     projectId: 'fodder-bramp-net',
     storageBucket: 'fodder-bramp-net.firebasestorage.app',
@@ -77,10 +78,11 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions windows = FirebaseOptions(
     apiKey: 'AIzaSyCa9_qeCHNh_UyI8wHnk_tEdH_jk0Pr99s',
-    appId: '1:900023187428:web:6f83337e9ca36a7cf839f1',
+    appId: '1:900023187428:web:447bd37c66655a95f839f1',
     messagingSenderId: '900023187428',
     projectId: 'fodder-bramp-net',
     authDomain: 'fodder-bramp-net.firebaseapp.com',
     storageBucket: 'fodder-bramp-net.firebasestorage.app',
+    measurementId: 'G-TL1FP7MY92',
   );
 }

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flame/components.dart';
 
 import 'package:fodder_game/game/components/bullet.dart';
@@ -268,6 +270,10 @@ class PlayerSoldier extends Soldier with HasGameReference<FodderGame> {
 
     // Start fire cooldown.
     _fireCooldownTimer = weaponStats.cooldown;
+
+    // TODO(bramp): Instead of logging the bullets - let's count them, and log
+    // them when the level ends.
+    unawaited(analytics.logBulletFired());
 
     audioSystem.playGunshot();
 

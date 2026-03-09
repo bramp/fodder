@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:math';
 
 import 'package:flame/collisions.dart';
@@ -8,6 +9,7 @@ import 'package:fodder_game/game/components/direction8.dart';
 import 'package:fodder_game/game/components/soldier_animations.dart';
 import 'package:fodder_game/game/config/game_config.dart' as config;
 import 'package:fodder_game/game/map/level_map.dart';
+import 'package:fodder_game/game/systems/analytics_system.dart';
 import 'package:fodder_game/game/systems/audio_system.dart';
 import 'package:fodder_game/game/systems/walkability_grid.dart';
 
@@ -58,7 +60,7 @@ const double _deathRemovalDelay = _deathAnimDuration + deathFadeDuration;
 /// Manages 8-directional walk/idle sprite animations loaded from the army
 /// sprite atlas via [SoldierAnimations].
 abstract class Soldier extends SpriteAnimationGroupComponent<SoldierState>
-    with CollisionCallbacks, HasAudioSystem {
+    with CollisionCallbacks, HasAudioSystem, HasAnalyticsSystem {
   Soldier({
     required this.soldierAnimations,
     Random? random,
@@ -245,6 +247,15 @@ abstract class Soldier extends SpriteAnimationGroupComponent<SoldierState>
   void die() {
     if (!isAlive) return;
     isAlive = false;
+
+    // Log death event.
+    unawaited(
+      analytics.logUnitDeath(
+        unitType: 'soldier',
+        side: opposingFaction == Faction.enemy ? 'player' : 'enemy',
+      ),
+    );
+
     _deathTimer = _deathRemovalDelay;
 
     audioSystem.playDeathScream();

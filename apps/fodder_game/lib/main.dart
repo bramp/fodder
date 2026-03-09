@@ -1,8 +1,11 @@
 import 'dart:async';
 
+import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:fodder_game/firebase_options.dart';
 import 'package:fodder_game/game/fodder_game.dart';
 import 'package:fodder_game/ui/crt_effect_wrapper.dart';
 import 'package:fodder_game/ui/debug_panel.dart';
@@ -17,6 +20,10 @@ const bool _useCrtShader = false;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
 
   // Lock orientation and hide status bar for full-screen game experience.
   await SystemChrome.setPreferredOrientations([
@@ -51,8 +58,13 @@ String _toUrlPath(String mapPath, {bool debug = false}) {
 // Router
 // ---------------------------------------------------------------------------
 
+final FirebaseAnalytics _analytics = FirebaseAnalytics.instance;
+
 final GoRouter _router = GoRouter(
   initialLocation: '/map/$_defaultGame/$_defaultMapName',
+  observers: [
+    FirebaseAnalyticsObserver(analytics: _analytics),
+  ],
   routes: [
     GoRoute(
       path: '/',

@@ -461,11 +461,13 @@ Legend: ✅ = implemented, 🔶 = partial, ❌ = not started
 - [ ] Squad selection sidebar
 - [ ] Rank icon display (`RANKFONT` sprite sheet)
 - [ ] Kill counter / score display
-- [ ] Heroes graveyard screen
+- [ ] Hero's graveyard screen
 - [ ] Recruit roster (360 names from `Recruits.cpp`)
 - [ ] Mission briefing / service screen
 - [ ] Game over when all 360 recruits killed
 - [ ] Campaign progression (missions → phases)
+- [ ] Privacy Policy page (for Analytics compliance)
+- [ ] Cookie consent banner (Web version)
 
 ### 5.4 Audio
 
