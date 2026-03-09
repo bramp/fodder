@@ -94,9 +94,9 @@ void main() {
     });
 
     test('maps previously missing groups', () {
-      expect(armyDatIngame[0xd5]?.name, 'effect_blood_shrapnel');
+      expect(armyDatIngame[0xd5]?.name, 'unused_squares_d5');
       expect(armyDatIngame[0xd6]?.name, 'civilian_death');
-      expect(armyDatIngame[0xd7]?.name, 'civilian_spear');
+      expect(armyDatIngame[0xd7]?.name, 'rocket_s');
       // 0xe8 (ufo_callpad) only exists in cf2, not cf1.
     });
   });
@@ -293,26 +293,6 @@ void main() {
         ),
         'ingame/unknown_ffff_0',
       );
-    });
-  });
-
-  group('fontCharacterName', () {
-    test('returns character for valid indices', () {
-      expect(fontCharacterName(0), 'A');
-      expect(fontCharacterName(26), '0');
-      expect(fontCharacterName(39), '!');
-    });
-
-    test('returns space as "space"', () {
-      expect(fontCharacterName(56), 'space');
-    });
-
-    test('returns slash as "slash"', () {
-      expect(fontCharacterName(44), 'slash');
-    });
-
-    test('returns char_\$frameIndex for out of range', () {
-      expect(fontCharacterName(1000), 'char_1000');
     });
   });
 

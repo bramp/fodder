@@ -89,15 +89,11 @@ void main() {
       expect(tmx, contains('x="97" y="49"'));
       expect(
         tmx,
-        contains(
-          '<property name="sprite_type" type="string" value="player"/>',
-        ),
+        contains('<property name="sprite_type" type="string" value="player"/>'),
       );
       expect(
         tmx,
-        contains(
-          '<property name="sprite_type" type="string" value="enemy"/>',
-        ),
+        contains('<property name="sprite_type" type="string" value="enemy"/>'),
       );
       expect(tmx, contains('</objectgroup>'));
       // No environment layer when there are no env sprites.

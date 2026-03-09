@@ -6,6 +6,7 @@ import 'package:flame/game.dart';
 import 'package:flame_tiled/flame_tiled.dart';
 
 import 'package:fodder_game/game/map/spawn_data.dart';
+import 'package:fodder_game/game/models/mission_objective.dart';
 import 'package:fodder_game/game/systems/walkability_grid.dart';
 
 /// A component that loads and renders a Tiled `.tmx` map.
@@ -20,16 +21,38 @@ import 'package:fodder_game/game/systems/walkability_grid.dart';
 /// ```dart
 /// final level = LevelMap(mapFile: 'cf1/maps/mapm1.tmx');
 /// await add(level);
+/// // After load, objectives are available:
+/// print(level.objectives); // [MissionObjective.killAllEnemy]
 /// ```
 class LevelMap extends Component with HasGameReference<FlameGame> {
   /// Creates a level map that will load [mapFile] on mount.
   ///
   /// [mapFile] is the relative path to the `.tmx` file (e.g. `cf1/maps/mapm1.tmx`),
   /// resolved relative to [_prefix].
-  LevelMap({required this.mapFile});
+  LevelMap({
+    required this.mapFile,
+  });
 
   /// The `.tmx` filename to load.
   final String mapFile;
+
+  /// The objectives that must be met to clear this level.
+  ///
+  /// Parsed from the map's `objectives` property during [onLoad].
+  /// Empty until the map has been loaded.
+  List<MissionObjective> objectives = const [];
+
+  /// Enemy aggression range for this phase, parsed from map properties.
+  int aggressionMin = 4;
+
+  /// Enemy aggression range for this phase, parsed from map properties.
+  int aggressionMax = 8;
+
+  /// The mission display name (e.g. "THE SENSIBLE INITIATION").
+  String? missionName;
+
+  /// The phase display name (e.g. "IT'S A JUNGLE OUT THERE").
+  String? phaseName;
 
   /// The asset prefix where map files live.
   ///
@@ -108,6 +131,34 @@ class LevelMap extends Component with HasGameReference<FlameGame> {
       tiled.tileMap.map,
       destTileSize: _destTileSize,
     );
+
+    // Parse map-level properties injected by the maps tool.
+    _parseMapProperties(tiled);
+
     await add(tiled);
+  }
+
+  /// Reads campaign metadata from map-level custom properties.
+  void _parseMapProperties(TiledComponent tiled) {
+    final props = tiled.tileMap.map.properties;
+
+    final objectivesStr = props.getValue<String>('objectives');
+    if (objectivesStr != null && objectivesStr.isNotEmpty) {
+      objectives = objectivesStr
+          .split(',')
+          .map((name) {
+            return MissionObjective.values.firstWhere(
+              (o) => o.name == name,
+              orElse: () => MissionObjective.none,
+            );
+          })
+          .where((o) => o != MissionObjective.none)
+          .toList();
+    }
+
+    aggressionMin = props.getValue<int>('aggressionMin') ?? aggressionMin;
+    aggressionMax = props.getValue<int>('aggressionMax') ?? aggressionMax;
+    missionName = props.getValue<String>('missionName');
+    phaseName = props.getValue<String>('phaseName');
   }
 }

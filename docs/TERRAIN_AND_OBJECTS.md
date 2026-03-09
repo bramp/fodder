@@ -233,6 +233,15 @@ See [ENEMY_AI.md §2.2](ENEMY_AI.md) for full spawning details.
 
 ## 7. Mission Objectives
 
+### How They Are Stored
+
+Mission objectives are **not** stored within the map (`.map`) or sprite placement (`.spt`) files. Maps are potentially reusable, so the objectives, enemy aggression levels, and available ammo are defined at the **campaign structure** level.
+
+* **In the Original Game**: These values were likely hard-coded into the `CF_ENG.EXE` arrays or compiled into `MAIN.CF`.
+* **In OpenFodder**: Objectives are stored externally in campaign JSON files (`.ofc`, like `Cannon Fodder.ofc`). Each `Mission` has an array of `Phases` (maps), and each phase has an `Objectives` JSON array specifying the string titles of required goals (e.g. `["KILL ALL ENEMY", "DESTROY ENEMY BUILDINGS"]`).
+
+### Available Objectives
+
 The phase ends when all active objectives are satisfied:
 
 | Value | Objective | Condition |

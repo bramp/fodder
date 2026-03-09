@@ -27,6 +27,13 @@ The tools are now part of the `fodder_tools` package. To run them:
 
 To run the game, you need the original assets. You can extract them using the provided tools.
 
+First, clone the OpenFodder campaign data (contains mission objectives, aggression
+levels, and demo data):
+
+```bash
+git clone https://github.com/OpenFodder/data.git vendor/openfodder-data
+```
+
 #### Cannon Fodder 1
 
 ```bash
@@ -38,7 +45,7 @@ dart run packages/fodder_tools/bin/extract.dart -i ${SRC?}/CF_ENG.DAT -o ${SRC?}
 
 # Extract sprites, maps, and audio
 dart run packages/fodder_tools/bin/sprites.dart -i ${SRC?}_Extracted -o ${OUT?}/sprites
-dart run packages/fodder_tools/bin/maps.dart    -i ${SRC?}_Extracted -o ${OUT?}/maps
+dart run packages/fodder_tools/bin/maps.dart    -i ${SRC?}_Extracted -o ${OUT?}/maps -c 'vendor/openfodder-data/Campaigns/Cannon Fodder.ofc'
 dart run packages/fodder_tools/bin/audio.dart   -i ${SRC?}_Extracted -o ${OUT?}/audio
 ```
 

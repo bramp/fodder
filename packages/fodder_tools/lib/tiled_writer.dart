@@ -1,3 +1,4 @@
+import 'package:fodder_tools/campaign_reader.dart';
 import 'package:fodder_tools/map_reader.dart';
 import 'package:fodder_tools/spt_reader.dart';
 import 'package:fodder_tools/terrain_data.dart';
@@ -97,6 +98,7 @@ String generateTmx({
   required MapData map,
   required String tilesetTsxFilename,
   List<SptSprite> sprites = const [],
+  CampaignPhase? campaignPhase,
 }) {
   // Split sprites into spawn entities and environment decorations.
   final spawnSprites = sprites
@@ -123,7 +125,36 @@ String generateTmx({
       'infinite="0" '
       'nextlayerid="$nextLayerId" nextobjectid="$nextObjectId">',
     )
-    ..writeln(' <tileset firstgid="1" source="$tilesetTsxFilename"/>')
+    ..writeln(' <tileset firstgid="1" source="$tilesetTsxFilename"/>');
+
+  // --- Map-level properties (objectives, aggression, names) ---
+  if (campaignPhase != null) {
+    buf
+      ..writeln(' <properties>')
+      ..writeln(
+        '  <property name="aggressionMax" type="int"'
+        ' value="${campaignPhase.aggressionMax}"/>',
+      )
+      ..writeln(
+        '  <property name="aggressionMin" type="int"'
+        ' value="${campaignPhase.aggressionMin}"/>',
+      )
+      ..writeln(
+        '  <property name="missionName"'
+        ' value="${_xmlEscape(campaignPhase.missionName)}"/>',
+      )
+      ..writeln(
+        '  <property name="objectives"'
+        ' value="${campaignPhase.objectives.join(',')}"/>',
+      )
+      ..writeln(
+        '  <property name="phaseName"'
+        ' value="${_xmlEscape(campaignPhase.phaseName)}"/>',
+      )
+      ..writeln(' </properties>');
+  }
+
+  buf
     // --- Tile layer ---
     ..writeln(
       ' <layer id="1" name="Ground" '
@@ -227,3 +258,12 @@ String generateTmx({
   buf.writeln('</map>');
   return buf.toString();
 }
+
+/// Escapes special XML characters in attribute values.
+// TODO(bramp): Use a proper XML library instead of hand-rolling this.
+String _xmlEscape(String input) => input
+    .replaceAll('&', '&amp;')
+    .replaceAll('"', '&quot;')
+    .replaceAll("'", '&apos;')
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;');

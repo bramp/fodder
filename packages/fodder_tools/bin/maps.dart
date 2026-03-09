@@ -5,6 +5,7 @@ import 'dart:typed_data';
 
 import 'package:args/args.dart';
 import 'package:fodder_tools/bht_reader.dart';
+import 'package:fodder_tools/campaign_reader.dart';
 import 'package:fodder_tools/dat_reader.dart';
 import 'package:fodder_tools/hit_reader.dart';
 import 'package:fodder_tools/map_reader.dart';
@@ -52,6 +53,14 @@ void main(List<String> arguments) {
       help: 'Output directory for Tiled files.',
       defaultsTo: 'output/maps',
     )
+    ..addOption(
+      'campaign',
+      abbr: 'c',
+      help:
+          'Path to an OpenFodder .ofc campaign JSON file. '
+          'When provided, map-level properties (objectives, '
+          'aggression, names) are embedded in each .tmx.',
+    )
     ..addFlag('help', abbr: 'h', negatable: false, help: 'Show usage.');
 
   final args = parser.parse(arguments);
@@ -65,6 +74,22 @@ void main(List<String> arguments) {
   final outputDir = Directory(args['output'] as String);
   if (!outputDir.existsSync()) {
     outputDir.createSync(recursive: true);
+  }
+
+  // Load campaign data if provided.
+  final campaignPath = args['campaign'] as String?;
+  var campaignLookup = <String, CampaignPhase>{};
+  if (campaignPath != null) {
+    final campaignFile = File(campaignPath);
+    if (!campaignFile.existsSync()) {
+      print('Error: campaign file not found: $campaignPath');
+      exit(1);
+    }
+    campaignLookup = parseCampaignJson(
+      campaignFile.readAsStringSync(),
+      warn: (msg) => _warn('campaign', msg),
+    );
+    print('Loaded ${campaignLookup.length} phases from campaign.');
   }
 
   // Resolve file access — archive or pre-extracted directory.
@@ -252,6 +277,8 @@ void main(List<String> arguments) {
       map: map,
       tilesetTsxFilename: tsxFilename,
       sprites: sprites,
+      campaignPhase:
+          campaignLookup[p.basenameWithoutExtension(mapFilename).toLowerCase()],
     );
     final tmxFilename = '${p.basenameWithoutExtension(mapFilename)}.tmx';
     File(p.join(outputDir.path, tmxFilename)).writeAsStringSync(tmx);

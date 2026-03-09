@@ -414,6 +414,7 @@ Legend: ✅ = implemented, 🔶 = partial, ❌ = not started
 ### 4.15 Mission Objectives
 
 - [ ] Objective system: phase ends when all objectives satisfied
+- [x] Defined `MissionObjective` enum attached to `LevelMap`
 - [ ] Kill All Enemy (1): all enemy sprites dead
 - [ ] Destroy Enemy Buildings (2): all doors/computers destroyed
 - [ ] Rescue Hostages (3): `mHostage_Count = 0`
