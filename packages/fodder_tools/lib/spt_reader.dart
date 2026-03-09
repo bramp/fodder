@@ -125,7 +125,8 @@ enum SpriteType {
   hostageRescueTent(73),
 
   /// Enemy leader (must be killed to complete mission).
-  enemyLeader(106);
+  enemyLeader(106)
+  ;
 
   const SpriteType(this.value);
 
@@ -133,7 +134,9 @@ enum SpriteType {
   final int value;
 
   /// Index for fast lookup by [value].
-  static final _byValue = {for (final t in values) t.value: t};
+  static final Map<int, SpriteType> _byValue = {
+    for (final t in values) t.value: t,
+  };
 
   /// Returns the [SpriteType] for the given integer [value], or `null`
   /// if the value is not in the known set.
@@ -149,7 +152,7 @@ enum SpriteType {
 
   /// Returns `true` if this sprite type is a static environment decoration
   /// (shrubs, trees, roofs, snowmen) rather than a dynamic entity.
-  /// TODO(bramp): Why exactly is this needed here?
+  // TODO(bramp): Why exactly is this needed here?
   bool get isEnvironment =>
       this == shrub ||
       this == tree ||
@@ -192,9 +195,9 @@ List<SptSprite> parseSpt(Uint8List data, {void Function(String)? warn}) {
   for (var i = 0; i < count; i++) {
     final offset = i * 10;
     // Skip direction (offset+0) and padding (offset+2).
-    final rawX = view.getUint16(offset + 4, Endian.big);
-    final rawY = view.getUint16(offset + 6, Endian.big);
-    final type = view.getUint16(offset + 8, Endian.big);
+    final rawX = view.getUint16(offset + 4);
+    final rawY = view.getUint16(offset + 6);
+    final type = view.getUint16(offset + 8);
 
     // OpenFodder adds 0x10 to the stored X when loading (see
     // cOriginalMap::loadCF1Spt: `Sprite->field_0 = ax + 0x10`).

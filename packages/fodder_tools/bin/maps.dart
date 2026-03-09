@@ -1,5 +1,3 @@
-// ignore_for_file: avoid_print, CLI tool uses print for user output.
-
 import 'dart:io';
 import 'dart:typed_data';
 
@@ -65,9 +63,9 @@ void main(List<String> arguments) {
 
   final args = parser.parse(arguments);
   if (args['help'] as bool) {
-    print('Exports Cannon Fodder maps to Tiled (.tmx/.tsx) format.\n');
-    print('Usage: dart run fodder_tools:maps [options]\n');
-    print(parser.usage);
+    stdout.writeln('Exports Cannon Fodder maps to Tiled (.tmx/.tsx) format.\n');
+    stdout.writeln('Usage: dart run fodder_tools:maps [options]\n');
+    stdout.writeln(parser.usage);
     return;
   }
 
@@ -82,14 +80,14 @@ void main(List<String> arguments) {
   if (campaignPath != null) {
     final campaignFile = File(campaignPath);
     if (!campaignFile.existsSync()) {
-      print('Error: campaign file not found: $campaignPath');
+      stdout.writeln('Error: campaign file not found: $campaignPath');
       exit(1);
     }
     campaignLookup = parseCampaignJson(
       campaignFile.readAsStringSync(),
       warn: (msg) => _warn('campaign', msg),
     );
-    print('Loaded ${campaignLookup.length} phases from campaign.');
+    stdout.writeln('Loaded ${campaignLookup.length} phases from campaign.');
   }
 
   // Resolve file access — archive or pre-extracted directory.
@@ -101,7 +99,7 @@ void main(List<String> arguments) {
   if (extractedPath != null) {
     final dir = Directory(extractedPath);
     if (!dir.existsSync()) {
-      print('Error: directory not found: $extractedPath');
+      stdout.writeln('Error: directory not found: $extractedPath');
       exit(1);
     }
     getFile = (f) => File(p.join(dir.path, f)).readAsBytesSync();
@@ -114,13 +112,13 @@ void main(List<String> arguments) {
   } else {
     final datPath = args['dat'] as String?;
     if (datPath == null) {
-      print('Error: Provide either --dat or --input.');
-      print(parser.usage);
+      stdout.writeln('Error: Provide either --dat or --input.');
+      stdout.writeln(parser.usage);
       exit(1);
     }
     final datFile = File(datPath);
     if (!datFile.existsSync()) {
-      print('Error: DAT not found: ${datFile.path}');
+      stdout.writeln('Error: DAT not found: ${datFile.path}');
       exit(1);
     }
     final reader = DatReader(datFile)..read();
@@ -135,11 +133,11 @@ void main(List<String> arguments) {
     ..sort();
 
   if (mapFiles.isEmpty) {
-    print('No .map files found.');
+    stdout.writeln('No .map files found.');
     exit(1);
   }
 
-  print('Found ${mapFiles.length} map files.');
+  stdout.writeln('Found ${mapFiles.length} map files.');
 
   // Cache: terrain prefix → tileset PNG already written.
   final exportedTilesets = <String, String>{};
@@ -174,14 +172,14 @@ void main(List<String> arguments) {
     // Export tileset PNG + TSX once per unique block combination.
     if (!exportedTilesets.containsKey(blockKey)) {
       if (!hasFile(map.baseBlockFilename)) {
-        print(
+        stdout.writeln(
           '  Warning: base block not found: ${map.baseBlockFilename} '
           '(skipping $mapFilename)',
         );
         continue;
       }
       if (!hasFile(map.subBlockFilename)) {
-        print(
+        stdout.writeln(
           '  Warning: sub block not found: ${map.subBlockFilename} '
           '(skipping $mapFilename)',
         );
@@ -224,7 +222,7 @@ void main(List<String> arguments) {
             warn: (msg) => _warn(resolvedName, msg),
           );
         } else {
-          print(
+          stdout.writeln(
             '  Warning: .bht files not found for $resolvedName '
             '($baseBhtName / $subBhtName) — sub-tile masks will be empty.',
           );
@@ -237,7 +235,7 @@ void main(List<String> arguments) {
           warn: (msg) => _warn(resolvedName, msg),
         );
       } else {
-        print(
+        stdout.writeln(
           '  Warning: .hit files not found for $resolvedName '
           '($baseHitName / $subHitName) — skipping terrain data.',
         );
@@ -255,7 +253,7 @@ void main(List<String> arguments) {
       File(p.join(outputDir.path, tsxFilename)).writeAsStringSync(tsx);
 
       exportedTilesets[blockKey] = tsxFilename;
-      print('  Tileset: $pngFilename + $tsxFilename ($resolvedName)');
+      stdout.writeln('  Tileset: $pngFilename + $tsxFilename ($resolvedName)');
     }
 
     // Export .tmx map.
@@ -270,7 +268,7 @@ void main(List<String> arguments) {
         warn: (msg) => _warn(sptFilename, msg),
       );
     } else {
-      print('  Warning: .spt file not found: $sptFilename');
+      stdout.writeln('  Warning: .spt file not found: $sptFilename');
     }
 
     final tmx = generateTmx(
@@ -285,5 +283,5 @@ void main(List<String> arguments) {
     mapCount++;
   }
 
-  print('Exported $mapCount maps to ${outputDir.path}');
+  stdout.writeln('Exported $mapCount maps to ${outputDir.path}');
 }

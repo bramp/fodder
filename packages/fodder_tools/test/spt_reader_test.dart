@@ -14,11 +14,11 @@ Uint8List _buildSptBytes(List<(int, int, int, int, int)> entries) {
     final (direction, padding, x, y, type) = entries[i];
     final offset = i * 10;
     view
-      ..setUint16(offset, direction, Endian.big)
-      ..setUint16(offset + 2, padding, Endian.big)
-      ..setUint16(offset + 4, x, Endian.big)
-      ..setUint16(offset + 6, y, Endian.big)
-      ..setUint16(offset + 8, type, Endian.big);
+      ..setUint16(offset, direction)
+      ..setUint16(offset + 2, padding)
+      ..setUint16(offset + 4, x)
+      ..setUint16(offset + 6, y)
+      ..setUint16(offset + 8, type);
   }
   return data;
 }

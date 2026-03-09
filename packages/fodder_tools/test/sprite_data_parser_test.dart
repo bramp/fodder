@@ -1,7 +1,6 @@
-import 'package:test/test.dart';
-
 import 'package:fodder_tools/sprite_data_parser.dart';
 import 'package:fodder_tools/sprite_frame.dart';
+import 'package:test/test.dart';
 
 void main() {
   group('SpriteDataParser', () {

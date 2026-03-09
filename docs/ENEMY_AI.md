@@ -73,7 +73,7 @@ When a new enemy is created dynamically:
   random direction before basic AI kicks in
 - Initial target delay: a negative `field_5E` value (−random(0..255) − 0x78) —
   prevents immediate targeting of players
-- Aggression: assigned via the ping-pong system (see [§4](#4-aggression-system))
+- Aggression: assigned via the ping-pong system (see [§4.2](#42-per-enemy-assignment-ping-pong))
 
 ---
 
@@ -118,21 +118,50 @@ targeting function:
 
 ## 4. Aggression System
 
-Each mission phase defines an aggression **range** (min, max). The default is
-`{ 4, 8 }`. Aggression is assigned to enemies via a **ping-pong** pattern:
+### 4.1 Campaign configuration
+
+Each mission phase defines an aggression **range** (`aggressionMin`,
+`aggressionMax`) in the `.ofc` campaign JSON:
+
+```json
+"Aggression": [4, 8]
+```
+
+The first element is `min`, the second is `max`. If absent, the default is
+`{ min: 4, max: 8 }`. Higher values produce harder enemies — faster movement,
+quicker spawning, and more accurate targeting.
+
+Three derived values are computed at phase load (`Sprite_Aggression_Set()`):
+
+| Variable | Formula | Purpose |
+| -------- | ------- | ------- |
+| `AggressionMin` | campaign min | Lower bound for ping-pong |
+| `AggressionMax` | campaign max | Upper bound for ping-pong (can escalate) |
+| `AggressionAverage` | `(min + max) / 2` | Threshold for movement / targeting checks |
+
+### 4.2 Per-enemy assignment (ping-pong)
+
+Individual enemies receive aggression via a **ping-pong** pattern:
 
 ```
-Next starts at average = (min + max) / 2
-Each enemy gets Next as their aggression
+Next starts at AggressionAverage
+Each enemy gets Next as their aggression (stored in field_62)
 Next += Increment (starts at +1)
-When Next reaches max → Increment flips to −1
-When Next reaches min → Increment flips to +1
+When Next reaches AggressionMax → Increment flips to −1
+When Next reaches AggressionMin → Increment flips to +1
 ```
 
 So enemies on the same map have **varying** aggression, spread evenly across
 the configured range.
 
-### 4.1 Aggression effects
+### 4.3 Aggression escalation
+
+Every **16** dynamically spawned enemies (tracked by a counter masked with
+`0x0F`), `AggressionMax` increments by 1, up to a hard cap of **0x1E (30)**.
+This means the mission gets progressively harder the longer the player takes,
+even if the campaign-configured max started low.
+
+### 4.4 Aggression effects summary
 
 | Aspect | Low aggression (0–4) | High aggression (10–20) |
 | ------ | -------------------- | ----------------------- |
@@ -141,7 +170,64 @@ the configured range.
 | Bullet range | Short (8 ticks alive) | Long (10–16 ticks alive) |
 | Bullet speed | 60 | 72–90 |
 | Building spawn delay | Long | Short |
+| Movement targeting | Scattered (±63 px) | Precise (±31 px) |
+| Spear damage | 8–9 | 9–12 (capped at 16) |
+| Cannon fire delay | ~0x321 ticks | ~0x321 + aggression ticks |
+| Helicopter accumulation | Slow | +1 + AggressionAverage per cycle |
 | Grenade chance | Same (1/32) | Same (1/32) |
+
+### 4.5 Detailed effect breakdowns
+
+**Movement speed** (per-enemy, `field_36`):
+```
+speed = 0x0C + field_62
+if speed > 0x1A: speed = 0x1A   // cap at 26
+```
+
+**Building spawn delay** (uses phase-level `AggressionMax`):
+```
+delay = (0x14 − AggressionMax) × 8 + random(0..15)
+if AggressionMax ≥ 0x14: delay = random(0..15)   // near-instant
+```
+
+**Movement targeting precision** (uses phase-level `AggressionAverage`):
+When an enemy's walk target is set, random scatter is added to both X and Y.
+The scatter range depends on the average aggression for the phase:
+```
+if AggressionAverage < 5:
+    scatter = random & 0x3F    // ±0..63 pixels — wandering, unfocused
+else:
+    scatter = random & 0x1F    // ±0..31 pixels — tighter targeting
+```
+This same threshold applies to **homing missile turrets** — low aggression
+turrets are less accurate.
+
+**Spear projectile damage** (per-enemy, `field_62`):
+```
+damage = (field_62 >> 3) + 8    // range 8–16
+if damage > 0x10: damage = 0x10 // cap at 16
+```
+
+**Cannon fire delay** (per-enemy, `field_62`):
+```
+fire_delay = 0x321 + field_62   // higher aggression = slightly longer base
+                                // but enemies fire more often overall
+```
+
+**Initial fire stagger** (at map load):
+```
+for each enemy sprite:
+    fire_delay += 0x0A          // 10-tick stagger per enemy
+    if field_62 > 4:
+        fire_delay = 0          // high-aggression enemies skip stagger
+```
+
+**Helicopter aggression accumulation** (enemy helicopters):
+```
+field_62 += 1 + AggressionAverage
+```
+Helicopter aggression grows each evaluation cycle, making enemy helicopters
+progressively more dangerous over time.
 
 See [WEAPONS.md](WEAPONS.md) for detailed bullet/grenade mechanics.
 
@@ -249,7 +335,7 @@ Simple push — no formation or flocking.
 ### 7.1 Basic enemy soldier (type 5) — Gun + Grenades
 
 **Gun (primary):**
-- Fire delay: based on aggression (see [§4.1](#41-aggression-effects))
+- Fire delay: based on aggression (see [§4.4](#44-aggression-effects-summary))
 - Bullet speed: `60 + aggression` (range 60–90)
 - Bullet lifetime: `(aggression >> 3) + 8` ticks (range 8–16), capped at 16
 - Bullet spread: fixed at 24

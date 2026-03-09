@@ -1,4 +1,4 @@
-// ignore_for_file: avoid_print, CLI tool uses print for user output.
+import 'dart:io';
 
 import 'package:fodder_tools/sprite_frame.dart';
 import 'package:fodder_tools/sprite_names.dart';
@@ -59,11 +59,11 @@ void exportCoverage(List<SpriteSheetType> sheets) {
 
   for (final datFile in byDatFile.keys.toList()..sort()) {
     final rects = byDatFile[datFile]!;
-    print('=== $datFile (${rects.length} frames) ===\n');
+    stdout.writeln('=== $datFile (${rects.length} frames) ===\n');
 
     _reportOverlaps(rects);
     _reportGaps(rects);
-    print('');
+    stdout.writeln();
   }
 }
 
@@ -83,17 +83,17 @@ void _reportOverlaps(List<FrameRect> rects) {
   }
 
   if (exactDups.isEmpty) {
-    print('  No duplicate frames.\n');
+    stdout.writeln('  No duplicate frames.\n');
   } else {
-    print('  Duplicate frames (identical pixel rectangle):');
+    stdout.writeln('  Duplicate frames (identical pixel rectangle):');
     for (final entry in exactDups.entries) {
       final (x, y, w, h) = entry.key;
-      print('    rect ($x,$y ${w}x$h):');
+      stdout.writeln('    rect ($x,$y ${w}x$h):');
       for (final r in entry.value) {
-        print('      ${r.label}');
+        stdout.writeln('      ${r.label}');
       }
     }
-    print('');
+    stdout.writeln();
   }
 
   // Find partial overlaps (different rect but intersecting pixels).
@@ -108,7 +108,7 @@ void _reportOverlaps(List<FrameRect> rects) {
         final aLabel = uniqueRects[i].value.first.label;
         final bLabel = uniqueRects[j].value.first.label;
         partialOverlaps.add(
-          '    ($ax,$ay ${aw}x$ah) ${aLabel} ∩ '
+          '    ($ax,$ay ${aw}x$ah) $aLabel ∩ '
           '($bx,$by ${bw}x$bh) $bLabel',
         );
       }
@@ -116,11 +116,11 @@ void _reportOverlaps(List<FrameRect> rects) {
   }
 
   if (partialOverlaps.isNotEmpty) {
-    print('  Partial overlaps (intersecting but different rects):');
+    stdout.writeln('  Partial overlaps (intersecting but different rects):');
     for (final line in partialOverlaps) {
-      print(line);
+      stdout.writeln(line);
     }
-    print('');
+    stdout.writeln();
   }
 }
 
@@ -152,7 +152,7 @@ void _reportGaps(List<FrameRect> rects) {
 
   final coveredCount = covered.where((b) => b).length;
   final pct = (coveredCount * 100.0 / totalPixels).toStringAsFixed(1);
-  print(
+  stdout.writeln(
     '  Coverage: $coveredCount / $totalPixels pixels '
     '($pct%) in ${sheetW}x$sheetH sheet',
   );
@@ -175,7 +175,7 @@ void _reportGaps(List<FrameRect> rects) {
   }
 
   if (gapRuns.isEmpty) {
-    print('  No uncovered pixels.\n');
+    stdout.writeln('  No uncovered pixels.\n');
     return;
   }
 
@@ -200,12 +200,12 @@ void _reportGaps(List<FrameRect> rects) {
   }
 
   if (fullWidthGaps.isNotEmpty) {
-    print('  Uncovered full rows:');
+    stdout.writeln('  Uncovered full rows:');
     for (final gap in fullWidthGaps) {
       if (gap.startY == gap.endY) {
-        print('    row ${gap.startY}');
+        stdout.writeln('    row ${gap.startY}');
       } else {
-        print('    rows ${gap.startY}–${gap.endY}');
+        stdout.writeln('    rows ${gap.startY}–${gap.endY}');
       }
     }
   }
@@ -218,6 +218,6 @@ void _reportGaps(List<FrameRect> rects) {
     }
   }
   if (partialGapRows.isNotEmpty) {
-    print('  ${partialGapRows.length} rows with partial gaps');
+    stdout.writeln('  ${partialGapRows.length} rows with partial gaps');
   }
 }

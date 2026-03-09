@@ -104,7 +104,8 @@ enum GfxType {
   pstuff,
 
   /// Unknown type.
-  unknown;
+  unknown
+  ;
 
   /// The .dat filename this [GfxType] maps to.
   String get datFileName => switch (this) {

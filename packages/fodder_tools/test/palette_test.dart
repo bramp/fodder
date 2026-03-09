@@ -1,10 +1,8 @@
 import 'dart:typed_data';
 
-import 'package:test/test.dart';
-
 // Relative import needed since tool/ packages lack pubspec.yaml.
-// ignore: avoid_relative_lib_imports
 import 'package:fodder_tools/palette.dart';
+import 'package:test/test.dart';
 
 void main() {
   group('Palette', () {

@@ -22,7 +22,7 @@ melos:
 
   scripts:
     analyze:
-      run: melos exec -c 1 -- "flutter analyze --no-fatal-infos"
+      run: melos exec -c 1 -- "flutter analyze"
       description: Run `flutter analyze` in all packages.
 
     test:

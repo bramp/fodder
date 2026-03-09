@@ -1,9 +1,7 @@
 import 'dart:convert';
 
-import 'package:test/test.dart';
-
-// ignore: avoid_relative_lib_imports // CLI tool
 import 'package:fodder_tools/atlas_writer.dart';
+import 'package:test/test.dart';
 
 void main() {
   group('generateAtlasJson', () {

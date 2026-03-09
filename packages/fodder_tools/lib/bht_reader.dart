@@ -14,10 +14,10 @@ const _baseBhtTileCount = 240;
 const _subBhtTileCount = 160;
 
 /// Expected size of a base `.bht` file.
-const _expectedBaseBhtSize = _baseBhtTileCount * bhtBytesPerTile; // 1920
+const int _expectedBaseBhtSize = _baseBhtTileCount * bhtBytesPerTile; // 1920
 
 /// Expected size of a sub `.bht` file.
-const _expectedSubBhtSize = _subBhtTileCount * bhtBytesPerTile; // 1280
+const int _expectedSubBhtSize = _subBhtTileCount * bhtBytesPerTile; // 1280
 
 /// Reads a `.bht` (BHIT) sub-tile bitmask file.
 ///

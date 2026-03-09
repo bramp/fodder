@@ -1,5 +1,3 @@
-// ignore_for_file: avoid_print, CLI tool uses print for user output.
-
 import 'dart:io';
 import 'dart:typed_data';
 
@@ -151,8 +149,8 @@ void main(List<String> arguments) {
 
   final args = parser.parse(arguments);
   if (args['help'] as bool) {
-    print('Usage: dart run tool/sprites/main.dart [options]');
-    print(parser.usage);
+    stdout.writeln('Usage: dart run tool/sprites/main.dart [options]');
+    stdout.writeln(parser.usage);
     return;
   }
 
@@ -171,7 +169,7 @@ void main(List<String> arguments) {
   if (extractedPath != null) {
     final dir = Directory(extractedPath);
     if (!dir.existsSync()) {
-      print('Error: directory not found: $extractedPath');
+      stdout.writeln('Error: directory not found: $extractedPath');
       return;
     }
     getFile = (f) => File(p.join(dir.path, f)).readAsBytesSync();
@@ -179,7 +177,7 @@ void main(List<String> arguments) {
   } else {
     final datFile = File(args['dat'] as String);
     if (!datFile.existsSync()) {
-      print('Error: DAT not found: ${datFile.path}');
+      stdout.writeln('Error: DAT not found: ${datFile.path}');
       return;
     }
     final reader = DatReader(datFile)..read();
@@ -283,7 +281,7 @@ void main(List<String> arguments) {
     }
   }
 
-  print('Exported $exported images to ${outputDir.path}');
+  stdout.writeln('Exported $exported images to ${outputDir.path}');
 
   // --- Sprite atlas JSONs ---
   _exportSpriteAtlases(hasFile: hasFile, outputDir: outputDir);
@@ -365,7 +363,7 @@ int _export4Bit(
     '${p.basenameWithoutExtension(filename)}.png',
   );
   File(outPath).writeAsBytesSync(png);
-  print('  $outPath (${width}x$height, $label)');
+  stdout.writeln('  $outPath (${width}x$height, $label)');
   return 1;
 }
 
@@ -377,7 +375,7 @@ int _export8BitLinear(
 ) {
   final expectedSize = spec.offset + spec.count * 3;
   if (data.length != expectedSize) {
-    print(
+    stdout.writeln(
       '  Warning: $filename size mismatch. Expected $expectedSize bytes, got ${data.length}.',
     );
   }
@@ -403,7 +401,7 @@ int _export8BitLinear(
     '${p.basenameWithoutExtension(filename)}.png',
   );
   File(outPath).writeAsBytesSync(png);
-  print('  $outPath (${width}x$height, 8-bit linear)');
+  stdout.writeln('  $outPath (${width}x$height, 8-bit linear)');
   return 1;
 }
 
@@ -414,7 +412,7 @@ int _exportPlanarModeX(
   Directory outputDir,
 ) {
   if (data.length < spec.offset + spec.count * 3) {
-    print(
+    stdout.writeln(
       '  Warning: $filename size too small. Expected at least ${spec.offset + spec.count * 3} bytes, got ${data.length}.',
     );
   }
@@ -435,7 +433,7 @@ int _exportPlanarModeX(
     '${p.basenameWithoutExtension(filename)}.png',
   );
   File(outPath).writeAsBytesSync(png);
-  print('  $outPath (${width}x$height, planar Mode X)');
+  stdout.writeln('  $outPath (${width}x$height, planar Mode X)');
   return 1;
 }
 
@@ -448,7 +446,7 @@ int _exportTile(
 }) {
   const standardSize = 0xFD00; // 64000 pixels (0xFA00) + 256 colors (0x300)
   if (data.length != standardSize) {
-    print(
+    stdout.writeln(
       '  Warning: $filename size mismatch. Expected $standardSize bytes, got ${data.length}.',
     );
     return 0;
@@ -475,7 +473,7 @@ int _exportTile(
     '${p.basenameWithoutExtension(filename)}.png',
   );
   File(outPath).writeAsBytesSync(png);
-  print('  $outPath (${width}x$height, $label)');
+  stdout.writeln('  $outPath (${width}x$height, $label)');
   return 1;
 }
 
@@ -637,9 +635,9 @@ void _exportSpriteAtlases({
 
     final outPath = p.join(outputDir.path, jsonFilename);
     File(outPath).writeAsStringSync(json);
-    print('  $outPath (${entries.length} sprites)');
+    stdout.writeln('  $outPath (${entries.length} sprites)');
     atlasCount++;
   }
 
-  print('Generated $atlasCount atlas JSON files in ${outputDir.path}');
+  stdout.writeln('Generated $atlasCount atlas JSON files in ${outputDir.path}');
 }

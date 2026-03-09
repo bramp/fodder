@@ -61,9 +61,11 @@ Future<void> main(List<String> arguments) async {
     final results = parser.parse(arguments);
 
     if (results['help'] as bool) {
-      print('Converts Cannon Fodder .VOC audio files to .WAV format.\n');
-      print('Usage: dart run bin/audio.dart [options]\n');
-      print(parser.usage);
+      stdout.writeln(
+        'Converts Cannon Fodder .VOC audio files to .WAV format.\n',
+      );
+      stdout.writeln('Usage: dart run bin/audio.dart [options]\n');
+      stdout.writeln(parser.usage);
       exit(0);
     }
 
@@ -71,7 +73,7 @@ Future<void> main(List<String> arguments) async {
     final outputDir = Directory(results['output'] as String);
 
     if (!inputDir.existsSync()) {
-      print('Error: Input directory does not exist.');
+      stdout.writeln('Error: Input directory does not exist.');
       exit(1);
     }
 
@@ -79,19 +81,19 @@ Future<void> main(List<String> arguments) async {
       outputDir.createSync(recursive: true);
     }
 
-    print('Converting ${fileMapping.length} voice files...');
+    stdout.writeln('Converting ${fileMapping.length} voice files...');
     for (final entry in fileMapping.entries) {
       final inputFile = File(p.join(inputDir.path, entry.key));
       final outputFile = File(p.join(outputDir.path, entry.value));
 
       if (!inputFile.existsSync()) {
-        print(
+        stdout.writeln(
           'Warning: Expected file ${entry.key} not found in input directory.',
         );
         continue;
       }
 
-      print('Converting ${entry.key} -> ${entry.value} ...');
+      stdout.writeln('Converting ${entry.key} -> ${entry.value} ...');
 
       final result = await Process.run('ffmpeg', [
         '-y', // Overwrite output files without asking
@@ -100,15 +102,15 @@ Future<void> main(List<String> arguments) async {
       ]);
 
       if (result.exitCode != 0) {
-        print('Error converting \${entry.key}:');
-        print(result.stderr);
+        stdout.writeln(r'Error converting ${entry.key}:');
+        stdout.writeln(result.stderr);
       }
     }
 
-    print('Audio conversion complete.');
+    stdout.writeln('Audio conversion complete.');
   } on FormatException catch (e) {
-    print('Error: $e\n');
-    print(parser.usage);
+    stdout.writeln('Error: $e\n');
+    stdout.writeln(parser.usage);
     exit(1);
   }
 }

@@ -1,5 +1,3 @@
-// ignore_for_file: avoid_print, CLI tool uses print for user output.
-
 import 'dart:convert';
 import 'dart:io';
 
@@ -9,16 +7,16 @@ import 'package:path/path.dart' as p;
 /// Generates a self-contained HTML audit page with sprite previews.
 void exportHtml(List<SpriteSheetType> sheets, Directory spriteDir) {
   if (!spriteDir.existsSync()) {
-    print('Error: sprite directory not found: ${spriteDir.path}');
+    stdout.writeln('Error: sprite directory not found: ${spriteDir.path}');
     exit(1);
   }
 
   final builder = _HtmlBuilder(spriteDir);
   final html = builder.build();
 
-  final outputPath = 'sprite_audit.html';
+  const outputPath = 'sprite_audit.html';
   File(outputPath).writeAsStringSync(html);
-  print('Wrote $outputPath (${html.length} bytes)');
+  stdout.writeln('Wrote $outputPath (${html.length} bytes)');
 }
 
 class _HtmlBuilder {
@@ -141,7 +139,7 @@ function toggleAnchors() {
       '<p>Mapped frames are darkened, leaving untouched pixels bright. Hover mapped areas to see borders.</p>',
     );
 
-    final scale = 2;
+    const scale = 2;
     final dw = imgW * scale;
 
     buf.writeln('<div class="coverage-map">');
@@ -231,8 +229,8 @@ function toggleAnchors() {
           final anchorPxX = maxLeft * scale;
           final anchorPxY = maxTop * scale;
 
-          final safeGroup = groupName.replaceAll(RegExp(r'[^a-zA-Z0-9]'), '-');
-          final animName = 'anim-$safeGroup-${cssClass}';
+          final safeGroup = groupName.replaceAll(RegExp('[^a-zA-Z0-9]'), '-');
+          final animName = 'anim-$safeGroup-$cssClass';
 
           buf.writeln('<style>');
           buf.writeln('@keyframes $animName {');
@@ -242,8 +240,8 @@ function toggleAnchors() {
                 framesList[i].value['anchor'] as Map<String, dynamic>?;
             final x = (f['x'] as num).toInt() * scale;
             final y = (f['y'] as num).toInt() * scale;
-            final w = ((f['w'] as num).toInt() * scale).toInt();
-            final h = ((f['h'] as num).toInt() * scale).toInt();
+            final w = (f['w'] as num).toInt() * scale;
+            final h = (f['h'] as num).toInt() * scale;
 
             final ax = anchor != null ? (anchor['x'] as num).toDouble() : 0.5;
             final ay = anchor != null ? (anchor['y'] as num).toDouble() : 0.5;
@@ -317,7 +315,7 @@ function toggleAnchors() {
           'width:${dw}px;height:${dh}px;'
           'background-position:-${x * scale}px -${y * scale}px;'
           'background-size:${bgW}px auto;'
-          '" title="$key ${w}x${h}">'
+          '" title="$key ${w}x$h">'
           '      <div class="anchor-dot" style="left:${ax * 100}%; top:${ay * 100}%;"></div>'
           '    </div>',
         );

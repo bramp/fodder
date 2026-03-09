@@ -1,1 +1,19 @@
 include: ../../analysis_options.yaml
+
+linter:
+  rules:
+    public_member_api_docs: false
+    sort_pub_dependencies: false
+    avoid_print: false
+    lines_longer_than_80_chars: false
+    cascade_invocations: false
+    avoid_dynamic_calls: false
+    missing_whitespace_between_adjacent_strings: false
+    noop_primitive_operations: false
+    unnecessary_ignore: false
+    flutter_style_todos: false
+    no_leading_underscores_for_local_identifiers: false
+    prefer_foreach: false
+    comment_references: false
+    missing_code_block_language_in_doc_comment: false
+    non_constant_identifier_names: false

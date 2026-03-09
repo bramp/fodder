@@ -62,8 +62,8 @@ class MapData {
     _checkGapBytes(data, 0x58, 0x60, 'gap3 (0x58–0x5F)', warn);
 
     final bd = ByteData.sublistView(data);
-    final width = bd.getUint16(0x54, Endian.big);
-    final height = bd.getUint16(0x56, Endian.big);
+    final width = bd.getUint16(0x54);
+    final height = bd.getUint16(0x56);
 
     if (width == 0 || height == 0) {
       throw FormatException('Map dimensions are zero: ${width}x$height');
@@ -90,7 +90,7 @@ class MapData {
     final trackValues = <int>{};
 
     final tiles = List<int>.generate(width * height, (i) {
-      final raw = bd.getUint16(0x60 + i * 2, Endian.big);
+      final raw = bd.getUint16(0x60 + i * 2);
 
       // Check for non-zero bits 9–12 (currently unknown purpose).
       if (raw & _unusedBitsMask != 0) {

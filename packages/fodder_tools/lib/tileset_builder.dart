@@ -8,7 +8,7 @@ import 'package:fodder_tools/png_writer.dart';
 const tilesPerBlk = 240;
 
 /// Total tiles in a combined base + sub tileset.
-const totalTileCount = tilesPerBlk * 2;
+const int totalTileCount = tilesPerBlk * 2;
 
 /// Tile size in pixels.
 const tileSize = 16;

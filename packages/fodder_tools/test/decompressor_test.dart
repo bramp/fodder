@@ -1,7 +1,7 @@
 import 'dart:io';
-import 'package:test/test.dart';
-// ignore: avoid_relative_lib_imports // CLI test tool
+
 import 'package:fodder_tools/dat_reader.dart';
+import 'package:test/test.dart';
 
 void main() {
   /// Verifies every entry in [datPath] decompresses to match [extractedDir].

@@ -16,7 +16,8 @@ enum MissionObjective {
   destroyComputer(7, 'Destroy Computer'),
   getCivilianHome(8, 'Get Civilian Home'),
   activateAllSwitches(9, 'Activate All Switches'), // Cannon Fodder 2
-  rescueHostageCF2(10, 'Rescue Hostage (CF2)'); // Cannon Fodder 2
+  rescueHostageCF2(10, 'Rescue Hostage (CF2)')
+  ; // Cannon Fodder 2
 
   const MissionObjective(this.id, this.title);
 

@@ -1,13 +1,10 @@
 import 'dart:typed_data';
 
-import 'package:test/test.dart';
-
 // Relative imports: tool/ packages lack pubspec.yaml.
-// ignore: avoid_relative_lib_imports
 import 'package:fodder_tools/image_decoder.dart';
 // Relative imports: tool/ packages lack pubspec.yaml.
-// ignore: avoid_relative_lib_imports
 import 'package:fodder_tools/palette.dart';
+import 'package:test/test.dart';
 
 void main() {
   /// Creates a palette with one non-transparent color at the given index.

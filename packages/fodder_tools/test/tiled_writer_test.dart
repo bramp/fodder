@@ -33,7 +33,7 @@ void main() {
     setUp(() {
       // Build a small 3×2 map.
       map = MapData.parse(
-        _buildMapBytes(width: 3, height: 2, tiles: [1, 2, 3, 240, 241, 0xE005]),
+        _buildMapBytes(width: 3, tiles: [1, 2, 3, 240, 241, 0xE005]),
       );
     });
 
@@ -178,11 +178,11 @@ Uint8List _buildMapBytes({
     data[0x10 + i] = subBlock.codeUnitAt(i);
   }
 
-  bd.setUint16(0x54, width, Endian.big);
-  bd.setUint16(0x56, height, Endian.big);
+  bd.setUint16(0x54, width);
+  bd.setUint16(0x56, height);
 
   for (var i = 0; i < tileData.length; i++) {
-    bd.setUint16(0x60 + i * 2, tileData[i], Endian.big);
+    bd.setUint16(0x60 + i * 2, tileData[i]);
   }
 
   return data;

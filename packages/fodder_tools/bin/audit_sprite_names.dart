@@ -1,12 +1,10 @@
-// ignore_for_file: avoid_print, CLI tool uses print for user output.
-
 import 'dart:io';
 
+import 'package:fodder_tools/audit_coverage.dart' as coverage;
+import 'package:fodder_tools/audit_html_export.dart' as html_export;
 import 'package:fodder_tools/sprite_data_parser.dart';
 import 'package:fodder_tools/sprite_frame.dart';
 import 'package:fodder_tools/sprite_names.dart';
-import 'package:fodder_tools/audit_coverage.dart' as coverage;
-import 'package:fodder_tools/audit_html_export.dart' as html_export;
 import 'package:path/path.dart' as p;
 
 /// Audits [sprite_names.dart] against the OpenFodder C++ header file.
@@ -21,21 +19,23 @@ import 'package:path/path.dart' as p;
 /// Pass `--coverage` to report frame overlaps and uncovered pixel regions.
 void main(List<String> args) {
   if (args.contains('--help') || args.contains('-h')) {
-    print('Usage: dart run bin/audit_sprite_names.dart [options]');
-    print('');
-    print('Audits sprite_names.dart against the OpenFodder C++ header.');
-    print('');
-    print('Options:');
-    print(
+    stdout.writeln('Usage: dart run bin/audit_sprite_names.dart [options]');
+    stdout.writeln();
+    stdout.writeln(
+      'Audits sprite_names.dart against the OpenFodder C++ header.',
+    );
+    stdout.writeln();
+    stdout.writeln('Options:');
+    stdout.writeln(
       '  --csv             Emit CSV comparing Dart names with C++ descriptions',
     );
-    print(
+    stdout.writeln(
       '  --html <dir>      Generate visual HTML audit page with sprite previews',
     );
-    print(
+    stdout.writeln(
       '  --coverage        Report frame overlaps and uncovered pixel regions',
     );
-    print('  -h, --help        Show this help message');
+    stdout.writeln('  -h, --help        Show this help message');
     return;
   }
 
@@ -58,11 +58,11 @@ void main(List<String> args) {
 
   final spriteDataFile = File(spriteDataPath);
   if (!spriteDataFile.existsSync()) {
-    print('Error: Could not find $spriteDataPath');
+    stdout.writeln('Error: Could not find $spriteDataPath');
     exit(1);
   }
 
-  print('Parsing sprite data from ${spriteDataFile.path}...\n');
+  stdout.writeln('Parsing sprite data from ${spriteDataFile.path}...\n');
   final sheets = SpriteDataParser.parse(file: spriteDataFile);
 
   if (csvMode) {
@@ -78,8 +78,10 @@ void main(List<String> args) {
   if (htmlMode) {
     final spriteDir = htmlIdx + 1 < args.length ? args[htmlIdx + 1] : null;
     if (spriteDir == null) {
-      print('Usage: --html <sprites-dir>');
-      print('  e.g. --html ../../packages/fodder_assets/assets/cf1/sprites');
+      stdout.writeln('Usage: --html <sprites-dir>');
+      stdout.writeln(
+        '  e.g. --html ../../packages/fodder_assets/assets/cf1/sprites',
+      );
       exit(1);
     }
     html_export.exportHtml(sheets, Directory(spriteDir));
@@ -92,14 +94,18 @@ void main(List<String> args) {
     totalIssues += _auditSheet(sheet);
   }
 
-  print('');
+  stdout.writeln();
   if (totalIssues == 0) {
-    print('All sprite_names.dart entries match the C++ source.');
+    stdout.writeln('All sprite_names.dart entries match the C++ source.');
   } else {
-    print('$totalIssues issue(s) found.');
-    print('');
-    print('Note: CF2 differences are expected — sprite_names.dart uses CF1');
-    print('as the baseline. CF2-only entries or dimension changes are known.');
+    stdout.writeln('$totalIssues issue(s) found.');
+    stdout.writeln();
+    stdout.writeln(
+      'Note: CF2 differences are expected — sprite_names.dart uses CF1',
+    );
+    stdout.writeln(
+      'as the baseline. CF2-only entries or dimension changes are known.',
+    );
     exit(1);
   }
 }
@@ -110,7 +116,7 @@ void main(List<String> args) {
 
 /// Emits a CSV to stdout comparing our Dart names with the C++ descriptions.
 void _exportCsv(List<SpriteSheetType> sheets) {
-  print('sheet,index,dart_name,cpp_description,frames,match');
+  stdout.writeln('sheet,index,dart_name,cpp_description,frames,match');
 
   for (final sheet in sheets) {
     final combined = dartMapForSheet(sheet);
@@ -139,7 +145,7 @@ void _exportCsv(List<SpriteSheetType> sheets) {
           ? 'exact'
           : '';
 
-      print(
+      stdout.writeln(
         '${_csvEscape(sheet.name)},'
         '$hexIdx,'
         '${_csvEscape(dartName)},'
@@ -168,7 +174,7 @@ String _csvEscape(String value) {
 int _auditSheet(SpriteSheetType sheet) {
   final combined = dartMapForSheet(sheet);
   if (combined == null) {
-    print('WARNING: No Dart map for sheet "${sheet.name}"');
+    stdout.writeln('WARNING: No Dart map for sheet "${sheet.name}"');
     return 1;
   }
 
@@ -187,7 +193,7 @@ int _auditSheet(SpriteSheetType sheet) {
       // (padding, unused entries). Only warn if the C++ group has real data.
       final hasData = cppFrames.any((f) => f.width > 0 && f.height > 0);
       if (hasData) {
-        print(
+        stdout.writeln(
           '  MISSING: ${sheet.name}[$hexIdx] '
           '(${cppFrames.length} frames, '
           '${cppFrames.first.width}x${cppFrames.first.height})',
@@ -199,7 +205,7 @@ int _auditSheet(SpriteSheetType sheet) {
 
     // Check frame count.
     if (dartGroup.frameCount != cppFrames.length) {
-      print(
+      stdout.writeln(
         '  MISMATCH: ${sheet.name}[$hexIdx] "${dartGroup.name}" '
         'frame count: dart=${dartGroup.frameCount} '
         'vs cpp=${cppFrames.length}',
@@ -219,7 +225,7 @@ int _auditSheet(SpriteSheetType sheet) {
   for (final idx in combined.keys) {
     if (idx >= sheet.entries.length || sheet.entries[idx].isEmpty) {
       final hexIdx = '0x${idx.toRadixString(16).padLeft(2, '0')}';
-      print(
+      stdout.writeln(
         '  EXTRA: ${sheet.name}[$hexIdx] "${combined[idx]!.name}" '
         'exists in Dart but not in C++',
       );
@@ -228,7 +234,7 @@ int _auditSheet(SpriteSheetType sheet) {
   }
 
   final status = issues == 0 ? 'OK' : '$issues issue(s)';
-  print(
+  stdout.writeln(
     '${sheet.name}: $status '
     '(${sheet.entries.length} cpp groups, '
     '${combined.length} dart entries)',
@@ -286,7 +292,7 @@ int _auditFrame(
   }
 
   if (mismatches.isNotEmpty) {
-    print(
+    stdout.writeln(
       '  MISMATCH: $sheetName[$hexIdx] "${dartGroup.name}" '
       'frame $frameIdx: ${mismatches.join(', ')}',
     );

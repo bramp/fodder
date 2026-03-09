@@ -4,10 +4,10 @@ import 'dart:typed_data';
 const _baseTileCount = 240;
 
 /// Expected file size (in bytes) for base `.hit` files.
-const _expectedBaseHitSize = _baseTileCount * 2; // 480
+const int _expectedBaseHitSize = _baseTileCount * 2; // 480
 
 /// Expected file size (in bytes) for sub `.hit` files.
-const _expectedSubHitSize = 160 * 2; // 320
+const int _expectedSubHitSize = 160 * 2; // 320
 
 /// Maximum valid terrain type value (0x0E = Jump).
 const _maxTerrainType = 0x0E;
@@ -91,7 +91,7 @@ List<int> readHitFile(
 
   final result = List<int>.generate(tileCount, (i) {
     if (i >= entryCount) return 0; // default: Land
-    final raw = bd.getInt16(i * 2, Endian.big);
+    final raw = bd.getInt16(i * 2);
 
     if (raw < 0) {
       negativeCount++;

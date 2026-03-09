@@ -6,7 +6,7 @@ import 'package:test/test.dart';
 
 void main() {
   /// Helper: build a list of all-zero 8-byte masks.
-  List<Uint8List> _zeroMasks(int count) =>
+  List<Uint8List> zeroMasks(int count) =>
       List.generate(count, (_) => Uint8List(bhtBytesPerTile));
 
   group('TileTerrainData', () {
@@ -32,7 +32,7 @@ void main() {
     test('simple positive values become simple tiles', () {
       final result = buildTileTerrainData(
         rawHitValues: [0, 3, 6],
-        bhtMasks: _zeroMasks(3),
+        bhtMasks: zeroMasks(3),
       );
       expect(result.length, 3);
       expect(result[0].primary, 0); // Land
@@ -60,7 +60,7 @@ void main() {
     test('negative value with all-zero mask stays mixed', () {
       final result = buildTileTerrainData(
         rawHitValues: [-32656], // 0x8070 → primary=0, secondary=7
-        bhtMasks: _zeroMasks(1),
+        bhtMasks: zeroMasks(1),
       );
       expect(result[0].isMixed, isTrue);
       expect(result[0].primary, 0);
@@ -82,7 +82,7 @@ void main() {
       final warnings = <String>[];
       buildTileTerrainData(
         rawHitValues: [0, 0, 0],
-        bhtMasks: _zeroMasks(2),
+        bhtMasks: zeroMasks(2),
         warn: warnings.add,
       );
       expect(warnings, contains(contains('lengths do not match')));
@@ -93,7 +93,7 @@ void main() {
       // Raw value 0x0F → primary = 15 > maxTerrainType (14)
       buildTileTerrainData(
         rawHitValues: [0x0F],
-        bhtMasks: _zeroMasks(1),
+        bhtMasks: zeroMasks(1),
         warn: warnings.add,
       );
       expect(warnings, contains(contains('terrain 15')));

@@ -33,12 +33,12 @@ void main() {
       data[0x53] = 0x64; // 'd'
 
       // Width and height (big-endian uint16) at 0x54 and 0x56.
-      bd.setUint16(0x54, width, Endian.big);
-      bd.setUint16(0x56, height, Endian.big);
+      bd.setUint16(0x54, width);
+      bd.setUint16(0x56, height);
 
       // Tile data (big-endian uint16) starting at 0x60.
       for (var i = 0; i < tileData.length; i++) {
-        bd.setUint16(0x60 + i * 2, tileData[i], Endian.big);
+        bd.setUint16(0x60 + i * 2, tileData[i]);
       }
 
       return data;
