@@ -540,7 +540,10 @@ class FodderGame extends FlameGame
   /// Assigns aggression via the ping-pong assigner, wires up walkability grid,
   /// player references, staggered fire delays, and bullet callbacks.
   Future<void> _spawnEnemies(SoldierAnimations enemyAnims) async {
-    final assigner = AggressionAssigner();
+    final assigner = AggressionAssigner(
+      min: levelMap.aggressionMin,
+      max: levelMap.aggressionMax,
+    );
     final grid = levelMap.walkabilityGrid;
     var fireDelay = 0.0;
     const fireDelayIncrement = 0.5; // ~0x0A ticks ≈ 0.5 s
@@ -552,6 +555,7 @@ class FodderGame extends FlameGame
       final enemy = EnemySoldier(soldierAnimations: enemyAnims)
         ..position = spawn.position.clone()
         ..aggression = agg
+        ..aggressionAverage = assigner.average
         ..initialFireDelay = agg > 4 ? 0 : fireDelay
         ..walkabilityGrid = grid
         ..players = playerSoldiers

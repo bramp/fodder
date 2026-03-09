@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flame/components.dart';
 
 import 'package:fodder_game/game/components/bullet.dart';
@@ -56,6 +58,12 @@ class EnemySoldier extends Soldier {
   /// Aggression level (typically 4–8). Affects speed, fire rate, bullet range.
   int aggression = 6;
 
+  /// Phase-level aggression average. Controls movement-targeting scatter.
+  ///
+  /// When `aggressionAverage < 5`, enemies scatter more widely around the
+  /// player (±63 px) instead of tightly (±31 px).
+  int aggressionAverage = 6;
+
   /// Initial fire delay (seconds) before this enemy can fire for the first
   /// time. Set at spawn time for staggered fire timers (Step 9).
   double initialFireDelay = 0;
@@ -80,6 +88,14 @@ class EnemySoldier extends Soldier {
 
   /// Last known safe (non-drop) position, used to restore on bounce-back.
   final Vector2 _safePosition = Vector2.zero();
+
+  /// Random scatter offset applied to the walk target so enemies don’t all
+  /// converge on the exact same pixel. Recomputed each time a new target is
+  /// acquired.
+  final Vector2 _targetScatter = Vector2.zero();
+
+  /// RNG for scatter offsets.
+  static final Random _random = Random();
 
   /// Callback for spawning a bullet into the world.
   ///
@@ -146,6 +162,7 @@ class EnemySoldier extends Soldier {
   void _updateIdle(double dt) {
     _target = _findTarget();
     if (_target != null) {
+      _recomputeScatter();
       _transitionTo(EnemyAiState.chasing);
     }
   }
@@ -164,6 +181,7 @@ class EnemySoldier extends Soldier {
         _transitionTo(EnemyAiState.idle);
         return;
       }
+      _recomputeScatter();
     }
 
     final toTarget = _target!.position - position;
@@ -182,9 +200,12 @@ class EnemySoldier extends Soldier {
       return;
     }
 
-    // Walk toward target.
-    if (dist > 1) {
-      final direction = toTarget.normalized();
+    // Walk toward target (with scatter offset).
+    final walkTarget = _target!.position + _targetScatter;
+    final toWalkTarget = walkTarget - position;
+    final walkDist = toWalkTarget.length;
+    if (walkDist > 1) {
+      final direction = toWalkTarget.normalized();
       position += direction * _speed * dt;
 
       final newFacing = Direction8.fromVector(direction.x, direction.y);
@@ -327,6 +348,19 @@ class EnemySoldier extends Soldier {
         setState(SoldierState.firing);
         _fireTimer = 0; // Fire immediately on entering firing state.
     }
+  }
+
+  /// Computes a random scatter offset based on [aggressionAverage].
+  ///
+  /// Low aggression (< 5): ±0..63 px. High aggression: ±0..31 px.
+  /// See `docs/ENEMY_AI.md` §4.5 for the original algorithm.
+  void _recomputeScatter() {
+    final mask = aggressionAverage < config.aggressionScatterThreshold
+        ? config.scatterMaskLow
+        : config.scatterMaskHigh;
+    _targetScatter
+      ..x = (_random.nextInt(mask + 1) * (_random.nextBool() ? 1.0 : -1.0))
+      ..y = (_random.nextInt(mask + 1) * (_random.nextBool() ? 1.0 : -1.0));
   }
 
   /// Updates [isInWater] from the terrain under the soldier.

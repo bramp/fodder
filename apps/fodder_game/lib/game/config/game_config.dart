@@ -64,6 +64,19 @@ const double enemySpeedMax = 26 * speedScale; // 130
 const int enemySpeedBase = 12;
 
 // ---------------------------------------------------------------------------
+// Aggression scatter  (ENEMY_AI.md §4.5)
+// ---------------------------------------------------------------------------
+
+/// Average aggression threshold below which enemies scatter more widely.
+const int aggressionScatterThreshold = 5;
+
+/// Scatter bitmask for low aggression (random & 0x3F = 0..63 px).
+const int scatterMaskLow = 0x3F;
+
+/// Scatter bitmask for high aggression (random & 0x1F = 0..31 px).
+const int scatterMaskHigh = 0x1F;
+
+// ---------------------------------------------------------------------------
 // Detection ranges  (ENEMY_AI.md §5, PLAYER.md §3.1)
 // ---------------------------------------------------------------------------
 
