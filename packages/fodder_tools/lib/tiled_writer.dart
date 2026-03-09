@@ -145,7 +145,7 @@ String generateTmx({
       )
       ..writeln(
         '  <property name="objectives"'
-        ' value="${campaignPhase.objectives.join(',')}"/>',
+        ' value="${campaignPhase.objectives.map((o) => o.name).join(',')}"/>',
       )
       ..writeln(
         '  <property name="phaseName"'

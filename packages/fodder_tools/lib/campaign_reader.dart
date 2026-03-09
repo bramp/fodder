@@ -1,5 +1,9 @@
 import 'dart:convert';
 
+import 'package:fodder_tools/mission_objective.dart';
+
+export 'package:fodder_tools/mission_objective.dart';
+
 /// Phase-level metadata extracted from an OpenFodder `.ofc` campaign JSON.
 class CampaignPhase {
   CampaignPhase({
@@ -14,24 +18,23 @@ class CampaignPhase {
   final String mapName;
   final String missionName;
   final String phaseName;
-  final List<String> objectives;
+  final List<MissionObjective> objectives;
   final int aggressionMin;
   final int aggressionMax;
 }
 
-/// Maps OpenFodder objective title strings to Dart `MissionObjective` enum
-/// names used in the game code.
-const _objectiveTitleToEnum = <String, String>{
-  'KILL ALL ENEMY': 'killAllEnemy',
-  'DESTROY ENEMY BUILDINGS': 'destroyEnemyBuildings',
-  'RESCUE HOSTAGES': 'rescueHostages',
-  'PROTECT ALL CIVILIANS': 'protectAllCivilians',
-  'KIDNAP ENEMY LEADER': 'kidnapEnemyLeader',
-  'DESTROY FACTORY': 'destroyFactory',
-  'DESTROY COMPUTER': 'destroyComputer',
-  'GET CIVILIAN HOME': 'getCivilianHome',
-  'ACTIVATE ALL SWITCHES': 'activateAllSwitches',
-  'RESCUE HOSTAGE': 'rescueHostageCF2',
+/// Maps OpenFodder objective title strings to [MissionObjective] values.
+const _objectiveTitleToEnum = <String, MissionObjective>{
+  'KILL ALL ENEMY': MissionObjective.killAllEnemy,
+  'DESTROY ENEMY BUILDINGS': MissionObjective.destroyEnemyBuildings,
+  'RESCUE HOSTAGES': MissionObjective.rescueHostages,
+  'PROTECT ALL CIVILIANS': MissionObjective.protectAllCivilians,
+  'KIDNAP ENEMY LEADER': MissionObjective.kidnapEnemyLeader,
+  'DESTROY FACTORY': MissionObjective.destroyFactory,
+  'DESTROY COMPUTER': MissionObjective.destroyComputer,
+  'GET CIVILIAN HOME': MissionObjective.getCivilianHome,
+  'ACTIVATE ALL SWITCHES': MissionObjective.activateAllSwitches,
+  'RESCUE HOSTAGE': MissionObjective.rescueHostageCF2,
 };
 
 /// Parses an OpenFodder `.ofc` campaign JSON and returns a lookup table
@@ -61,15 +64,15 @@ Map<String, CampaignPhase> parseCampaignJson(
       final aggrMax = (aggression[1] as num).toInt();
 
       final rawObjectives = phaseMap['Objectives'] as List<dynamic>;
-      final objectives = <String>[];
+      final objectives = <MissionObjective>[];
       for (final obj in rawObjectives) {
         final title = (obj as String).toUpperCase();
-        final enumName = _objectiveTitleToEnum[title];
-        if (enumName == null) {
+        final objective = _objectiveTitleToEnum[title];
+        if (objective == null) {
           warn?.call('Unknown objective: "$obj"');
           continue;
         }
-        objectives.add(enumName);
+        objectives.add(objective);
       }
 
       result[mapName] = CampaignPhase(
