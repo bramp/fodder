@@ -19,6 +19,15 @@ dart pub global activate melos
 dart run melos bootstrap
 ```
 
+## Re-generating Flutter App
+
+To re-generate the Flutter application with a new bundle identifier (e.g., when the Flutter project structure needs updating or you're changing the package name), run the following from the `apps/fodder_game` directory:
+
+```bash
+cd apps/fodder_game
+flutter create --org net.bramp --project-name fodder .
+```
+
 ## Importing Original Game Assets
 
 The tools are now part of the `fodder_tools` package. To run them:

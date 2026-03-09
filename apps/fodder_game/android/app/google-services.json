@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "900023187428",
+    "project_id": "fodder-bramp-net",
+    "storage_bucket": "fodder-bramp-net.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:900023187428:android:fb215e0655ccae8bf839f1",
+        "android_client_info": {
+          "package_name": "net.bramp.fodder"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAqz1ENaleYNYJgSk8SEFjwJ87hnQ1mAl0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
