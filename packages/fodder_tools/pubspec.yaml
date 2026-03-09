@@ -11,6 +11,8 @@ environment:
 
 dependencies:
   args: ^2.7.0
+  fodder_core:
+    path: ../fodder_core
   image: ^4.8.0
   path: ^1.9.1
 

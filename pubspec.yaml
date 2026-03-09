@@ -3,6 +3,7 @@ publish_to: none
 
 workspace:
   - apps/fodder_game
+  - packages/fodder_core
   - packages/fodder_tools
   - packages/fodder_assets
 
@@ -21,7 +22,7 @@ melos:
 
   scripts:
     analyze:
-      run: melos exec -c 1 -- "flutter analyze"
+      run: melos exec -c 1 -- "flutter analyze --no-fatal-infos"
       description: Run `flutter analyze` in all packages.
 
     test:

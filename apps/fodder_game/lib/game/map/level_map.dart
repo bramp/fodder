@@ -5,8 +5,8 @@ import 'package:flame/components.dart';
 import 'package:flame/game.dart';
 import 'package:flame_tiled/flame_tiled.dart';
 
+import 'package:fodder_core/mission_objective.dart';
 import 'package:fodder_game/game/map/spawn_data.dart';
-import 'package:fodder_game/game/models/mission_objective.dart';
 import 'package:fodder_game/game/systems/walkability_grid.dart';
 
 /// A component that loads and renders a Tiled `.tmx` map.

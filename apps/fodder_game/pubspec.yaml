@@ -17,6 +17,8 @@ dependencies:
     sdk: flutter
   fodder_assets:
     path: ../../packages/fodder_assets
+  fodder_core:
+    path: ../../packages/fodder_core
   go_router: ^14.8.1
 
   meta: any

@@ -1,0 +1,11 @@
+name: fodder_core
+description: Shared models and constants for Fodder packages.
+version: 0.1.0
+publish_to: none
+resolution: workspace
+
+environment:
+  sdk: ^3.11.0
+
+dev_dependencies:
+  very_good_analysis: ^10.2.0

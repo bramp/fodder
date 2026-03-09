@@ -1,8 +1,8 @@
 import 'dart:convert';
 
-import 'package:fodder_tools/mission_objective.dart';
+import 'package:fodder_core/mission_objective.dart';
 
-export 'package:fodder_tools/mission_objective.dart';
+export 'package:fodder_core/mission_objective.dart';
 
 /// Phase-level metadata extracted from an OpenFodder `.ofc` campaign JSON.
 class CampaignPhase {
