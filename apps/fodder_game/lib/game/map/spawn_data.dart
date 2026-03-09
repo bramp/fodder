@@ -1,27 +1,27 @@
 import 'package:flame/components.dart';
 import 'package:flame_tiled/flame_tiled.dart';
+import 'package:fodder_game/game/map/spawn_type.dart';
 
 /// A single spawn point extracted from a Tiled object-group layer.
 class SpawnPoint {
-  /// Creates a spawn point with the given [position] and [spriteType].
+  /// Creates a spawn point with the given [position] and [spawnType].
   const SpawnPoint({
     required this.position,
-    required this.spriteType,
+    required this.spawnType,
     required this.name,
   });
 
   /// World-space position (already scaled to destination tile size).
   final Vector2 position;
 
-  /// The raw sprite type integer from the original engine's `eSprites` enum.
-  // TODO(bramp): Change this to a proper enum
-  final int spriteType;
+  /// The type of entity at this spawn point.
+  final SpawnType spawnType;
 
   /// Human-readable name from the Tiled object (e.g. "player", "enemy").
   final String name;
 
   @override
-  String toString() => 'SpawnPoint($name, type=$spriteType, $position)';
+  String toString() => 'SpawnPoint($name, $spawnType, $position)';
 }
 
 /// Parsed spawn data for a level, split into player and enemy groups.
@@ -38,8 +38,8 @@ class SpawnData {
   /// Extracts spawn data from a loaded Tiled map.
   ///
   /// Looks for [ObjectGroup] layers named "Spawns" (players, enemies, etc.)
-  /// and "Raised" (trees, shrubs, building roofs, etc.) and reads
-  /// each object's `sprite_type` custom property (int) to classify entries.
+  /// and "Raised" (trees, shrubs, building roofs, etc.) and maps each
+  /// object's `name` attribute to a [SpawnType] to classify entries.
   ///
   /// [destTileSize] is the destination tile size used to scale the
   /// original-coordinate positions into world space. The original .spt
@@ -62,30 +62,19 @@ class SpawnData {
 
     if (spawnsLayer != null) {
       for (final obj in spawnsLayer.objects) {
-        // TODO(bramp): let's normalise this name, and not use ints.
-        final spriteType = obj.properties.getValue<int>('sprite_type');
-        if (spriteType == null) continue;
+        final spawnType = SpawnType.fromName(obj.name);
 
         final point = SpawnPoint(
           position: Vector2(obj.x * scale, obj.y * scale),
-          spriteType: spriteType,
+          spawnType: spawnType,
           name: obj.name,
         );
 
         all.add(point);
 
-        // Player type == 0.
-        if (spriteType == 0) {
-          players.add(point);
-        }
-        // Enemy types: 5 (basic), 36 (rocket), 106 (leader).
-        if (spriteType == 5 || spriteType == 36 || spriteType == 106) {
-          enemies.add(point);
-        }
-        // Bird types: 66 (left), 67 (right).
-        if (spriteType == 66 || spriteType == 67) {
-          birds.add(point);
-        }
+        if (spawnType.isPlayer) players.add(point);
+        if (spawnType.isEnemy) enemies.add(point);
+        if (spawnType.isBird) birds.add(point);
       }
     }
 
@@ -97,13 +86,12 @@ class SpawnData {
 
     if (raisedLayer != null) {
       for (final obj in raisedLayer.objects) {
-        final spriteType = obj.properties.getValue<int>('sprite_type');
-        if (spriteType == null) continue;
+        final spawnType = SpawnType.fromName(obj.name);
 
         environment.add(
           SpawnPoint(
             position: Vector2(obj.x * scale, obj.y * scale),
-            spriteType: spriteType,
+            spawnType: spawnType,
             name: obj.name,
           ),
         );
@@ -137,7 +125,7 @@ class SpawnData {
   /// and enemy leaders.
   final List<SpawnPoint> enemies;
 
-  /// Bird spawn points (types 66 = left, 67 = right).
+  /// Bird spawn points (left and right).
   final List<SpawnPoint> birds;
 
   /// Environment decoration points (trees, shrubs, building roofs, etc.).

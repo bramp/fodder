@@ -191,7 +191,8 @@ String generateTmx({
         )
         ..writeln('   <properties>')
         ..writeln(
-          '    <property name="sprite_type" type="int" value="${s.type}"/>',
+          '    <property name="sprite_type" type="string"'
+          ' value="$typeName"/>',
         )
         ..writeln('   </properties>')
         ..writeln('  </object>');
@@ -213,7 +214,8 @@ String generateTmx({
         )
         ..writeln('   <properties>')
         ..writeln(
-          '    <property name="sprite_type" type="int" value="${s.type}"/>',
+          '    <property name="sprite_type" type="string"'
+          ' value="$typeName"/>',
         )
         ..writeln('   </properties>')
         ..writeln('  </object>');

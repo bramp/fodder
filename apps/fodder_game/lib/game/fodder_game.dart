@@ -15,6 +15,7 @@ import 'package:fodder_game/game/components/player_soldier.dart';
 import 'package:fodder_game/game/components/soldier.dart';
 import 'package:fodder_game/game/components/soldier_animations.dart';
 import 'package:fodder_game/game/map/level_map.dart';
+import 'package:fodder_game/game/map/spawn_type.dart';
 import 'package:fodder_game/game/models/squad.dart';
 import 'package:fodder_game/game/sprites/sprite_atlas.dart';
 import 'package:fodder_game/game/sprites/sprite_frames.dart';
@@ -497,8 +498,7 @@ class FodderGame extends FlameGame
   /// them to the world.
   Future<void> _spawnBirds() async {
     for (final spawn in levelMap.spawnData.birds) {
-      // Type 66 = left, type 67 = right.
-      final direction = spawn.spriteType == 67
+      final direction = spawn.spawnType == SpawnType.birdRight
           ? BirdDirection.right
           : BirdDirection.left;
 

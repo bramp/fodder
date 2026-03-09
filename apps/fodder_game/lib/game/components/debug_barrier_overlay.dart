@@ -217,12 +217,9 @@ class DebugBarrierOverlay extends Component with HasVisibility {
 
     for (final spawn in _spawnData.all) {
       final Paint fill;
-      // Player type == 0.
-      if (spawn.spriteType == 0) {
+      if (spawn.spawnType.isPlayer) {
         fill = _playerSpawnPaint;
-      } else if (spawn.spriteType == 5 ||
-          spawn.spriteType == 36 ||
-          spawn.spriteType == 106) {
+      } else if (spawn.spawnType.isEnemy) {
         fill = _enemySpawnPaint;
       } else {
         fill = _otherSpawnPaint;
