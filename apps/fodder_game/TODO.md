@@ -394,7 +394,7 @@ Legend: ✅ = implemented, 🔶 = partial, ❌ = not started
 - [ ] Snowman decoration (type 16, atlas frame `92_0`) — untested, no CF1 maps use it
 - [ ] Shrub2 overlay (type 17, atlas frame `93_0`) — untested, no CF1 maps use it
 - [ ] Waterfall animation (type 18) — not yet implemented
-- [ ] Bird animation (type 66) — not yet implemented
+- [x] Bird animation (type 66) — basic flight, ping-pong animation, offscreen respawn
 - [ ] Explodable environment sprites: explosions should destroy types 13–17
 - [ ] Y-sort environment sprites with soldiers (currently fixed priority 15)
 - [ ] Load copt atlas (`juncopt.json`/`juncopt.png`) once and share between `BulletSprites` and `EnvironmentSprite`

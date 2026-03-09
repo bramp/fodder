@@ -5,6 +5,7 @@ import 'package:flame/game.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 
+import 'package:fodder_game/game/components/bird_sprite.dart';
 import 'package:fodder_game/game/components/bullet.dart';
 import 'package:fodder_game/game/components/bullet_sprites.dart';
 import 'package:fodder_game/game/components/debug_barrier_overlay.dart';
@@ -176,6 +177,9 @@ class FodderGame extends FlameGame
 
     // 7. Build bullet sprites from the copt atlas.
     bulletSprites = BulletSprites.fromAtlas(_coptAtlas);
+
+    // 8. Spawn birds from map data.
+    await _spawnBirds();
 
     // 9. Spawn environment sprites from map data.
     await _spawnEnvironmentSprites();
@@ -486,6 +490,27 @@ class FodderGame extends FlameGame
       alive[i]
         ..predecessor = i > 0 ? alive[i - 1] : null
         ..followPath(chainPaths[i]);
+    }
+  }
+
+  /// Creates [BirdSprite] components from the map's Spawns layer and adds
+  /// them to the world.
+  Future<void> _spawnBirds() async {
+    for (final spawn in levelMap.spawnData.birds) {
+      // Type 66 = left, type 67 = right.
+      final direction = spawn.spriteType == 67
+          ? BirdDirection.right
+          : BirdDirection.left;
+
+      final bird = BirdSprite.fromAtlas(
+        direction: direction,
+        position: spawn.position.clone(),
+        atlas: _armyAtlas,
+      );
+
+      if (bird != null) {
+        await world.add(bird);
+      }
     }
   }
 

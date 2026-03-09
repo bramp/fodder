@@ -30,6 +30,7 @@ class SpawnData {
   const SpawnData({
     required this.players,
     required this.enemies,
+    required this.birds,
     required this.environment,
     required this.all,
   });
@@ -50,6 +51,7 @@ class SpawnData {
     final all = <SpawnPoint>[];
     final players = <SpawnPoint>[];
     final enemies = <SpawnPoint>[];
+    final birds = <SpawnPoint>[];
     final environment = <SpawnPoint>[];
 
     // Parse the "Spawns" object group (players, enemies, etc.).
@@ -60,6 +62,7 @@ class SpawnData {
 
     if (spawnsLayer != null) {
       for (final obj in spawnsLayer.objects) {
+        // TODO(bramp): let's normalise this name, and not use ints.
         final spriteType = obj.properties.getValue<int>('sprite_type');
         if (spriteType == null) continue;
 
@@ -78,6 +81,10 @@ class SpawnData {
         // Enemy types: 5 (basic), 36 (rocket), 106 (leader).
         if (spriteType == 5 || spriteType == 36 || spriteType == 106) {
           enemies.add(point);
+        }
+        // Bird types: 66 (left), 67 (right).
+        if (spriteType == 66 || spriteType == 67) {
+          birds.add(point);
         }
       }
     }
@@ -108,6 +115,7 @@ class SpawnData {
     return SpawnData(
       players: players,
       enemies: enemies,
+      birds: birds,
       environment: environment,
       all: all,
     );
@@ -117,6 +125,7 @@ class SpawnData {
   static const empty = SpawnData(
     players: [],
     enemies: [],
+    birds: [],
     environment: [],
     all: [],
   );
@@ -127,6 +136,9 @@ class SpawnData {
   /// Enemy (baddie) spawn points — includes basic enemies, rocket enemies,
   /// and enemy leaders.
   final List<SpawnPoint> enemies;
+
+  /// Bird spawn points (types 66 = left, 67 = right).
+  final List<SpawnPoint> birds;
 
   /// Environment decoration points (trees, shrubs, building roofs, etc.).
   ///

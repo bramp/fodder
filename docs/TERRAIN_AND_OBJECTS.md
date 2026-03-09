@@ -255,3 +255,136 @@ The count is checked every frame in `Phase_Goals_Check()`.
 
 A **phase completion timer** of **100 ticks** (0x64, ~6 seconds) triggers
 after all objectives are met, before actually advancing to the next phase.
+
+---
+
+## 8. Environment Decorations
+
+Static overlays rendered from the per-terrain copt atlas (`*copt.dat`).
+
+| ID | Constant | Atlas frame | Notes |
+| -- | -------- | ----------- | ----- |
+| 13 | `eSprite_Shrub` | `8f_0` | Shrub overlay |
+| 14 | `eSprite_Tree` | `90_0` | Tree-top overlay |
+| 15 | `eSprite_BuildingRoof` | `91_0` | Building roof overlay |
+| 16 | `eSprite_Snowman` | `92_0` | Snowman decoration |
+| 17 | `eSprite_Shrub2` | `93_0` | Small shrub overlay |
+
+These are placed in the TMX `Raised` object layer and rendered at priority
+above soldiers, creating the illusion of walking under canopies and roofs.
+Explosions should destroy environment sprites of types 13–17.
+
+---
+
+## 9. Birds
+
+Ambient flying birds are purely decorative animated sprites. They fly in one
+direction, wrap around relative to the camera when offscreen, and play
+terrain-specific bird-call sounds at random intervals.
+
+### 9.1 Sprite types
+
+| ID | Constant | Anim sheet | Direction |
+| -- | -------- | ---------- | --------- |
+| 66 | `eSprite_Bird_Left` | `0xD3` (`bird_fly_left`) | Flies left (−X) |
+| 67 | `eSprite_Bird_Right` | `0xD4` (`bird_fly_right`) | Flies right (+X) |
+| 19 | `eSprite_Bird2_Left` | `0x98` | Simple two-frame bird, wraps at X < −64 |
+
+Types 66 and 67 are the main bird types placed on maps. Type 19 is a simpler
+bird used in test/demo scenarios.
+
+### 9.2 Animation
+
+Each animation group contains **6 frames** (indices 0–5). The bird cycles
+through frames in a **ping-pong** pattern: 0→1→2→3→4→5→4→3→2→1→0→…
+
+The frame index advances once per engine tick (~60 ms). A full oscillation
+cycle (0→5→0) takes **10 ticks ≈ 0.6 seconds**.
+
+Frames 4 and 5 have Y-anchor offsets:
+
+| Frame | Y offset (original px) | Visual effect |
+| ----- | ---------------------- | ------------- |
+| 0–3 | 0 | Level flight |
+| 4 | 1 | Slight downward dip |
+| 5 | 3 | Deeper dip (wing apex) |
+
+These offsets create a bobbing motion that simulates flapping wings.
+
+### 9.3 Movement
+
+Birds move horizontally at a variable speed using 16.16 fixed-point
+arithmetic. The speed depends on the frame oscillation direction:
+
+| Oscillation phase | Horizontal speed (original) | Remake (2× scale) |
+| ----------------- | --------------------------- | ------------------ |
+| Ascending (frames 5→0) | 1.5 px/tick → **25 px/s** | **50 px/s** |
+| Descending (frames 0→5) | 2.0 px/tick → **33 px/s** | **67 px/s** |
+
+`Bird_Right` mirrors the direction (+X) with the same speeds.
+
+There is no vertical movement — the Y position stays fixed. The apparent
+vertical wobble comes entirely from the per-frame anchor offsets.
+
+### 9.4 Spawning
+
+Birds are placed from map data (`.spt` / TMX `Spawns` layer), like any other
+sprite. Their initial position is their map-data position.
+
+On first update, a brief **warm-up timer** of **8 ticks (≈ 0.48 s)** delays
+the first offscreen-respawn check. During this time the bird flies from its
+initial position.
+
+### 9.5 Offscreen respawn
+
+Each frame the engine checks whether the bird was rendered on-screen in the
+previous frame (`field_5C`). Once the bird flies off-screen:
+
+1. A **respawn timer** of **0x3F = 63 ticks (≈ 3.78 s)** counts down.
+2. When the timer reaches zero, the bird is repositioned relative to the
+   camera:
+
+| Direction | New X | New Y |
+| --------- | ----- | ----- |
+| `Bird_Left` | `camera.x + windowWidth + random(0..63)` | `camera.y + random(0..255)` |
+| `Bird_Right` | `camera.x − random(0..63)` | `camera.y + random(0..255)` |
+
+This places the bird just off the incoming edge of the screen so it flies
+across the viewport naturally.
+
+### 9.6 Hit detection
+
+Types 66 and 67 **cannot be shot** — there is no hit-detection call in their
+handler. They are purely decorative.
+
+Type 19 (`Bird2_Left`) *can* be hit (it calls `sub_25DCF` for damage
+handling), but this type is rarely used on actual maps.
+
+### 9.7 Sound
+
+Each frame, with a **1/128 random chance**, the bird plays a terrain-specific
+ambient bird-call sound:
+
+| Terrain type | Sound ID | File |
+| ------------ | -------- | ---- |
+| Jungle | `0x1A` | `jungle_bird.wav` |
+| Ice / AFX | `0x1F` | `ice_bird.wav` |
+| Interior / Moors | `0x1A`/`0x1F` | `interior_bird.wav` / `moor_bird.wav` |
+
+### 9.8 Draw order
+
+Birds are drawn with `eSprite_Draw_OnTop` priority, meaning they always
+render above soldiers, terrain, and other ground-level sprites.
+
+### 9.9 Remake conversion
+
+| Original | Remake | Notes |
+| -------- | ------ | ----- |
+| `field_0` / `field_2` | `position.x` | 16.16 fixed-point → float px |
+| `field_4` | `position.y` | Pixel position (2× scaled) |
+| `field_8` | Atlas group | `bird_fly_left` / `bird_fly_right` |
+| `field_A` | `_frameIndex` | Ping-pong 0–5 |
+| `field_12` | `_oscillationDir` | +1 or −1 |
+| `field_57` | `_respawnTimer` | Seconds (0.48 s initial, 3.78 s respawn) |
+| `field_5C` | viewport intersection check | Whether bird is on-screen |
+| 1.5–2.0 px/tick | 50–67 px/s | `original × 16.67 fps × 2 scale` |
