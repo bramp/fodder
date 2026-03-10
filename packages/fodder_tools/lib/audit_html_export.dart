@@ -122,6 +122,7 @@ function toggleAnchors() {
 
       _writeCoverage(buf, dataUri, frames, imgW);
       _writeSprites(buf, cssClass, frames, imgW);
+      _writeDirectionalAnimations(buf, cssClass, frames, imgW);
     }
 
     buf.writeln('</body></html>');
@@ -163,6 +164,40 @@ function toggleAnchors() {
     }
     buf.writeln('</div>');
   }
+
+  /// The 16-point compass directions in clockwise order starting from south.
+  static const _compassDirs16 = [
+    's',
+    'ssw',
+    'sw',
+    'wsw',
+    'w',
+    'wnw',
+    'nw',
+    'nnw',
+    'n',
+    'nne',
+    'ne',
+    'ene',
+    'e',
+    'ese',
+    'se',
+    'sse',
+  ];
+
+  /// The 8-point compass directions in clockwise order starting from south.
+  static const _compassDirs8 = [
+    's',
+    'sw',
+    'w',
+    'nw',
+    'n',
+    'ne',
+    'e',
+    'se',
+  ];
+
+  static final Set<String> _compassSet = {..._compassDirs16};
 
   void _writeSprites(
     StringBuffer buf,
@@ -328,5 +363,179 @@ function toggleAnchors() {
 
       buf.writeln('</div>');
     }
+  }
+
+  /// Groups directional sprites by their shared prefix (e.g. all
+  /// `helicopter_s`, `helicopter_ssw`, … become the `helicopter` family)
+  /// and renders a spinning CSS animation cycling through the first frame
+  /// of each direction in clockwise order.
+  void _writeDirectionalAnimations(
+    StringBuffer buf,
+    String cssClass,
+    Map<String, dynamic> frames,
+    int imgW,
+  ) {
+    // Step 1: group frame keys by stripping the trailing _N frame index.
+    final sortedEntries = frames.entries.toList()
+      ..sort((a, b) => a.key.compareTo(b.key));
+
+    final grouped = <String, List<MapEntry<String, dynamic>>>{};
+    for (final entry in sortedEntries) {
+      final key = entry.key;
+      final lastUnderscore = key.lastIndexOf('_');
+      final groupName = lastUnderscore != -1
+          ? key.substring(0, lastUnderscore)
+          : key;
+      grouped.putIfAbsent(groupName, () => []).add(entry);
+    }
+
+    // Step 2: detect directional families.
+    // A family shares a common prefix whose last segment is a compass
+    // direction (e.g. ingame/helicopter_s → prefix ingame/helicopter, dir s).
+    final dirFamilies =
+        <String, Map<String, List<MapEntry<String, dynamic>>>>{};
+    for (final groupEntry in grouped.entries) {
+      final groupName = groupEntry.key;
+      final lastUnderscore = groupName.lastIndexOf('_');
+      if (lastUnderscore == -1) continue;
+
+      final dirSuffix = groupName.substring(lastUnderscore + 1);
+      if (!_compassSet.contains(dirSuffix)) continue;
+
+      final familyPrefix = groupName.substring(0, lastUnderscore);
+      dirFamilies.putIfAbsent(familyPrefix, () => {})[dirSuffix] =
+          groupEntry.value;
+    }
+
+    // Only show families with at least 4 directions.
+    dirFamilies.removeWhere((_, dirs) => dirs.length < 4);
+    if (dirFamilies.isEmpty) return;
+
+    buf.writeln(
+      '<h3>Directional Animations (${dirFamilies.length} families)</h3>',
+    );
+    buf.writeln(
+      '<p>First frame of each direction, cycling clockwise.</p>',
+    );
+
+    buf.writeln('<div style="display:flex; flex-wrap:wrap; gap:16px;">');
+
+    for (final familyEntry in dirFamilies.entries) {
+      final prefix = familyEntry.key;
+      final dirs = familyEntry.value;
+
+      // Use 16-point order if any secondary-intercardinal dirs are present.
+      final has16 = dirs.keys.any((d) => !_compassDirs8.contains(d));
+      final dirOrder = has16 ? _compassDirs16 : _compassDirs8;
+
+      // Collect first frame from each direction, in clockwise order.
+      final orderedFrames = <MapEntry<String, dynamic>>[];
+      for (final dir in dirOrder) {
+        final dirFrames = dirs[dir];
+        if (dirFrames != null && dirFrames.isNotEmpty) {
+          orderedFrames.add(dirFrames.first);
+        }
+      }
+      if (orderedFrames.length < 4) continue;
+
+      // Compute bounding box accounting for anchors.
+      var maxLeft = 0.0;
+      var maxRight = 0.0;
+      var maxTop = 0.0;
+      var maxBottom = 0.0;
+
+      for (final fEntry in orderedFrames) {
+        final f = fEntry.value['frame'] as Map<String, dynamic>;
+        final w = (f['w'] as num).toInt();
+        final h = (f['h'] as num).toInt();
+        final anchor = fEntry.value['anchor'] as Map<String, dynamic>?;
+        final ax = anchor != null ? (anchor['x'] as num).toDouble() : 0.5;
+        final ay = anchor != null ? (anchor['y'] as num).toDouble() : 0.5;
+
+        final left = ax * w;
+        final right = (1 - ax) * w;
+        final top = ay * h;
+        final bottom = (1 - ay) * h;
+
+        if (left > maxLeft) maxLeft = left;
+        if (right > maxRight) maxRight = right;
+        if (top > maxTop) maxTop = top;
+        if (bottom > maxBottom) maxBottom = bottom;
+      }
+
+      final maxW = (maxLeft + maxRight).ceil();
+      final maxH = (maxTop + maxBottom).ceil();
+      if (maxW <= 0 || maxH <= 0) continue;
+
+      final scale = (maxW < 24 && maxH < 24) ? 3 : 2;
+      final dw = maxW * scale;
+      final dh = maxH * scale;
+      final bgW = imgW * scale;
+
+      final anchorPxX = maxLeft * scale;
+      final anchorPxY = maxTop * scale;
+
+      final displayName = prefix.split('/').last;
+      final safeGroup =
+          '${prefix.replaceAll(RegExp('[^a-zA-Z0-9]'), '-')}-spin';
+      final animName = 'anim-$safeGroup-$cssClass';
+
+      // Build CSS keyframes.
+      buf.writeln('<style>');
+      buf.writeln('@keyframes $animName {');
+      for (var i = 0; i < orderedFrames.length; i++) {
+        final f = orderedFrames[i].value['frame'] as Map<String, dynamic>;
+        final anchor =
+            orderedFrames[i].value['anchor'] as Map<String, dynamic>?;
+        final x = (f['x'] as num).toInt() * scale;
+        final y = (f['y'] as num).toInt() * scale;
+        final w = (f['w'] as num).toInt() * scale;
+        final h = (f['h'] as num).toInt() * scale;
+
+        final ax = anchor != null ? (anchor['x'] as num).toDouble() : 0.5;
+        final ay = anchor != null ? (anchor['y'] as num).toDouble() : 0.5;
+
+        final frameAnchorX = ax * w;
+        final frameAnchorY = ay * h;
+
+        final offsetX = anchorPxX - frameAnchorX;
+        final offsetY = anchorPxY - frameAnchorY;
+
+        final pct = (i * 100.0 / orderedFrames.length).toStringAsFixed(2);
+        buf.writeln('  $pct% {');
+        buf.writeln('    background-position: -${x}px -${y}px;');
+        buf.writeln('    width: ${w}px;');
+        buf.writeln('    height: ${h}px;');
+        buf.writeln(
+          '    transform: translate(${offsetX}px, ${offsetY}px);',
+        );
+        buf.writeln('  }');
+      }
+      buf.writeln('}');
+      buf.writeln('</style>');
+
+      final durationMs = orderedFrames.length * 200; // 200 ms per direction
+
+      buf.writeln(
+        '<div class="sprite-item" style="border-color:#66a; background:#222">',
+      );
+      buf.writeln(
+        '  <div style="position:relative; width:${dw}px; height:${dh}px;">'
+        '    <div class="sprite-box $cssClass" style="'
+        'position:absolute; left:0; top:0;'
+        'background-size:${bgW}px auto;'
+        'animation: $animName ${durationMs}ms steps(1) infinite;'
+        '" title="$displayName spinning"></div>'
+        '    <div class="anchor-dot" style="left:${anchorPxX}px; top:${anchorPxY}px;"></div>'
+        '  </div>',
+      );
+      buf.writeln(
+        '  <div class="sprite-name" style="color:#8ac">'
+        '$displayName<br>${orderedFrames.length} dirs</div>',
+      );
+      buf.writeln('</div>');
+    }
+
+    buf.writeln('</div>');
   }
 }
