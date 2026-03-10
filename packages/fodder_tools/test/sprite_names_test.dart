@@ -308,16 +308,16 @@ void main() {
       expect(f.h, 14);
     });
 
-    test('defaults modX and modY to zero', () {
+    test('defaults anchorX and anchorY to zero', () {
       const f = F(0, 16, 14);
-      expect(f.modX, 0);
-      expect(f.modY, 0);
+      expect(f.anchorX, 0);
+      expect(f.anchorY, 0);
     });
 
-    test('stores explicit modX and modY', () {
+    test('stores explicit anchorX and anchorY', () {
       const f = F(44864, 16, 14, 0, 1);
-      expect(f.modX, 0);
-      expect(f.modY, 1);
+      expect(f.anchorX, 0);
+      expect(f.anchorY, 1);
     });
 
     test('computes pixelX and pixelY from byteOffset', () {
@@ -352,11 +352,11 @@ void main() {
       expect(g.h, 14);
     });
 
-    test('non-zero modY in bird_fly_right (variable group)', () {
+    test('non-zero anchorY in bird_fly_right (variable group)', () {
       final g = armyDatIngame[0xd3]!;
       expect(g.isVariable, isTrue);
-      expect(g.frames[4].modY, 1);
-      expect(g.frames[5].modY, 3);
+      expect(g.frames[4].anchorY, 1);
+      expect(g.frames[5].anchorY, 3);
     });
 
     test('font group has expected frame count', () {

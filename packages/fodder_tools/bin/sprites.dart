@@ -564,22 +564,22 @@ void _exportSpriteAtlases({
         final int byteOffset;
         final int w;
         final int h;
-        final int modX;
-        final int modY;
+        final int anchorX;
+        final int anchorY;
 
         if (group.isVariable) {
           final frame = group.frames[frameIdx];
           byteOffset = frame.byteOffset;
           w = frame.w;
           h = frame.h;
-          modX = frame.modX;
-          modY = frame.modY;
+          anchorX = frame.anchorX;
+          anchorY = frame.anchorY;
         } else {
           byteOffset = group.offsets[frameIdx];
           w = group.w;
           h = group.h;
-          modX = 0;
-          modY = 0;
+          anchorX = 0;
+          anchorY = 0;
         }
 
         if (w <= 0 || h <= 0) continue;
@@ -602,8 +602,8 @@ void _exportSpriteAtlases({
                   y: y,
                   width: w,
                   height: h,
-                  anchorX: modX,
-                  anchorY: modY,
+                  anchorX: anchorX,
+                  anchorY: anchorY,
                 ),
               );
 

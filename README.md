@@ -72,3 +72,9 @@ dart run packages/fodder_tools/bin/sprites.dart -i ${SRC?}_Extracted -o ${OUT?}/
 dart run packages/fodder_tools/bin/maps.dart    -i ${SRC?}_Extracted -o ${OUT?}/maps
 dart run packages/fodder_tools/bin/audio.dart   -i ${SRC?}_Extracted -o ${OUT?}/audio
 ```
+
+```bash
+# Debug issues with
+dart run packages/fodder_tools/bin/audit_sprite_names.dart --html ${OUT?}/sprites
+dart run packages/fodder_tools/bin/audit_sprite_names.dart --coverage
+```

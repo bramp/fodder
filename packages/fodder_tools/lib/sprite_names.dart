@@ -79,13 +79,19 @@ import 'package:fodder_tools/sprite_frame.dart';
 /// - `x = (byteOffset % 160) * 2`
 /// - `y = byteOffset ~/ 160`
 class Frame {
-  const Frame(this.byteOffset, this.w, this.h, [this.modX = 0, this.modY = 0]);
+  const Frame(
+    this.byteOffset,
+    this.w,
+    this.h, [
+    this.anchorX = 0,
+    this.anchorY = 0,
+  ]);
 
   final int byteOffset;
   final int w;
   final int h;
-  final int modX;
-  final int modY;
+  final int anchorX;
+  final int anchorY;
 
   int get pixelX => (byteOffset % 160) * 2;
   int get pixelY => byteOffset ~/ 160;
@@ -93,7 +99,7 @@ class Frame {
   @override
   String toString() =>
       'Frame($byteOffset, ${w}x$h'
-      '${modX != 0 || modY != 0 ? ', mod=$modX,$modY' : ''})';
+      '${anchorX != 0 || anchorY != 0 ? ', anchor=$anchorX,$anchorY' : ''})';
 }
 
 /// A named sprite group with palette index and frame data.
@@ -103,7 +109,7 @@ class Frame {
 /// byte [offsets].
 ///
 /// **Variable groups** ([SpriteGroup.v]): frames differ in size or have
-/// modX/modY → stored as a `List<Frame>`.
+/// anchorX/anchorY → stored as a `List<Frame>`.
 class SpriteGroup {
   const SpriteGroup(this.name, this.palette, this.w, this.h, this.offsets)
     : frames = const [],
@@ -819,6 +825,7 @@ final armyDatIngame = <int, S>{
     F(44920, 16, 14, 0, 3),
   ]),
   0xd5: const S('unused_squares_d5', 0xa0, 16, 14, [40448, 40456, 40464]),
+
   0xd6: const S('civilian_death', 0xa0, 16, 14, [
     11296,
     11304,
@@ -829,7 +836,6 @@ final armyDatIngame = <int, S>{
     11344,
     11352,
     13440,
-    13448,
   ]),
   0xd7: const S('rocket_s', 0xa0, 16, 14, [13448]),
   0xd8: const S('rocket_sw', 0xa0, 16, 14, [13456]),
@@ -839,14 +845,14 @@ final armyDatIngame = <int, S>{
   0xdc: const S('rocket_ne', 0xa0, 16, 14, [20232]),
   0xdd: const S('rocket_e', 0xa0, 16, 14, [20240]),
   0xde: const S('rocket_se', 0xa0, 16, 14, [20248]),
-  0xef: const S('civilian_panic_s', 0xa0, 16, 14, [44928, 44936, 44944]),
-  0xf0: const S('civilian_panic_sw', 0xa0, 16, 14, [44952, 47040, 47048]),
-  0xf1: const S('civilian_panic_w', 0xa0, 16, 14, [47056, 47064, 47072]),
-  0xf2: const S('civilian_panic_nw', 0xa0, 16, 14, [47080, 47088, 47096]),
-  0xf3: const S('civilian_panic_n', 0xa0, 16, 14, [47104, 47112, 47120]),
-  0xf4: const S('civilian_panic_ne', 0xa0, 16, 14, [47128, 47136, 47144]),
-  0xf5: const S('civilian_panic_e', 0xa0, 16, 14, [47152, 47160, 47168]),
-  0xf6: const S('civilian_panic_se', 0xa0, 16, 14, [47176, 47184, 47192]),
+  0xef: const S('hostage_handsup_s', 0xa0, 16, 14, [44928, 44936, 44944]),
+  0xf0: const S('hostage_handsup_sw', 0xa0, 16, 14, [44952, 47040, 47048]),
+  0xf1: const S('hostage_handsup_w', 0xa0, 16, 14, [47056, 47064, 47072]),
+  0xf2: const S('hostage_handsup_nw', 0xa0, 16, 14, [47080, 47088, 47096]),
+  0xf3: const S('hostage_handsup_n', 0xa0, 16, 14, [47104, 47112, 47120]),
+  0xf4: const S('hostage_handsup_ne', 0xa0, 16, 14, [47128, 47136, 47144]),
+  0xf5: const S('hostage_handsup_e', 0xa0, 16, 14, [47152, 47160, 47168]),
+  0xf6: const S('hostage_handsup_se', 0xa0, 16, 14, [47176, 47184, 47192]),
   0xf7: const S('civilian_walk_s', 0xa0, 16, 14, [49280, 49288, 49296]),
   0xf8: const S('civilian_walk_sw', 0xa0, 16, 14, [49304, 49312, 49320]),
   0xf9: const S('civilian_walk_w', 0xa0, 16, 14, [49328, 49336, 49344]),
@@ -856,7 +862,7 @@ final armyDatIngame = <int, S>{
   0xfd: const S('civilian_walk_e', 0xa0, 16, 14, [49424, 49432, 51520]),
   0xfe: const S('civilian_walk_se', 0xa0, 16, 14, [51528, 51536, 51544]),
   0xff: const S('death_ash_pile', 0xa0, 16, 14, [51552, 49288, 51560]),
-  0x100: const S('death_gibbing', 0xa0, 16, 14, [
+  0x100: const S('civilian_death', 0xa0, 16, 14, [
     38080,
     38088,
     38096,

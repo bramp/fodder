@@ -263,8 +263,8 @@ int _auditFrame(
     dartOffset = f.byteOffset;
     dartW = f.w;
     dartH = f.h;
-    dartModX = f.modX;
-    dartModY = f.modY;
+    dartModX = f.anchorX;
+    dartModY = f.anchorY;
   } else {
     dartOffset = dartGroup.offsets[frameIdx];
     dartW = dartGroup.w;

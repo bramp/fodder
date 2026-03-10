@@ -228,32 +228,29 @@ function toggleAnchors() {
       buf.writeln('<div class="sprite-group-title">$groupName</div>');
 
       if (framesList.length > 1) {
-        var maxLeft = 0.0;
-        var maxRight = 0.0;
-        var maxTop = 0.0;
-        var maxBottom = 0.0;
+        // Compute bounding box. Each frame occupies [ax, ax+w] × [ay, ay+h]
+        // where (ax, ay) is the rendering offset from the entity position.
+        var minX = double.infinity;
+        var maxX = double.negativeInfinity;
+        var minY = double.infinity;
+        var maxY = double.negativeInfinity;
 
         for (final fEntry in framesList) {
           final f = fEntry.value['frame'] as Map<String, dynamic>;
-          final w = (f['w'] as num).toInt();
-          final h = (f['h'] as num).toInt();
+          final w = (f['w'] as num).toDouble();
+          final h = (f['h'] as num).toDouble();
           final anchor = fEntry.value['anchor'] as Map<String, dynamic>?;
-          final ax = anchor != null ? (anchor['x'] as num).toDouble() : 0.5;
-          final ay = anchor != null ? (anchor['y'] as num).toDouble() : 0.5;
+          final ax = anchor != null ? (anchor['x'] as num).toDouble() : 0.0;
+          final ay = anchor != null ? (anchor['y'] as num).toDouble() : 0.0;
 
-          final left = ax * w;
-          final right = (1 - ax) * w;
-          final top = ay * h;
-          final bottom = (1 - ay) * h;
-
-          if (left > maxLeft) maxLeft = left;
-          if (right > maxRight) maxRight = right;
-          if (top > maxTop) maxTop = top;
-          if (bottom > maxBottom) maxBottom = bottom;
+          if (ax < minX) minX = ax;
+          if (ax + w > maxX) maxX = ax + w;
+          if (ay < minY) minY = ay;
+          if (ay + h > maxY) maxY = ay + h;
         }
 
-        final maxW = (maxLeft + maxRight).ceil();
-        final maxH = (maxTop + maxBottom).ceil();
+        final maxW = (maxX - minX).ceil();
+        final maxH = (maxY - minY).ceil();
 
         if (maxW > 0 && maxH > 0) {
           final scale = (maxW < 24 && maxH < 24) ? 3 : 2;
@@ -261,8 +258,9 @@ function toggleAnchors() {
           final dh = maxH * scale;
           final bgW = imgW * scale;
 
-          final anchorPxX = maxLeft * scale;
-          final anchorPxY = maxTop * scale;
+          // Entity origin within the container.
+          final originX = -minX * scale;
+          final originY = -minY * scale;
 
           final safeGroup = groupName.replaceAll(RegExp('[^a-zA-Z0-9]'), '-');
           final animName = 'anim-$safeGroup-$cssClass';
@@ -278,14 +276,12 @@ function toggleAnchors() {
             final w = (f['w'] as num).toInt() * scale;
             final h = (f['h'] as num).toInt() * scale;
 
-            final ax = anchor != null ? (anchor['x'] as num).toDouble() : 0.5;
-            final ay = anchor != null ? (anchor['y'] as num).toDouble() : 0.5;
+            final ax = anchor != null ? (anchor['x'] as num).toDouble() : 0.0;
+            final ay = anchor != null ? (anchor['y'] as num).toDouble() : 0.0;
 
-            final frameAnchorX = ax * w;
-            final frameAnchorY = ay * h;
-
-            final offsetX = anchorPxX - frameAnchorX;
-            final offsetY = anchorPxY - frameAnchorY;
+            // Position this frame within the container.
+            final offsetX = (ax - minX) * scale;
+            final offsetY = (ay - minY) * scale;
 
             final pct = (i * 100.0 / framesList.length).toStringAsFixed(2);
             buf.writeln('  $pct% {');
@@ -311,7 +307,7 @@ function toggleAnchors() {
             'background-size:${bgW}px auto;'
             'animation: $animName ${durationMs}ms steps(1) infinite;'
             '" title="Animated preview"></div>'
-            '      <div class="anchor-dot" style="left:${anchorPxX}px; top:${anchorPxY}px;"></div>'
+            '      <div class="anchor-dot" style="left:${originX}px; top:${originY}px;"></div>'
             '    </div>',
           );
           buf.writeln(
@@ -334,8 +330,8 @@ function toggleAnchors() {
         final h = (f['h'] as num).toInt();
 
         final anchor = entry.value['anchor'] as Map<String, dynamic>?;
-        final ax = anchor != null ? (anchor['x'] as num).toDouble() : 0.5;
-        final ay = anchor != null ? (anchor['y'] as num).toDouble() : 0.5;
+        final ax = anchor != null ? (anchor['x'] as num).toInt() : 0;
+        final ay = anchor != null ? (anchor['y'] as num).toInt() : 0;
 
         final scale = (w < 24 && h < 24) ? 3 : 2;
         final dw = w * scale;
@@ -351,7 +347,7 @@ function toggleAnchors() {
           'background-position:-${x * scale}px -${y * scale}px;'
           'background-size:${bgW}px auto;'
           '" title="$key ${w}x$h">'
-          '      <div class="anchor-dot" style="left:${ax * 100}%; top:${ay * 100}%;"></div>'
+          '      <div class="anchor-dot" style="left:${ax * scale}px; top:${ay * scale}px;"></div>'
           '    </div>',
         );
         final displayName = suffix.startsWith('_')
@@ -438,33 +434,29 @@ function toggleAnchors() {
       }
       if (orderedFrames.length < 4) continue;
 
-      // Compute bounding box accounting for anchors.
-      var maxLeft = 0.0;
-      var maxRight = 0.0;
-      var maxTop = 0.0;
-      var maxBottom = 0.0;
+      // Compute bounding box. Each frame occupies [ax, ax+w] × [ay, ay+h]
+      // where (ax, ay) is the rendering offset from the entity position.
+      var minX = double.infinity;
+      var maxX = double.negativeInfinity;
+      var minY = double.infinity;
+      var maxY = double.negativeInfinity;
 
       for (final fEntry in orderedFrames) {
         final f = fEntry.value['frame'] as Map<String, dynamic>;
-        final w = (f['w'] as num).toInt();
-        final h = (f['h'] as num).toInt();
+        final w = (f['w'] as num).toDouble();
+        final h = (f['h'] as num).toDouble();
         final anchor = fEntry.value['anchor'] as Map<String, dynamic>?;
-        final ax = anchor != null ? (anchor['x'] as num).toDouble() : 0.5;
-        final ay = anchor != null ? (anchor['y'] as num).toDouble() : 0.5;
+        final ax = anchor != null ? (anchor['x'] as num).toDouble() : 0.0;
+        final ay = anchor != null ? (anchor['y'] as num).toDouble() : 0.0;
 
-        final left = ax * w;
-        final right = (1 - ax) * w;
-        final top = ay * h;
-        final bottom = (1 - ay) * h;
-
-        if (left > maxLeft) maxLeft = left;
-        if (right > maxRight) maxRight = right;
-        if (top > maxTop) maxTop = top;
-        if (bottom > maxBottom) maxBottom = bottom;
+        if (ax < minX) minX = ax;
+        if (ax + w > maxX) maxX = ax + w;
+        if (ay < minY) minY = ay;
+        if (ay + h > maxY) maxY = ay + h;
       }
 
-      final maxW = (maxLeft + maxRight).ceil();
-      final maxH = (maxTop + maxBottom).ceil();
+      final maxW = (maxX - minX).ceil();
+      final maxH = (maxY - minY).ceil();
       if (maxW <= 0 || maxH <= 0) continue;
 
       final scale = (maxW < 24 && maxH < 24) ? 3 : 2;
@@ -472,8 +464,9 @@ function toggleAnchors() {
       final dh = maxH * scale;
       final bgW = imgW * scale;
 
-      final anchorPxX = maxLeft * scale;
-      final anchorPxY = maxTop * scale;
+      // Entity origin within the container.
+      final originX = -minX * scale;
+      final originY = -minY * scale;
 
       final displayName = prefix.split('/').last;
       final safeGroup =
@@ -492,14 +485,12 @@ function toggleAnchors() {
         final w = (f['w'] as num).toInt() * scale;
         final h = (f['h'] as num).toInt() * scale;
 
-        final ax = anchor != null ? (anchor['x'] as num).toDouble() : 0.5;
-        final ay = anchor != null ? (anchor['y'] as num).toDouble() : 0.5;
+        final ax = anchor != null ? (anchor['x'] as num).toDouble() : 0.0;
+        final ay = anchor != null ? (anchor['y'] as num).toDouble() : 0.0;
 
-        final frameAnchorX = ax * w;
-        final frameAnchorY = ay * h;
-
-        final offsetX = anchorPxX - frameAnchorX;
-        final offsetY = anchorPxY - frameAnchorY;
+        // Position this frame within the container.
+        final offsetX = (ax - minX) * scale;
+        final offsetY = (ay - minY) * scale;
 
         final pct = (i * 100.0 / orderedFrames.length).toStringAsFixed(2);
         buf.writeln('  $pct% {');
@@ -526,7 +517,7 @@ function toggleAnchors() {
         'background-size:${bgW}px auto;'
         'animation: $animName ${durationMs}ms steps(1) infinite;'
         '" title="$displayName spinning"></div>'
-        '    <div class="anchor-dot" style="left:${anchorPxX}px; top:${anchorPxY}px;"></div>'
+        '    <div class="anchor-dot" style="left:${originX}px; top:${originY}px;"></div>'
         '  </div>',
       );
       buf.writeln(
