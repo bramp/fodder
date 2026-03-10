@@ -106,13 +106,24 @@ void main() {
       expect(coptDatIngame[0x7F]?.name, 'bullet');
     });
 
-    test('maps helicopter directional groups', () {
-      expect(coptDatIngame[0x80]?.name, 'helicopter_s');
-      expect(coptDatIngame[0x87]?.name, 'helicopter_nnw');
-      expect(coptDatIngame[0x8B]?.name, 'helicopter_ene');
-      // E, ESE, SE, SSE use virtual indices (0x8C-0x8F are taken).
-      expect(coptDatIngame[0x10080]?.name, 'helicopter_e');
-      expect(coptDatIngame[0x10083]?.name, 'helicopter_sse');
+    test('maps helicopter directional group', () {
+      final group = coptDatIngame[0x80];
+      expect(group, isA<DirectionalSpriteGroup>());
+      expect(group?.name, 'helicopter');
+
+      final frames = group!.expandFrames();
+      expect(frames.first.name, 'helicopter_s_0');
+      expect(frames.any((f) => f.name == 'helicopter_nnw_0'), isTrue);
+      expect(frames.any((f) => f.name == 'helicopter_ene_0'), isTrue);
+      expect(frames.any((f) => f.name == 'helicopter_e_0'), isTrue);
+      expect(frames.any((f) => f.name == 'helicopter_sse_0'), isTrue);
+      expect(frames.length, 16);
+    });
+
+    test('helicopter null groups cover 0x81-0x8B', () {
+      for (var i = 0x81; i <= 0x8b; i++) {
+        expect(coptDatIngame[i], isA<NullGroup>());
+      }
     });
 
     test('maps environment decoration groups', () {

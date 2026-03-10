@@ -77,4 +77,5 @@ dart run packages/fodder_tools/bin/audio.dart   -i ${SRC?}_Extracted -o ${OUT?}/
 # Debug issues with
 dart run packages/fodder_tools/bin/audit_sprite_names.dart --html ${OUT?}/sprites
 dart run packages/fodder_tools/bin/audit_sprite_names.dart --coverage
+dart run packages/fodder_tools/bin/audit_sprite_names.dart
 ```

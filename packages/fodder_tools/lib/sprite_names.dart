@@ -102,6 +102,30 @@ class Frame {
       '${anchorX != 0 || anchorY != 0 ? ', anchor=$anchorX,$anchorY' : ''})';
 }
 
+/// A resolved frame ready for atlas export.
+///
+/// Produced by [SpriteGroup.expandFrames]. Contains a fully-qualified name
+/// (relative to the sheet, e.g. `player_walk_s_0` or `main_A`) plus all
+/// the geometry needed to locate and render the frame on the sprite sheet.
+class NamedFrame extends Frame {
+  const NamedFrame(
+    this.name,
+    super.byteOffset,
+    super.w,
+    super.h, [
+    super.anchorX,
+    super.anchorY,
+  ]);
+
+  /// Display name for this frame (e.g. `player_walk_s_0`, `helicopter_e_0`).
+  final String name;
+
+  @override
+  String toString() =>
+      'NamedFrame($name, $byteOffset, ${w}x$h'
+      '${anchorX != 0 || anchorY != 0 ? ', anchor=$anchorX,$anchorY' : ''})';
+}
+
 /// A named sprite group with palette index and frame data.
 ///
 /// **Uniform groups** (primary constructor): every frame shares the same
@@ -151,14 +175,206 @@ class SpriteGroup {
   bool get isFont => chars != null;
   int get frameCount => isVariable ? frames.length : offsets.length;
 
+  /// Expands this group into a flat list of [NamedFrame]s ready for atlas
+  /// export. The name on each frame is `{displayLabel}_{suffix}` where
+  /// `displayLabel` is [name] with the `font_` prefix stripped for font
+  /// groups, and `suffix` is either a character name (fonts) or frame index.
+  List<NamedFrame> expandFrames() {
+    final displayLabel = isFont ? name.substring(5) : name;
+    final count = frameCount;
+    return [
+      for (var i = 0; i < count; i++)
+        if (isVariable)
+          NamedFrame(
+            '${displayLabel}_${_frameSuffix(i)}',
+            frames[i].byteOffset,
+            frames[i].w,
+            frames[i].h,
+            frames[i].anchorX,
+            frames[i].anchorY,
+          )
+        else
+          NamedFrame(
+            '${displayLabel}_${_frameSuffix(i)}',
+            offsets[i],
+            w,
+            h,
+          ),
+    ];
+  }
+
+  /// Returns the display suffix for frame [i] — a character name for font
+  /// groups, or the numeric index otherwise.
+  String _frameSuffix(int i) {
+    if (isFont && i < chars!.length) {
+      return _charToName(chars![i]);
+    }
+    return i.toString();
+  }
+
   @override
   String toString() =>
       'SpriteGroup($name, 0x${palette.toRadixString(16)}, '
       '$frameCount frames)';
 }
 
+/// A directional sprite group — one logical sprite with per-direction frames.
+///
+/// All directions share [w]×[h]. Use [DirectionalSpriteGroup.v] when
+/// individual directions have varying dimensions or anchors.
+class DirectionalSpriteGroup extends SpriteGroup {
+  const DirectionalSpriteGroup(
+    String name,
+    int palette,
+    int w,
+    int h,
+    this.directions,
+  ) : variableDirections = const {},
+      super(name, palette, w, h, const []);
+
+  /// Variable-frame variant: each direction maps to a `List<Frame>`.
+  const DirectionalSpriteGroup.v(
+    String name,
+    int palette,
+    this.variableDirections,
+  ) : directions = const {},
+      super.v(name, palette, const []);
+
+  /// Per-direction frames (uniform). Keys are compass strings
+  /// (e.g. `'s'`, `'nw'`, `'ene'`).
+  final Map<String, List<int>> directions;
+
+  /// Per-direction frames (variable dimensions/anchors).
+  final Map<String, List<Frame>> variableDirections;
+
+  bool get _isVariableDir => variableDirections.isNotEmpty;
+
+  @override
+  int get frameCount {
+    if (_isVariableDir) {
+      return variableDirections.values.fold(0, (sum, f) => sum + f.length);
+    }
+    return directions.values.fold(0, (sum, f) => sum + f.length);
+  }
+
+  @override
+  List<NamedFrame> expandFrames() {
+    final displayLabel = name;
+    final result = <NamedFrame>[];
+
+    if (_isVariableDir) {
+      for (final MapEntry(key: dir, value: frames)
+          in variableDirections.entries) {
+        for (var i = 0; i < frames.length; i++) {
+          final f = frames[i];
+          result.add(
+            NamedFrame(
+              '${displayLabel}_${dir}_$i',
+              f.byteOffset,
+              f.w,
+              f.h,
+              f.anchorX,
+              f.anchorY,
+            ),
+          );
+        }
+      }
+    } else {
+      for (final MapEntry(key: dir, value: offsets) in directions.entries) {
+        for (var i = 0; i < offsets.length; i++) {
+          result.add(
+            NamedFrame('${displayLabel}_${dir}_$i', offsets[i], w, h),
+          );
+        }
+      }
+    }
+
+    return result;
+  }
+}
+
+/// A composite group that combines multiple sub-groups into one.
+///
+/// The C++ data sometimes packs several logically distinct sprite sets
+/// (e.g. multiple font faces) into a single flat array. A
+/// [CompositeSpriteGroup] lets us preserve the logical split while still
+/// reporting the correct total frame count to the audit tool.
+class CompositeSpriteGroup extends SpriteGroup {
+  const CompositeSpriteGroup(this.children) : super('', 0, 0, 0, const []);
+
+  final List<SpriteGroup> children;
+
+  @override
+  String get name => children.firstOrNull?.name ?? '';
+
+  @override
+  int get frameCount => children.fold(0, (sum, c) => sum + c.frameCount);
+
+  @override
+  List<NamedFrame> expandFrames() => [
+    for (final child in children) ...child.expandFrames(),
+  ];
+
+  @override
+  String toString() =>
+      'CompositeSpriteGroup($frameCount frames, '
+      '${children.length} children)';
+}
+
+/// A placeholder for indices that are intentionally blank — covered by
+/// a [DirectionalSpriteGroup] or otherwise unused. The audit tool checks
+/// for this type and silently skips it.
+class NullGroup extends SpriteGroup {
+  const NullGroup(this.reason) : super('', 0, 0, 0, const []);
+
+  /// Why this index is blank (e.g. "covered by helicopter at 0x80").
+  final String reason;
+
+  @override
+  List<NamedFrame> expandFrames() => const [];
+
+  @override
+  String toString() => 'NullGroup($reason)';
+}
+
+/// Maps a character to its human-readable name for font atlas entries.
+String _charToName(String c) => switch (c) {
+  ' ' => 'space',
+  '/' => 'slash',
+  '.' => 'dot',
+  ':' => 'colon',
+  ';' => 'semicolon',
+  ',' => 'comma',
+  '!' => 'exclamation',
+  '"' => 'quote',
+  "'" => 'single_quote',
+  '(' => 'lparen',
+  ')' => 'rparen',
+  '[' => 'lbracket',
+  ']' => 'rbracket',
+  '?' => 'question',
+  '-' => 'dash',
+  '+' => 'plus',
+  '=' => 'equals',
+  '£' => 'pound',
+  r'$' => 'dollar',
+  '%' => 'percent',
+  '^' => 'caret',
+  '&' => 'ampersand',
+  '*' => 'asterisk',
+  _ => c,
+};
+
 /// Compact alias for [SpriteGroup], used in the data declarations below.
 typedef S = SpriteGroup;
+
+/// Compact alias for [DirectionalSpriteGroup], used in the data declarations
+/// below.
+typedef D = DirectionalSpriteGroup;
+
+/// Compact alias for [CompositeSpriteGroup], used in the data declarations
+/// below.
+typedef G = CompositeSpriteGroup;
 
 /// Compact alias for [SpriteGroup.font], used in the data declarations below.
 // ignore: non_constant_identifier_names
@@ -195,52 +411,56 @@ typedef F = Frame;
 ///
 /// Contains the main game font.
 final fontDatFont = <int, S>{
-  0x00: Sf(
-    'font_main',
-    0x00,
-    16,
-    16,
-    'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789:;.,!',
-    [
-      0, 8, 16, 24, 32, 40, 48, 56, // A-H
-      64, 72, 80, 88, 96, 104, 112, 120, // I-P
-      128, 136, 144, 152, 2720, 2728, 2736, 2744, // Q-X
-      2752, 2760, 2768, 2776, 2784, 2792, 2800, 2808, // Y-f
-      2816, 2824, 2832, 2840, 2848, 2856, 2864, 2872, // g-n
-      5440, 5448, 5456, 5464, 5472, 5480, 5488, 5496, // o-v
-      5504, 5512, 5520, 5528, 5536, 5544, 5552, 5560, // w-3
-      5568, 5576, 5584, 5592, 8160, 8168, 8176, 8184, // 4-;
-      8192, 8200, 8208, // .-!
-    ],
-  ),
-  0x01: Sf('font_numbers', 0x01, 15, 17, "0123456789.,!()'?", [
-    8216, 8224, 8232, 8240, 8248, 8256, 8264, 8272, // 0-7
-    8280, 8288, 8296, 8304, 8312, // 8-!
-    10880, // (
-    10888 - 1, // ) is offset incorrectly in the sheet, so we nudge it a little
-    10896, 10904, // ' ?
+  // C++ packs all 83 frames into a single mSpriteSheet_Font_PC array.
+  // We split them into logical sub-fonts for better naming.
+  0x00: G([
+    Sf(
+      'font_main',
+      0x00,
+      16,
+      16,
+      'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789:;.,!',
+      [
+        0, 8, 16, 24, 32, 40, 48, 56, // A-H
+        64, 72, 80, 88, 96, 104, 112, 120, // I-P
+        128, 136, 144, 152, 2720, 2728, 2736, 2744, // Q-X
+        2752, 2760, 2768, 2776, 2784, 2792, 2800, 2808, // Y-f
+        2816, 2824, 2832, 2840, 2848, 2856, 2864, 2872, // g-n
+        5440, 5448, 5456, 5464, 5472, 5480, 5488, 5496, // o-v
+        5504, 5512, 5520, 5528, 5536, 5544, 5552, 5560, // w-3
+        5568, 5576, 5584, 5592, 8160, 8168, 8176, 8184, // 4-;
+        8192, 8200, 8208, // .-!
+      ],
+    ),
+    Sf('font_numbers', 0x01, 15, 17, "0123456789.,!()'?", [
+      8216, 8224, 8232, 8240, 8248, 8256, 8264, 8272, // 0-7
+      8280, 8288, 8296, 8304, 8312, // 8-!
+      10880, // (
+      10888 -
+          1, // ) is offset incorrectly in the sheet, so we nudge it a little
+      10896, 10904, // ' ?
+    ]),
+    // TODO(bramp): The last few rows of characters are not correctly mapped
+    Sf(
+      'font_alt',
+      0x02,
+      16,
+      15,
+      "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789:;.,!  ()   -'? ÄÖ",
+      [
+        19040, 19048, 19056, 19064, 19072, 19080, 19088, 19096, // A-H
+        19104, 19112, 19120, 19128, 19136, 19144, 19152, 19160, // I-P
+        19168, 19176, 19184, 19192, 21760, 21768, 21776, 21784, // Q-X
+        21792, 21800, 21808, 21816, 21824, 21832, 21840, 21848, // Y-f
+        21856, 21864, 21872, 21880, 21888, 21896, 21904, 21912, // g-n
+        24480, 24488, 24496, 24504, 24512, 24520, 24528, 24536, // o-v
+        24544, 24552, 24560, 24568, 24576, 24584, 24592, 24600, // w-3
+        24608, 24616, 24624, 24632, 27200, 27208, 27216, 27224, // 4-;
+        27232, 27240, 27248, 27256, 27264, 27272, 27280, 27288, // .-^
+        27296, 27304, 27312, 27320, 27328, 27336, 27344, 27352, // &-/
+      ],
+    ),
   ]),
-
-  // TODO(bramp): The last few rows of characters are not correctly mapped
-  0x02: Sf(
-    'font_alt',
-    0x02,
-    16,
-    15,
-    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789:;.,!  ()   -'? ÄÖ",
-    [
-      19040, 19048, 19056, 19064, 19072, 19080, 19088, 19096, // A-H
-      19104, 19112, 19120, 19128, 19136, 19144, 19152, 19160, // I-P
-      19168, 19176, 19184, 19192, 21760, 21768, 21776, 21784, // Q-X
-      21792, 21800, 21808, 21816, 21824, 21832, 21840, 21848, // Y-f
-      21856, 21864, 21872, 21880, 21888, 21896, 21904, 21912, // g-n
-      24480, 24488, 24496, 24504, 24512, 24520, 24528, 24536, // o-v
-      24544, 24552, 24560, 24568, 24576, 24584, 24592, 24600, // w-3
-      24608, 24616, 24624, 24632, 27200, 27208, 27216, 27224, // 4-;
-      27232, 27240, 27248, 27256, 27264, 27272, 27280, 27288, // .-^
-      27296, 27304, 27312, 27320, 27328, 27336, 27344, 27352, // &-/
-    ],
-  ),
 };
 
 /// Sprite groups stored in **pstuff.dat** (`GfxType.briefing`).
@@ -763,8 +983,8 @@ final armyDatIngame = <int, S>{
     20208,
     20216,
   ]),
-  0xcd: const S('effect_fire_loop', 0xa0, 16, 14, [18072, 20160, 20168, 20176]),
-  0xce: const S('effect_smoke_column', 0xa0, 16, 14, [
+  0xcd: const S('fire', 0xa0, 16, 14, [18072, 20160, 20168, 20176]),
+  0xce: const S('smoke_column', 0xa0, 16, 14, [
     20256,
     20264,
     20272,
@@ -772,42 +992,20 @@ final armyDatIngame = <int, S>{
     20288,
     20296,
   ]),
-  0xcf: const S('effect_explosion_large', 0xa0, 16, 14, [
-    33696,
-    33704,
-    33712,
-    33720,
-    33728,
-    33736,
-    33744,
-    33752,
-    35840,
-    35848,
-    35856,
-    35864,
-    35872,
-    35880,
-    35888,
-    35896,
-  ]),
-  0xd0: const S('effect_explosion_large_alt', 0xa0, 16, 14, [
-    33696,
-    33704,
-    33712,
-    33720,
-    33728,
-    33736,
-    33744,
-    33752,
-    35840,
-    35848,
-    35856,
-    35864,
-    35872,
-    35880,
-    35888,
-    35896,
-  ]),
+  // 0xCF: Unused duplicate of 0xD0 (same stru_351BC, never referenced in code).
+  // Civilian walking: 16 frames from stru_351BC, 2 frames per direction.
+  // sub_25A66 maps field_10 direction → frame base: N=0, NW=2, W=4, SW=6,
+  // S=8, SE=10, E=12, NE=14. sub_25A31 toggles +0/+1 for animation.
+  0xd0: const D('civilian_walking', 0xa0, 16, 14, {
+    'n': [33696, 33704],
+    'nw': [33712, 33720],
+    'w': [33728, 33736],
+    'sw': [33744, 33752],
+    's': [35840, 35848],
+    'se': [35856, 35864],
+    'e': [35872, 35880],
+    'ne': [35888, 35896],
+  }),
   0xd3: const S.v('bird_fly_left', 0xa0, [
     F(44832, 16, 14),
     F(44840, 16, 14),
@@ -874,6 +1072,7 @@ final armyDatIngame = <int, S>{
     51664,
     51672,
   ]),
+  // TODO(bramp): Wrong
   0x101: const S('death_gibbing_pre', 0xa0, 16, 14, [35960]),
   0x102: const S('effect_explosion_dirt', 0xa0, 16, 14, [
     51584,
@@ -888,7 +1087,7 @@ final armyDatIngame = <int, S>{
   0x105: const S('gib_arm', 0xa0, 16, 14, [42640]),
   0x106: const S('gib_torso', 0xa0, 16, 14, [42648]),
   0x107: const S('gib_leg', 0xa0, 16, 14, [42656]),
-  0x108: const S('effect_blood_pool', 0xa0, 16, 14, [
+  0x108: const S('floor_button', 0xa0, 16, 14, [
     44800,
     44808,
     44816,
@@ -953,24 +1152,38 @@ final coptDatIngame = <int, S>{
   // Helicopter body: 16 compass directions, one frame each.
   // C++ 0x80-0x8B all reference the same 16-frame struct (stru_343EC);
   // only 0x8B is used in game code (field_A selects the frame at runtime).
-  // Indices 0x10080-0x10083 are virtual — the real C++ slots 0x8C-0x8F
-  // are taken by rotor/debris/pilot/shrub.
-  0x80: const S('helicopter_s', 0xd0, 32, 32, [13440]),
-  0x81: const S('helicopter_ssw', 0xd0, 32, 32, [13456]),
-  0x82: const S('helicopter_sw', 0xd0, 32, 32, [13472]),
-  0x83: const S('helicopter_wsw', 0xd0, 32, 32, [13488]),
-  0x84: const S('helicopter_w', 0xd0, 32, 32, [13504]),
-  0x85: const S('helicopter_wnw', 0xd0, 32, 32, [13520]),
-  0x86: const S('helicopter_nw', 0xd0, 32, 32, [13536]),
-  0x87: const S.v('helicopter_nnw', 0xd0, [F(13872, 32, 30, 0, 2)]),
-  0x88: const S('helicopter_n', 0xd0, 32, 32, [13568]),
-  0x89: const S('helicopter_nne', 0xd0, 32, 32, [13584]),
-  0x8a: const S('helicopter_ne', 0xd0, 32, 32, [18560]),
-  0x8b: const S('helicopter_ene', 0xd0, 32, 32, [18576]),
-  0x10080: const S('helicopter_e', 0xd0, 32, 32, [18592]),
-  0x10081: const S('helicopter_ese', 0xd0, 32, 32, [18608]),
-  0x10082: const S('helicopter_se', 0xd0, 32, 32, [18624]),
-  0x10083: const S('helicopter_sse', 0xd0, 32, 32, [18640]),
+  // Real C++ slots 0x8C-0x8F are taken by rotor/debris/pilot/shrub.
+  0x80: const D.v('helicopter', 0xd0, {
+    's': [F(13440, 32, 32)],
+    'ssw': [F(13456, 32, 32)],
+    'sw': [F(13472, 32, 32)],
+    'wsw': [F(13488, 32, 32)],
+    'w': [F(13504, 32, 32)],
+    'wnw': [F(13520, 32, 32)],
+    'nw': [F(13536, 32, 32)],
+    'nnw': [F(13872, 32, 30, 0, 2)],
+    'n': [F(13568, 32, 32)],
+    'nne': [F(13584, 32, 32)],
+    'ne': [F(18560, 32, 32)],
+    'ene': [F(18576, 32, 32)],
+    'e': [F(18592, 32, 32)],
+    'ese': [F(18608, 32, 32)],
+    'se': [F(18624, 32, 32)],
+    'sse': [F(18640, 32, 32)],
+  }),
+  // C++ 0x81-0x8B are duplicate refs to the same stru_343EC covered by
+  // the DirectionalSpriteGroup at 0x80.
+  0x81: const NullGroup('covered by helicopter at 0x80'),
+  0x82: const NullGroup('covered by helicopter at 0x80'),
+  0x83: const NullGroup('covered by helicopter at 0x80'),
+  0x84: const NullGroup('covered by helicopter at 0x80'),
+  0x85: const NullGroup('covered by helicopter at 0x80'),
+  0x86: const NullGroup('covered by helicopter at 0x80'),
+  0x87: const NullGroup('covered by helicopter at 0x80'),
+  0x88: const NullGroup('covered by helicopter at 0x80'),
+  0x89: const NullGroup('covered by helicopter at 0x80'),
+  0x8a: const NullGroup('covered by helicopter at 0x80'),
+  0x8b: const NullGroup('covered by helicopter at 0x80'),
   0x8c: const S('helicopter_rotor', 0xb0, 32, 16, [18656, 18672, 18688, 18704]),
   0x8d: const S.v('helicopter_debris', 0xb0, [
     F(21216, 32, 11),
@@ -1417,6 +1630,8 @@ String? spriteGroupName({
 }) => spriteGroup(sheetTypeName: sheetTypeName, groupIndex: groupIndex)?.name;
 
 /// Returns the fully-qualified sprite name for a single frame.
+///
+/// Delegates to [SpriteGroup.expandFrames] for name generation.
 String spriteFrameName({
   required String sheetTypeName,
   required int groupIndex,
@@ -1426,49 +1641,22 @@ String spriteFrameName({
     sheetTypeName: sheetTypeName,
     groupIndex: groupIndex,
   );
-  final groupLabel =
-      group?.name ?? 'unknown_${groupIndex.toRadixString(16).padLeft(2, '0')}';
-  final isFont = isFontGroup(groupLabel);
 
-  String frameSuffix;
-  if (isFont &&
-      group != null &&
-      group.chars != null &&
-      frameIndex < group.chars!.length) {
-    final c = group.chars![frameIndex];
-    frameSuffix = switch (c) {
-      ' ' => 'space',
-      '/' => 'slash',
-      '.' => 'dot',
-      ':' => 'colon',
-      ';' => 'semicolon',
-      ',' => 'comma',
-      '!' => 'exclamation',
-      '"' => 'quote',
-      "'" => 'single_quote',
-      '(' => 'lparen',
-      ')' => 'rparen',
-      '[' => 'lbracket',
-      ']' => 'rbracket',
-      '?' => 'question',
-      '-' => 'dash',
-      '+' => 'plus',
-      '=' => 'equals',
-      '£' => 'pound',
-      r'$' => 'dollar',
-      '%' => 'percent',
-      '^' => 'caret',
-      '&' => 'ampersand',
-      '*' => 'asterisk',
-      _ => c,
-    };
-  } else {
-    frameSuffix = frameIndex.toString();
+  final prefix = normaliseSheetName(sheetTypeName);
+
+  if (group == null || group is NullGroup) {
+    final fallback = 'unknown_${groupIndex.toRadixString(16).padLeft(2, '0')}';
+    return '$prefix/${fallback}_$frameIndex';
   }
 
-  final displayLabel = isFont ? groupLabel.substring(5) : groupLabel;
+  final frames = group.expandFrames();
+  if (frameIndex < frames.length) {
+    return '$prefix/${frames[frameIndex].name}';
+  }
 
-  return '${normaliseSheetName(sheetTypeName)}/${displayLabel}_$frameSuffix';
+  // Fallback for out-of-range frame index.
+  final displayLabel = group.isFont ? group.name.substring(5) : group.name;
+  return '$prefix/${displayLabel}_$frameIndex';
 }
 
 final Map<String, Map<int, S>> _sheetNameTables = {

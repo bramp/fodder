@@ -203,6 +203,9 @@ int _auditSheet(SpriteSheetType sheet) {
       continue;
     }
 
+    // NullGroups are intentionally blank — skip silently.
+    if (dartGroup is NullGroup) continue;
+
     // Check frame count.
     if (dartGroup.frameCount != cppFrames.length) {
       stdout.writeln(
@@ -215,9 +218,17 @@ int _auditSheet(SpriteSheetType sheet) {
     }
 
     // Check per-frame data.
+    final expandedFrames = dartGroup.expandFrames();
     for (var fi = 0; fi < cppFrames.length; fi++) {
       final cpp = cppFrames[fi];
-      issues += _auditFrame(sheet.name, hexIdx, dartGroup, fi, cpp);
+      issues += _auditFrame(
+        sheet.name,
+        hexIdx,
+        dartGroup,
+        fi,
+        cpp,
+        expandedFrames,
+      );
     }
   }
 
@@ -251,44 +262,26 @@ int _auditFrame(
   SpriteGroup dartGroup,
   int frameIdx,
   SpriteFrame cpp,
+  List<NamedFrame> expandedFrames,
 ) {
-  final int dartOffset;
-  final int dartW;
-  final int dartH;
-  final int dartModX;
-  final int dartModY;
-
-  if (dartGroup.isVariable) {
-    final f = dartGroup.frames[frameIdx];
-    dartOffset = f.byteOffset;
-    dartW = f.w;
-    dartH = f.h;
-    dartModX = f.anchorX;
-    dartModY = f.anchorY;
-  } else {
-    dartOffset = dartGroup.offsets[frameIdx];
-    dartW = dartGroup.w;
-    dartH = dartGroup.h;
-    dartModX = 0;
-    dartModY = 0;
-  }
+  final f = expandedFrames[frameIdx];
 
   final mismatches = <String>[];
 
-  if (dartOffset != cpp.byteOffset) {
-    mismatches.add('offset: dart=$dartOffset vs cpp=${cpp.byteOffset}');
+  if (f.byteOffset != cpp.byteOffset) {
+    mismatches.add('offset: dart=${f.byteOffset} vs cpp=${cpp.byteOffset}');
   }
-  if (dartW != cpp.width) {
-    mismatches.add('width: dart=$dartW vs cpp=${cpp.width}');
+  if (f.w != cpp.width) {
+    mismatches.add('width: dart=${f.w} vs cpp=${cpp.width}');
   }
-  if (dartH != cpp.height) {
-    mismatches.add('height: dart=$dartH vs cpp=${cpp.height}');
+  if (f.h != cpp.height) {
+    mismatches.add('height: dart=${f.h} vs cpp=${cpp.height}');
   }
-  if (dartModX != cpp.modX) {
-    mismatches.add('modX: dart=$dartModX vs cpp=${cpp.modX}');
+  if (f.anchorX != cpp.modX) {
+    mismatches.add('modX: dart=${f.anchorX} vs cpp=${cpp.modX}');
   }
-  if (dartModY != cpp.modY) {
-    mismatches.add('modY: dart=$dartModY vs cpp=${cpp.modY}');
+  if (f.anchorY != cpp.modY) {
+    mismatches.add('modY: dart=${f.anchorY} vs cpp=${cpp.modY}');
   }
 
   if (mismatches.isNotEmpty) {

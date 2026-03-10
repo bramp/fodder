@@ -508,16 +508,10 @@ class _SpriteRegion {
 List<_SpriteRegion> _buildSpriteRegions(Map<int, SpriteGroup> map) {
   final regions = <_SpriteRegion>[];
   for (final group in map.values) {
-    if (group.isVariable) {
-      for (final frame in group.frames) {
-        regions.add(
-          _SpriteRegion(frame.byteOffset, frame.w, frame.h, group.palette),
-        );
-      }
-    } else {
-      for (final offset in group.offsets) {
-        regions.add(_SpriteRegion(offset, group.w, group.h, group.palette));
-      }
+    for (final frame in group.expandFrames()) {
+      regions.add(
+        _SpriteRegion(frame.byteOffset, frame.w, frame.h, group.palette),
+      );
     }
   }
   return regions;
@@ -558,39 +552,14 @@ void _exportSpriteAtlases({
     final availableFiles = files.where(hasFile).toList();
     if (availableFiles.isEmpty) continue;
 
-    for (final MapEntry(key: groupIndex, value: group) in map.entries) {
-      final frameCount = group.frameCount;
-      for (var frameIdx = 0; frameIdx < frameCount; frameIdx++) {
-        final int byteOffset;
-        final int w;
-        final int h;
-        final int anchorX;
-        final int anchorY;
+    for (final MapEntry(value: group) in map.entries) {
+      final prefix = normaliseSheetName(sheet);
+      final namedFrames = group.expandFrames();
 
-        if (group.isVariable) {
-          final frame = group.frames[frameIdx];
-          byteOffset = frame.byteOffset;
-          w = frame.w;
-          h = frame.h;
-          anchorX = frame.anchorX;
-          anchorY = frame.anchorY;
-        } else {
-          byteOffset = group.offsets[frameIdx];
-          w = group.w;
-          h = group.h;
-          anchorX = 0;
-          anchorY = 0;
-        }
+      for (final frame in namedFrames) {
+        if (frame.w <= 0 || frame.h <= 0) continue;
 
-        if (w <= 0 || h <= 0) continue;
-
-        final x = (byteOffset % 160) * 2;
-        final y = byteOffset ~/ 160;
-        final name = spriteFrameName(
-          sheetTypeName: sheet,
-          groupIndex: groupIndex,
-          frameIndex: frameIdx,
-        );
+        final name = '$prefix/${frame.name}';
 
         for (final filename in availableFiles) {
           atlasEntries
@@ -598,16 +567,16 @@ void _exportSpriteAtlases({
               .add(
                 AtlasEntry(
                   name: name,
-                  x: x,
-                  y: y,
-                  width: w,
-                  height: h,
-                  anchorX: anchorX,
-                  anchorY: anchorY,
+                  x: frame.pixelX,
+                  y: frame.pixelY,
+                  width: frame.w,
+                  height: frame.h,
+                  anchorX: frame.anchorX,
+                  anchorY: frame.anchorY,
                 ),
               );
 
-          final bottomEdge = y + h;
+          final bottomEdge = frame.pixelY + frame.h;
           final prev = imageHeights[filename] ?? 0;
           if (bottomEdge > prev) imageHeights[filename] = bottomEdge;
         }
