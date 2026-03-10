@@ -185,22 +185,6 @@ S Sfv(String name, int pal, String chars, List<Frame> frames) {
 /// Compact alias for [Frame], used in the data declarations below.
 typedef F = Frame;
 
-// ---------------------------------------------------------------------------
-// Spread helpers
-// ---------------------------------------------------------------------------
-
-/// Expands N directional entries that share a single frame list.
-Map<int, S> _dn(
-  int base,
-  String prefix,
-  int pal,
-  List<String> dirs,
-  List<F> sharedFrames,
-) => {
-  for (var i = 0; i < dirs.length; i++)
-    base + i: S.v('${prefix}_${dirs[i]}', pal, sharedFrames),
-};
-
 /// Sprite groups stored in **font.dat** (`GfxType.font`).
 ///
 /// Contains the main game font.
@@ -906,45 +890,12 @@ final armyDatIngame = <int, S>{
   ]),
 };
 
-const _heliDirs = [
-  's',
-  'ssw',
-  'sw',
-  'wsw',
-  'w',
-  'wnw',
-  'nw',
-  'nnw',
-  'n',
-  'nne',
-  'ne',
-  'ene',
-];
-
-const _heliFrames = [
-  F(13440, 32, 32),
-  F(13456, 32, 32),
-  F(13472, 32, 32),
-  F(13488, 32, 32),
-  F(13504, 32, 32),
-  F(13520, 32, 32),
-  F(13536, 32, 32),
-  F(13872, 32, 30, 0, 2),
-  F(13568, 32, 32),
-  F(13584, 32, 32),
-  F(18560, 32, 32),
-  F(18576, 32, 32),
-  F(18592, 32, 32),
-  F(18608, 32, 32),
-  F(18624, 32, 32),
-  F(18640, 32, 32),
-];
-
 /// Sprite groups stored in **\*copt.dat** (`GfxType.inGame2`).
 ///
 /// Per-terrain sprite sheets (juncopt.dat, descopt.dat, etc.) containing
 /// helicopters, environment objects, vehicles, text overlays, and UI.
 final coptDatIngame = <int, S>{
+  // TODO(bramp): No idea
   0x7b: const S('effect_shrapnel_white_0', 0xb0, 16, 1, [
     2240,
     2240,
@@ -955,6 +906,7 @@ final coptDatIngame = <int, S>{
     2240,
     2240,
   ]),
+  // TODO(bramp): No idea
   0x7c: const S('effect_shrapnel_white_1', 0xb0, 16, 1, [
     2240,
     2240,
@@ -965,18 +917,22 @@ final coptDatIngame = <int, S>{
     2240,
     2240,
   ]),
+  // TODO(bramp): No idea - maybe a grenade getting larger
   0x7d: const S('effect_shrapnel_white_2', 0xb0, 16, 6, [
     7936,
     7944,
     7952,
     7960,
   ]),
+  // TODO(bramp): No idea
   0x7e: const S('effect_shrapnel_white_3', 0xb0, 16, 6, [
     7968,
     7976,
     7984,
     7992,
   ]),
+
+  // TODO(bramp): Not sure what this is. Some kind of splash, perhaps cropped poorly.
   0x7f: const S('bullet', 0xb0, 16, 6, [
     8896,
     8904,
@@ -987,13 +943,36 @@ final coptDatIngame = <int, S>{
     9872,
     9880,
   ]),
-  ..._dn(0x80, 'helicopter', 0xd0, _heliDirs, _heliFrames),
+
+  // Helicopter body: 16 compass directions, one frame each.
+  // C++ 0x80-0x8B all reference the same 16-frame struct (stru_343EC);
+  // only 0x8B is used in game code (field_A selects the frame at runtime).
+  // Indices 0x10080-0x10083 are virtual — the real C++ slots 0x8C-0x8F
+  // are taken by rotor/debris/pilot/shrub.
+  0x80: const S('helicopter_s', 0xd0, 32, 32, [13440]),
+  0x81: const S('helicopter_ssw', 0xd0, 32, 32, [13456]),
+  0x82: const S('helicopter_sw', 0xd0, 32, 32, [13472]),
+  0x83: const S('helicopter_wsw', 0xd0, 32, 32, [13488]),
+  0x84: const S('helicopter_w', 0xd0, 32, 32, [13504]),
+  0x85: const S('helicopter_wnw', 0xd0, 32, 32, [13520]),
+  0x86: const S('helicopter_nw', 0xd0, 32, 32, [13536]),
+  0x87: const S.v('helicopter_nnw', 0xd0, [F(13872, 32, 30, 0, 2)]),
+  0x88: const S('helicopter_n', 0xd0, 32, 32, [13568]),
+  0x89: const S('helicopter_nne', 0xd0, 32, 32, [13584]),
+  0x8a: const S('helicopter_ne', 0xd0, 32, 32, [18560]),
+  0x8b: const S('helicopter_ene', 0xd0, 32, 32, [18576]),
+  0x10080: const S('helicopter_e', 0xd0, 32, 32, [18592]),
+  0x10081: const S('helicopter_ese', 0xd0, 32, 32, [18608]),
+  0x10082: const S('helicopter_se', 0xd0, 32, 32, [18624]),
+  0x10083: const S('helicopter_sse', 0xd0, 32, 32, [18640]),
   0x8c: const S('helicopter_rotor', 0xb0, 32, 16, [18656, 18672, 18688, 18704]),
   0x8d: const S.v('helicopter_debris', 0xb0, [
     F(21216, 32, 11),
     F(21232, 16, 7),
     F(22352, 16, 5),
   ]),
+
+  // TODO(bramp): This is actually a explosion.
   0x8e: const S.v('pilot', 0xc0, [
     F(0, 16, 15),
     F(8, 32, 25),
@@ -1029,11 +1008,19 @@ final coptDatIngame = <int, S>{
   ]),
   0x96: const S('effect_sparks_0', 0xb0, 16, 6, [9088, 9096, 9104, 9112]),
   0x97: const S.v('effect_sparks_1', 0xb0, [F(10992, 16, 3), F(11000, 16, 4)]),
+
+  // TODO(bramp): This is some kind of bird
   0x98: const S('effect_sparks_2', 0xb0, 16, 13, [23864, 23872]),
+  // TODO(bramp): Some kind of door
   0x99: const S('effect_sparks_3', 0xb0, 16, 15, [23880]),
+  // TODO(bramp): Bad crop
   0x9a: const S('fence_wood', 0xb0, 16, 11, [25176, 25184, 25192, 25200]),
   0x9b: const S('env_building_window', 0xb0, 16, 15, [23888]),
+
+  // TODO(bramp): Bad crop
   0x9c: const S('wall_stone', 0xb0, 16, 8, [23896, 23904, 23912, 23920]),
+
+  // TODO(bramp): Wrong - maybe a butterfly?
   0x9d: const S('bones_and_shadows', 0xb0, 16, 7, [
     11328,
     11336,
@@ -1045,9 +1032,13 @@ final coptDatIngame = <int, S>{
     12472,
   ]),
   0x9e: const S('env_building_piece', 0xb0, 16, 10, [26264, 26272]),
-  0xa0: const S('text_phase_complete', 0xc0, 128, 20, [31840]),
-  0xa1: const S('text_mission_complete', 0xc0, 80, 20, [28216]),
-  0xa2: const S('text_mission_failed', 0xc0, 112, 20, [28640]),
+  0xa0: const S('text_complete', 0xc0, 128, 20, [31840]),
+  0xa1: const S('text_phase', 0xc0, 80, 20, [28216]),
+  0xa2: const S('text_mission', 0xc0, 112, 20, [28640]),
+  0xca: const S('text_try', 0xc0, 64, 17, [38120]),
+  0xcb: const S.v('text_again', 0xc0, [F(38152, 96, 17, 10)]),
+
+  // TODO(bramp): This looks like a rocket in 16 directions.
   0xa3: const S('player_parachute_rotation', 0xb0, 16, 5, [
     21080,
     21088,
@@ -1084,6 +1075,8 @@ final coptDatIngame = <int, S>{
     F(31504, 32, 28),
     F(49536, 32, 27),
   ]),
+
+  // TODO(bramp): Rename to explosure - anchors are wrong.
   0xc0: const S.v('building_large', 0xc0, [
     F(24, 48, 34),
     F(48, 48, 42),
@@ -1093,7 +1086,9 @@ final coptDatIngame = <int, S>{
   0xc1: const S('text_game_over', 0xc0, 96, 25, [24064]),
   0xc2: const S('ui_pixel_block_0', 0xb0, 16, 13, [10312]),
   0xc3: const S('ui_pixel_block_1', 0xb0, 16, 13, [10320]),
+  // TODO(bramp): No idea what this is
   0xc4: const S('doorway', 0xb0, 16, 4, [23648, 23656, 23664, 23672]),
+  // TODO(bramp): No idea what this is
   0xc5: const S('box_wood', 0xb0, 16, 6, [24280, 25240, 25248]),
   0xc6: const S('effect_structure_debris', 0xb0, 16, 6, [
     24288,
@@ -1103,6 +1098,8 @@ final coptDatIngame = <int, S>{
   ]),
   0xc7: const S('ui_pixel_block_2', 0xb0, 16, 4, [26272]),
   0xc8: const S('ui_pixel_block_3', 0xb0, 16, 13, [26280]),
+
+  // TODO(bramp): Bad crop!
   0xc9: const S('death_gibbing_alt', 0xb0, 16, 17, [
     38080,
     38088,
@@ -1110,8 +1107,7 @@ final coptDatIngame = <int, S>{
     38104,
     38112,
   ]),
-  0xca: const S('ui_pixel_block_4', 0xc0, 64, 17, [38120]),
-  0xcb: const S.v('ui_pixel_block_5', 0xc0, [F(38152, 96, 17, 10)]),
+
   0xd1: const S.v('tank_body', 0xd0, [
     F(41072, 32, 30),
     F(45824, 32, 31),
